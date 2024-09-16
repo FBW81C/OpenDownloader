@@ -1,0 +1,58 @@
+# Build-Verzeichnisse
+bin/
+obj/
+
+# Visual Studio-spezifische Dateien
+.vscode/
+.vs/
+*.user
+*.suo
+*.sln.docstates
+*.ncrunchsolution
+*.ncrunchproject
+
+# Paketabhängigkeiten
+packages/
+*.nupkg
+*.snupkg
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# Log-, Dump- und andere temporäre Dateien
+*.log
+*.tlog
+*.lastcodeanalysissucceeded
+*.DotSettings.user
+.DS_Store
+
+# Publish-Ausgabe
+publish/
+
+# User-spezifische und lokal erstellte Dateien
+*.userosscache
+*.userprefs
+*.sqlite
+*.db
+*.mdf
+*.ldf
+
+# Rider-Projektdateien
+.idea/
+*.sln.iml
+
+# IDE- und Plugin-Konfigurationen
+.vscode/
+.idea/
+
+# Resharper-Dateien
+*.DotSettings
+_ReSharper.Caches/
+
+# NuGet-Paketverzeichnis und Cache
+*.nupkg
+*.snupkg
+.nuget/
+
+# SonarQube
+.sonar/
