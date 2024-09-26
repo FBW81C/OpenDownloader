@@ -2,6 +2,9 @@ using System;
 using System.Diagnostics;
 using System.Runtime.Intrinsics.Arm;
 using System.Text.RegularExpressions;
+using YouTubeDownloader.lib;
+using YouTubeDownloader.model;
+using YouTubeDownloader.ytdlpUtil;
 
 namespace YouTubeDownloader
 {
@@ -37,7 +40,12 @@ namespace YouTubeDownloader
             {
                 pbDownload.Value = 0;
                 tbConsole.Clear();
-                bool isSuccess = await DownloadFileWithProgressAsync(fileUrl, folder, new Progress<int>(percent =>
+                var arguments = new Dictionary<string, string>
+                {
+                    { "quality", (cbQuality.SelectedItem??"Best").ToString()??"Best" },
+                    { "fps", (cbFPS.SelectedItem??"Best").ToString()??"Best" }
+                };
+                bool isSuccess = await Service.DownloadFileWithProgressAsync(fileUrl, folder, arguments, new Progress<int>(percent =>
                 {
                     pbDownload.Value = percent;
                 }));
@@ -57,80 +65,7 @@ namespace YouTubeDownloader
             }
         }
 
-        private async Task<bool> DownloadFileWithProgressAsync(string url, string folder, IProgress<int> progress)
-        {
-            var arguments = $"-P \"{folder.Replace("\\", "/")}\" \"{url}\"";
-
-            var userPofileFolder = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-            var programFolder = Path.Combine(userPofileFolder, Program.programFolderName);
-            var ytdlpPath = Path.Combine(programFolder, "yt-dlp.exe");
-
-            return await RunYtDlpAsync(ytdlpPath, arguments, progress);
-        }
-
-        private async Task<bool> RunYtDlpAsync(string ytDlpPath, string arguments, IProgress<int> progress)
-        {
-            try
-            {
-                var process = new Process
-                {
-                    StartInfo = new ProcessStartInfo
-                    {
-                        FileName = ytDlpPath,
-                        Arguments = arguments,
-                        RedirectStandardOutput = true,
-                        RedirectStandardError = true,
-                        UseShellExecute = false,
-                        CreateNoWindow = true
-                    },
-                    EnableRaisingEvents = true
-                };
-
-                bool isSuccess = true;
-
-                process.OutputDataReceived += (sender, args) =>
-                {
-                    if (args.Data != null)
-                    {
-                        ParseProgress(args.Data, progress);
-                        AppendOutput(args.Data);
-                    }
-                };
-                process.ErrorDataReceived += (sender, args) =>
-                {
-                    if (args.Data != null)
-                    {
-                        if (args.Data.ToLower().Contains("error"))
-                        {
-                            isSuccess = false;
-                        }
-                        AppendOutput(args.Data);
-                    }
-                };
-
-                process.Start();
-
-                process.BeginOutputReadLine();
-                process.BeginErrorReadLine();
-
-                await process.WaitForExitAsync();
-
-                if (process.ExitCode != 0)
-                {
-                    return false;
-                }
-
-                return isSuccess;
-
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error: {ex.Message}");
-                return false;
-            }
-        }
-
-        private void AppendOutput(string? data)
+        public void AppendConsoleOutput(string? data)
         {
             if (data != null)
             {
@@ -145,34 +80,33 @@ namespace YouTubeDownloader
             }
         }
 
-        private void ParseProgress(string output, IProgress<int> progress)
+        public void SetETA(string data)
         {
-            var match = Regex.Match(output, @"\b(\d{1,3})\.*\d*%");  // Searches for "XXX.X%"
-            if (match.Success)
+            Regex regex = new Regex("ETA *\\d{2}:\\d{2}");
+            Match match = regex.Match(data);
+            if (match.Success) 
             {
-                if (int.TryParse(match.Groups[1].Value, out int percent))
-                {
-                    progress.Report(percent);
-                }
+                tbETA.Text = match.Value;
             }
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            try 
+            try
             {
                 var defaultDirFilePath = Path.Combine(Program.programFolderPath, Program.defaultDirectoryPathFileName);
-                if (File.Exists(defaultDirFilePath)) 
+                if (File.Exists(defaultDirFilePath))
                 {
                     tbFolder.Text = File.ReadAllText(defaultDirFilePath);
                 }
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 MessageBox.Show($"Failed to load default directory because: {ex.Message}");
             }
-        } 
+        }
 
-        private void btnBrowseFolder_Click(object sender, EventArgs e)
+        private async void btnBrowseFolder_Click(object sender, EventArgs e)
         {
             using (FolderBrowserDialog dialog = new FolderBrowserDialog())
             {
@@ -198,6 +132,49 @@ namespace YouTubeDownloader
             {
                 MessageBox.Show($"Failed to set path as default because: {ex.Message}");
             }
+        }
+
+        private void cbQuality_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            // Prohibit user from chaning text in Combobox
+            e.KeyChar = (char)Keys.None;
+        }
+
+        private async void tbURL_Leave(object sender, EventArgs e)
+        {
+            if (Globals.lastUrl == tbURL.Text)
+            {
+                return;
+            }
+
+            var isUrl = UrlValidator.IsUrl(tbURL.Text);
+            btnDownload.Enabled = isUrl;
+            Globals.lastUrl = tbURL.Text;
+            cbQuality.Enabled = false;
+
+            if (!isUrl)
+            {
+                cbQuality.Text = "N/A";
+                return;
+            }
+
+            cbQuality.Items.Clear();
+            cbQuality.Text = "Loading...";
+            List<string> details;
+            try
+            {
+                details = await Task.Run(() => Service.GetFileInfoAsync(tbURL.Text));
+            }
+            catch
+            {
+                return;
+            }
+
+            cbQuality.Enabled = true;
+            cbQuality.Items.Add("Best");
+            cbQuality.SelectedItem = "Best";
+
+            cbQuality.Items.AddRange(details.ToArray());
         }
     }
 }

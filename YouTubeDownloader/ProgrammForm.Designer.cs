@@ -40,12 +40,20 @@
             textProgress = new Label();
             tbConsole = new TextBox();
             btnDefault = new Button();
+            cbQuality = new ComboBox();
+            textQuality = new Label();
+            textFPS = new Label();
+            textFormat = new Label();
+            cbFPS = new ComboBox();
+            cbFormat = new ComboBox();
+            tbETA = new TextBox();
             SuspendLayout();
             // 
             // btnDownload
             // 
             btnDownload.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            btnDownload.Location = new Point(672, 461);
+            btnDownload.Enabled = false;
+            btnDownload.Location = new Point(872, 461);
             btnDownload.Name = "btnDownload";
             btnDownload.Size = new Size(100, 23);
             btnDownload.TabIndex = 0;
@@ -75,7 +83,7 @@
             // 
             textCredits.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             textCredits.AutoSize = true;
-            textCredits.Location = new Point(578, 507);
+            textCredits.Location = new Point(778, 507);
             textCredits.Name = "textCredits";
             textCredits.Size = new Size(194, 15);
             textCredits.TabIndex = 3;
@@ -86,13 +94,14 @@
             tbURL.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             tbURL.Location = new Point(75, 18);
             tbURL.Name = "tbURL";
-            tbURL.Size = new Size(697, 23);
+            tbURL.Size = new Size(897, 23);
             tbURL.TabIndex = 4;
+            tbURL.Leave += tbURL_Leave;
             // 
             // btnBrowseFolder
             // 
             btnBrowseFolder.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            btnBrowseFolder.Location = new Point(577, 64);
+            btnBrowseFolder.Location = new Point(777, 64);
             btnBrowseFolder.Name = "btnBrowseFolder";
             btnBrowseFolder.Size = new Size(100, 23);
             btnBrowseFolder.TabIndex = 5;
@@ -105,7 +114,7 @@
             tbFolder.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             tbFolder.Location = new Point(75, 64);
             tbFolder.Name = "tbFolder";
-            tbFolder.Size = new Size(496, 23);
+            tbFolder.Size = new Size(696, 23);
             tbFolder.TabIndex = 6;
             // 
             // pbDownload
@@ -113,7 +122,7 @@
             pbDownload.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             pbDownload.Location = new Point(75, 461);
             pbDownload.Name = "pbDownload";
-            pbDownload.Size = new Size(591, 23);
+            pbDownload.Size = new Size(723, 23);
             pbDownload.TabIndex = 7;
             // 
             // textProgress
@@ -128,17 +137,17 @@
             // tbConsole
             // 
             tbConsole.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            tbConsole.Location = new Point(12, 106);
+            tbConsole.Location = new Point(12, 145);
             tbConsole.Multiline = true;
             tbConsole.Name = "tbConsole";
             tbConsole.ReadOnly = true;
-            tbConsole.Size = new Size(760, 349);
+            tbConsole.Size = new Size(960, 310);
             tbConsole.TabIndex = 9;
             // 
             // btnDefault
             // 
             btnDefault.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            btnDefault.Location = new Point(683, 64);
+            btnDefault.Location = new Point(883, 64);
             btnDefault.Name = "btnDefault";
             btnDefault.Size = new Size(89, 23);
             btnDefault.TabIndex = 10;
@@ -146,11 +155,86 @@
             btnDefault.UseVisualStyleBackColor = true;
             btnDefault.Click += btnDefault_Click;
             // 
+            // cbQuality
+            // 
+            cbQuality.Enabled = false;
+            cbQuality.FormattingEnabled = true;
+            cbQuality.Location = new Point(257, 103);
+            cbQuality.Name = "cbQuality";
+            cbQuality.Size = new Size(121, 23);
+            cbQuality.TabIndex = 11;
+            cbQuality.Text = "N/A";
+            cbQuality.KeyPress += cbQuality_KeyPress;
+            // 
+            // textQuality
+            // 
+            textQuality.AutoSize = true;
+            textQuality.Location = new Point(206, 106);
+            textQuality.Name = "textQuality";
+            textQuality.Size = new Size(45, 15);
+            textQuality.TabIndex = 12;
+            textQuality.Text = "Quality";
+            // 
+            // textFPS
+            // 
+            textFPS.AutoSize = true;
+            textFPS.Location = new Point(384, 106);
+            textFPS.Name = "textFPS";
+            textFPS.Size = new Size(26, 15);
+            textFPS.TabIndex = 13;
+            textFPS.Text = "FPS";
+            // 
+            // textFormat
+            // 
+            textFormat.AutoSize = true;
+            textFormat.Location = new Point(13, 106);
+            textFormat.Name = "textFormat";
+            textFormat.Size = new Size(45, 15);
+            textFormat.TabIndex = 14;
+            textFormat.Text = "Format";
+            // 
+            // cbFPS
+            // 
+            cbFPS.Enabled = false;
+            cbFPS.FormattingEnabled = true;
+            cbFPS.Location = new Point(416, 103);
+            cbFPS.Name = "cbFPS";
+            cbFPS.Size = new Size(121, 23);
+            cbFPS.TabIndex = 15;
+            cbFPS.Text = "N/A";
+            // 
+            // cbFormat
+            // 
+            cbFormat.Enabled = false;
+            cbFormat.FormattingEnabled = true;
+            cbFormat.Location = new Point(75, 103);
+            cbFormat.Name = "cbFormat";
+            cbFormat.Size = new Size(121, 23);
+            cbFormat.TabIndex = 16;
+            cbFormat.Text = "N/A";
+            // 
+            // tbETA
+            // 
+            tbETA.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            tbETA.Location = new Point(804, 461);
+            tbETA.Name = "tbETA";
+            tbETA.ReadOnly = true;
+            tbETA.Size = new Size(62, 23);
+            tbETA.TabIndex = 17;
+            tbETA.Text = "ETA: N/A";
+            // 
             // ProgrammForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(784, 531);
+            ClientSize = new Size(984, 531);
+            Controls.Add(tbETA);
+            Controls.Add(cbFormat);
+            Controls.Add(cbFPS);
+            Controls.Add(textFormat);
+            Controls.Add(textFPS);
+            Controls.Add(textQuality);
+            Controls.Add(cbQuality);
             Controls.Add(btnDefault);
             Controls.Add(tbConsole);
             Controls.Add(textProgress);
@@ -185,5 +269,12 @@
         private Label textProgress;
         private TextBox tbConsole;
         private Button btnDefault;
+        private ComboBox cbQuality;
+        private Label textQuality;
+        private Label textFPS;
+        private Label textFormat;
+        private ComboBox cbFPS;
+        private ComboBox cbFormat;
+        private TextBox tbETA;
     }
 }

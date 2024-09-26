@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO.Compression;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -27,30 +28,70 @@ namespace YouTubeDownloader
 
         private async void btnInstall_Click(object sender, EventArgs e)
         {
-            var installationSuccess = false;
+            var installationSuccess = true;
 
-            var userPofileFolder = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-            string folderPath = Path.Combine(userPofileFolder, Program.programFolderName);
+            string folderPath = Program.programFolderPath;
             Directory.CreateDirectory(folderPath);
 
-            string fileUrl = "https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp.exe";
-            string fileName = "yt-dlp.exe";
+            pbInstall.Value = 0;
 
-            string filePath = Path.Combine(folderPath, fileName);
-
+            // yt-dlp
             try
             {
-                pbInstall.Value = 0;
+                string fileUrl = "https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp.exe";
+                string fileName = "yt-dlp.exe";
+                string filePath = Path.Combine(folderPath, fileName);
                 await DownloadFileWithProgressAsync(fileUrl, filePath, new Progress<int>(percent =>
                 {
-                    pbInstall.Value = percent;
+                    pbInstall.Value = percent / 3;
                 }));
-                MessageBox.Show("Downlaoded files sucessfully, installation complete.");
-                installationSuccess = true;
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Failed to download files: {ex.Message}");
+                installationSuccess = false;
+                MessageBox.Show($"Failed to download file: {ex.Message}");
+                return;
+
+            }
+
+            // ffmpeg
+            try
+            {
+                string fileUrl = "https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-n7.0-latest-win64-lgpl-7.0.zip";
+                string fileName = "ffmpeg.zip";
+                string filePath = Path.Combine(folderPath, fileName);
+                await DownloadFileWithProgressAsync(fileUrl, filePath, new Progress<int>(percent =>
+                {
+                    pbInstall.Value = (percent / 3) + 33;
+                }));
+            }
+            catch (Exception ex)
+            {
+                installationSuccess = false;
+                MessageBox.Show($"Failed to download file: {ex.Message}");
+                return;
+            }
+
+            // unzip
+            try
+            {
+                var zipFolder = Path.Combine(folderPath, "ffmpeg.zip");
+                var unzipedFolder = Path.Combine(folderPath, "ffmpeg-n7.0-latest-win64-lgpl-7.0");
+
+                pbInstall.Value = 75;
+                ZipFile.ExtractToDirectory(zipFolder, folderPath);
+                pbInstall.Value = 85;
+                File.Move(Path.Combine(Path.Combine(unzipedFolder, "bin"), "ffmpeg.exe"), Path.Combine(folderPath, "ffmpeg.exe"));
+                pbInstall.Value = 90;
+                File.Delete(zipFolder);
+                pbInstall.Value = 95;
+                Directory.Delete(unzipedFolder, true);
+                pbInstall.Value = 100;
+            }
+            catch (Exception ex)
+            {
+                installationSuccess = false;
+                MessageBox.Show($"Failed to unzip file: {ex.Message}");
             }
 
             if (installationSuccess)
