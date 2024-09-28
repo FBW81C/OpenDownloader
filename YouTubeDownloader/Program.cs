@@ -1,3 +1,5 @@
+using YouTubeDownloader.model;
+
 namespace YouTubeDownloader
 {
     internal static class Program

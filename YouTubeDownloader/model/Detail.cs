@@ -10,6 +10,6 @@ namespace YouTubeDownloader.model
     {
         public Quality Quality {  get; set; }
         public List<int> FPS { get; set; } = [];
-        public FileSize Size { get; set; }
+        public long Size { get; set; }
     }
 }

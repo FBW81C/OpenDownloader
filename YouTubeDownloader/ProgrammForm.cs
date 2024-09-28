@@ -40,10 +40,14 @@ namespace YouTubeDownloader
             {
                 pbDownload.Value = 0;
                 tbConsole.Clear();
+                var quality = (cbQuality.SelectedItem as Detail)?.Quality;
+
+                var fps = cbFPS.SelectedItem;
+
                 var arguments = new Dictionary<string, string>
                 {
-                    { "quality", (cbQuality.SelectedItem??"Best").ToString()??"Best" },
-                    { "fps", (cbFPS.SelectedItem??"Best").ToString()??"Best" }
+                    { "quality", quality?.ToString()??"Best" },
+                    { "fps", fps?.ToString()??"Best" }
                 };
                 bool isSuccess = await Service.DownloadFileWithProgressAsync(fileUrl, folder, arguments, new Progress<int>(percent =>
                 {
@@ -84,7 +88,7 @@ namespace YouTubeDownloader
         {
             Regex regex = new Regex("ETA *\\d{2}:\\d{2}");
             Match match = regex.Match(data);
-            if (match.Success) 
+            if (match.Success)
             {
                 tbETA.Text = match.Value;
             }
@@ -134,7 +138,7 @@ namespace YouTubeDownloader
             }
         }
 
-        private void cbQuality_KeyPress(object sender, KeyPressEventArgs e)
+        private void cb_KeyPress(object sender, KeyPressEventArgs e)
         {
             // Prohibit user from chaning text in Combobox
             e.KeyChar = (char)Keys.None;
@@ -151,30 +155,69 @@ namespace YouTubeDownloader
             btnDownload.Enabled = isUrl;
             Globals.lastUrl = tbURL.Text;
             cbQuality.Enabled = false;
+            cbFPS.Enabled = false;
 
             if (!isUrl)
             {
+                cbFPS.Text = "N/A";
                 cbQuality.Text = "N/A";
                 return;
             }
 
-            cbQuality.Items.Clear();
+            cbQuality.DataSource = null;
             cbQuality.Text = "Loading...";
-            List<string> details;
+            cbFPS.Text = "Loading...";
+
+            List<Detail> details = [];
             try
             {
                 details = await Task.Run(() => Service.GetFileInfoAsync(tbURL.Text));
             }
-            catch
+            catch (Exception ex)
             {
+                MessageBox.Show(ex.ToString());
                 return;
             }
 
             cbQuality.Enabled = true;
-            cbQuality.Items.Add("Best");
-            cbQuality.SelectedItem = "Best";
+            
+            cbQuality.DisplayMember = "Quality";
+            cbQuality.ValueMember = "Quality";
+            cbQuality.DataSource = details;
 
-            cbQuality.Items.AddRange(details.ToArray());
+            if (details.Count > 0)
+            {
+                cbQuality.SelectedIndex = 0;
+            }
+            else
+            {
+                cbQuality.Enabled = false;
+                cbQuality.Text = "N/A";
+            }
+        }
+
+        private void cbQuality_SelectedValueChanged(object sender, EventArgs e)
+        {
+            var detail = cbQuality.SelectedItem as Detail;
+            if (detail == null)
+            {
+                return;
+            }
+            tbFilesize.Text = FilesizeParser.GetTextForm(detail.Size);
+
+            cbFPS.Enabled = detail.FPS.Count > 0; // NEU
+            cbFPS.DataSource = null; // NEU
+            cbFPS.DisplayMember = "FPS";
+            cbFPS.DataSource = detail.FPS;
+
+            if (detail.FPS.Count > 0)
+            {
+                cbFPS.SelectedIndex = 0;
+            }
+            else
+            {
+                cbFPS.Text = "N/A";
+            }
         }
     }
 }

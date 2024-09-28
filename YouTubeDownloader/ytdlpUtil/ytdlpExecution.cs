@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using YouTubeDownloader.lib;
 using YouTubeDownloader.model;
 
 namespace YouTubeDownloader.ytdlpUtil
@@ -78,7 +79,7 @@ namespace YouTubeDownloader.ytdlpUtil
             }
         }
 
-        public static async Task<List<string>> DownloadFileInfoAsync(string url)
+        public static async Task<List<Detail>> DownloadFileInfoAsync(string url)
         {
             var process = new Process
             {
@@ -101,23 +102,23 @@ namespace YouTubeDownloader.ytdlpUtil
 
             await process.WaitForExitAsync();
 
-            Regex resolutionRegex = new Regex(@"\b\d{3,4}x\d{3,4}");
+            Regex regex = new Regex(@"\b\d{3,4}x\d{3,4}\s*\d{2,3}\s*.{1}\s*~{0,1}\s*\d*.\d*(KiB|MiB|GiB|TiB)");
 
-            HashSet<string> lines = [];
+            List<string> lines = [];
             using (StringReader stringReader = new StringReader(output))
             {
                 string line;
                 while ((line = stringReader.ReadLine()) != null)
                 {
-                    Console.WriteLine(line);
-                    Match match = resolutionRegex.Match(line);
+                    Match match = regex.Match(line);
                     if (match.Success)
                     {
                         lines.Add(match.Value);
                     }
                 }
             }
-            return lines.ToList();
+           
+            return DetailParser.ParseToDetail(lines);
         }
 
         private static void ParseProgress(string output, IProgress<int> progress)

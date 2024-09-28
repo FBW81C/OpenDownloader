@@ -16,19 +16,16 @@ namespace YouTubeDownloader.ytdlpUtil
         public static async Task<bool> DownloadFileWithProgressAsync(string url, string folder, Dictionary<string, string> arguments, IProgress<int> progress)
         {
             string? quality = (arguments["quality"] == "Best" ? null : $"[height={arguments["quality"].Split("x")[^1]}]");
-            string? fps = "";
+            string? fps = (arguments["fps"] == "Best" ? null : $"[fps={arguments["fps"]}]"); 
 
-            var args = $"-P \"{folder.Replace("\\", "/")}\" -f \"bestvideo{quality??""}+bestaudio\" \"{url}\"";
+            var args = $"-P \"{folder.Replace("\\", "/")}\" -f \"bestvideo{quality??""}{fps??""}+bestaudio\" \"{url}\"";
             return await ytdlpExecution.DownloadFileAsync(args, progress);
         }
-        public static async Task<List<string>> GetFileInfoAsync(string url)
+        public static async Task<List<Detail>> GetFileInfoAsync(string url)
         {
             var list =  await ytdlpExecution.DownloadFileInfoAsync(url);
-            // 1920x1080
-            // 720x680
-            // 100x200
 
-            var strings = new List<string[]>();
+            /*var strings = new List<string[]>();
 
             foreach (var item in list)
             {
@@ -54,10 +51,10 @@ namespace YouTubeDownloader.ytdlpUtil
             for (var i = 0;i < strings.Count; i++)
             {
                 sortedlist.Add($"{strings[i][0]}x{strings[i][1]}");
-            }
+            }*/
 
-            list.Add("worst");
-            return sortedlist;
+            //list.Add("worst");
+            return list;
         }
     }
 }
