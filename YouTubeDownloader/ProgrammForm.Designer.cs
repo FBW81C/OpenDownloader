@@ -55,7 +55,7 @@
             // 
             btnDownload.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnDownload.Enabled = false;
-            btnDownload.Location = new Point(632, 461);
+            btnDownload.Location = new Point(872, 461);
             btnDownload.Name = "btnDownload";
             btnDownload.Size = new Size(100, 23);
             btnDownload.TabIndex = 0;
@@ -85,7 +85,7 @@
             // 
             textCredits.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             textCredits.AutoSize = true;
-            textCredits.Location = new Point(538, 507);
+            textCredits.Location = new Point(778, 507);
             textCredits.Name = "textCredits";
             textCredits.Size = new Size(194, 15);
             textCredits.TabIndex = 3;
@@ -96,14 +96,14 @@
             tbURL.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             tbURL.Location = new Point(75, 18);
             tbURL.Name = "tbURL";
-            tbURL.Size = new Size(657, 23);
+            tbURL.Size = new Size(897, 23);
             tbURL.TabIndex = 4;
             tbURL.Leave += tbURL_Leave;
             // 
             // btnBrowseFolder
             // 
             btnBrowseFolder.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            btnBrowseFolder.Location = new Point(537, 64);
+            btnBrowseFolder.Location = new Point(777, 64);
             btnBrowseFolder.Name = "btnBrowseFolder";
             btnBrowseFolder.Size = new Size(100, 23);
             btnBrowseFolder.TabIndex = 5;
@@ -116,7 +116,7 @@
             tbFolder.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             tbFolder.Location = new Point(75, 64);
             tbFolder.Name = "tbFolder";
-            tbFolder.Size = new Size(456, 23);
+            tbFolder.Size = new Size(696, 23);
             tbFolder.TabIndex = 6;
             // 
             // pbDownload
@@ -124,7 +124,7 @@
             pbDownload.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             pbDownload.Location = new Point(75, 461);
             pbDownload.Name = "pbDownload";
-            pbDownload.Size = new Size(483, 23);
+            pbDownload.Size = new Size(723, 23);
             pbDownload.TabIndex = 7;
             // 
             // textProgress
@@ -143,13 +143,13 @@
             tbConsole.Multiline = true;
             tbConsole.Name = "tbConsole";
             tbConsole.ReadOnly = true;
-            tbConsole.Size = new Size(720, 310);
+            tbConsole.Size = new Size(960, 310);
             tbConsole.TabIndex = 9;
             // 
             // btnDefault
             // 
             btnDefault.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            btnDefault.Location = new Point(643, 64);
+            btnDefault.Location = new Point(883, 64);
             btnDefault.Name = "btnDefault";
             btnDefault.Size = new Size(89, 23);
             btnDefault.TabIndex = 10;
@@ -216,11 +216,12 @@
             cbFormat.Size = new Size(121, 23);
             cbFormat.TabIndex = 16;
             cbFormat.Text = "N/A";
+            cbFormat.KeyPress += cb_KeyPress;
             // 
             // tbETA
             // 
             tbETA.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            tbETA.Location = new Point(564, 461);
+            tbETA.Location = new Point(804, 461);
             tbETA.Name = "tbETA";
             tbETA.ReadOnly = true;
             tbETA.Size = new Size(62, 23);
@@ -230,7 +231,7 @@
             // tbFilesize
             // 
             tbFilesize.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            tbFilesize.Location = new Point(632, 103);
+            tbFilesize.Location = new Point(872, 103);
             tbFilesize.Name = "tbFilesize";
             tbFilesize.ReadOnly = true;
             tbFilesize.Size = new Size(100, 23);
@@ -241,7 +242,7 @@
             // 
             textEstimatedSize.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             textEstimatedSize.AutoSize = true;
-            textEstimatedSize.Location = new Point(544, 106);
+            textEstimatedSize.Location = new Point(784, 106);
             textEstimatedSize.Name = "textEstimatedSize";
             textEstimatedSize.Size = new Size(82, 15);
             textEstimatedSize.TabIndex = 19;
@@ -251,7 +252,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(744, 531);
+            ClientSize = new Size(984, 531);
             Controls.Add(textEstimatedSize);
             Controls.Add(tbFilesize);
             Controls.Add(tbETA);

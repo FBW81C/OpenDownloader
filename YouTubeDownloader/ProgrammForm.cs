@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics;
 using System.Runtime.Intrinsics.Arm;
 using System.Text.RegularExpressions;
+using System.Windows.Forms;
 using YouTubeDownloader.lib;
 using YouTubeDownloader.model;
 using YouTubeDownloader.ytdlpUtil;
@@ -56,11 +57,15 @@ namespace YouTubeDownloader
 
                 if (isSuccess)
                 {
-                    MessageBox.Show($"File successfully saved to: {folder}");
+                    Icon infoIcon = SystemIcons.Information;
+                    NotificationForm notification = new NotificationForm("YouTubeDonwloader", "Successful",  $"Successfully donwloaded file to:\n{folder}", infoIcon);
+                    notification.Show();
                 }
                 else
                 {
-                    MessageBox.Show($"Download failed check output for more information!");
+                    Icon infoIcon = SystemIcons.Error;
+                    NotificationForm notification = new NotificationForm("YouTubeDonwloader", "Error", $"Failed donwloaded file!\ncheck output window for more information", infoIcon);
+                    notification.Show();
                 }
             }
             catch (Exception ex)
@@ -108,6 +113,9 @@ namespace YouTubeDownloader
             {
                 MessageBox.Show($"Failed to load default directory because: {ex.Message}");
             }
+
+            cbFormat.Items.Clear();
+            cbFormat.Items.AddRange(["Orginal format", "MP4", "MOV", "WMV", "WEBM", "MP3 - Audio only", "OGG  - Audio only", "WAV  - Audio only", "WMA - Audio only"]);
         }
 
         private async void btnBrowseFolder_Click(object sender, EventArgs e)
@@ -152,9 +160,10 @@ namespace YouTubeDownloader
             }
 
             var isUrl = UrlValidator.IsUrl(tbURL.Text);
-            btnDownload.Enabled = isUrl;
+            btnDownload.Enabled = false;
             Globals.lastUrl = tbURL.Text;
             cbQuality.Enabled = false;
+            cbFormat.Enabled = false;
             cbFPS.Enabled = false;
 
             if (!isUrl)
@@ -179,8 +188,11 @@ namespace YouTubeDownloader
                 return;
             }
 
+            btnDownload.Enabled = true;
             cbQuality.Enabled = true;
-            
+            cbFormat.Enabled = true;
+            cbFormat.SelectedIndex = 0;
+
             cbQuality.DisplayMember = "Quality";
             cbQuality.ValueMember = "Quality";
             cbQuality.DataSource = details;
