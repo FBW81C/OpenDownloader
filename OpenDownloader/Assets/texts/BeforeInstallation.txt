@@ -1,0 +1,18 @@
+Welcome to the OpenDownloader Installer!
+
+OpenDownloader is a simple free and open-source Video Downloader for Windows by FBW81C.
+
+GitHub: https://github.com/FBW81C/OpenDownloader
+YouTube: https://www.youtube.com/@FBW81C
+
+Features:
+- Downloading Videos
+- Default path
+- FPS selection
+- Quality selection
+- Estimated file size
+- ETA
+
+Dependencies:
+- .NET 8 (Core)
+- ytdlp

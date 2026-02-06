@@ -1,0 +1,6 @@
+OpenDownloader Version 1.1 by FBW81C
+
+OpenDownloader Repository:
+https://github.com/FBW81C/OpenDownloader
+
+Refer to LICENSE.TXT for conditions of distribution and use.
