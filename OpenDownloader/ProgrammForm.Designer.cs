@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ProgrammForm));
             btnDownload = new Button();
             textURL = new Label();
             textSaveTo = new Label();
@@ -285,6 +286,7 @@
             Controls.Add(textSaveTo);
             Controls.Add(textURL);
             Controls.Add(btnDownload);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             MaximumSize = new Size(751, 539);
             MinimumSize = new Size(751, 533);
             Name = "ProgrammForm";
