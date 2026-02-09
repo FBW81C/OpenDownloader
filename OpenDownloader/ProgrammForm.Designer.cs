@@ -49,16 +49,16 @@
             tbETA = new TextBox();
             tbFilesize = new TextBox();
             textEstimatedSize = new Label();
+            btn_CopyToClipboard = new Button();
             SuspendLayout();
             // 
             // btnDownload
             // 
             btnDownload.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnDownload.Enabled = false;
-            btnDownload.Location = new Point(1509, 1193);
-            btnDownload.Margin = new Padding(7, 8, 7, 8);
+            btnDownload.Location = new Point(620, 436);
             btnDownload.Name = "btnDownload";
-            btnDownload.Size = new Size(243, 63);
+            btnDownload.Size = new Size(100, 23);
             btnDownload.TabIndex = 0;
             btnDownload.Text = "Download";
             btnDownload.UseVisualStyleBackColor = true;
@@ -67,20 +67,18 @@
             // textURL
             // 
             textURL.AutoSize = true;
-            textURL.Location = new Point(32, 51);
-            textURL.Margin = new Padding(7, 0, 7, 0);
+            textURL.Location = new Point(13, 19);
             textURL.Name = "textURL";
-            textURL.Size = new Size(71, 41);
+            textURL.Size = new Size(28, 15);
             textURL.TabIndex = 1;
             textURL.Text = "URL";
             // 
             // textSaveTo
             // 
             textSaveTo.AutoSize = true;
-            textSaveTo.Location = new Point(29, 124);
-            textSaveTo.Margin = new Padding(7, 0, 7, 0);
+            textSaveTo.Location = new Point(12, 45);
             textSaveTo.Name = "textSaveTo";
-            textSaveTo.Size = new Size(118, 41);
+            textSaveTo.Size = new Size(46, 15);
             textSaveTo.TabIndex = 2;
             textSaveTo.Text = "Save To";
             // 
@@ -88,30 +86,27 @@
             // 
             textCredits.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             textCredits.AutoSize = true;
-            textCredits.Location = new Point(1306, 1386);
-            textCredits.Margin = new Padding(7, 0, 7, 0);
+            textCredits.Location = new Point(538, 507);
             textCredits.Name = "textCredits";
-            textCredits.Size = new Size(449, 41);
+            textCredits.Size = new Size(177, 15);
             textCredits.TabIndex = 3;
             textCredits.Text = "OpenDownloader © by FBW81C";
             // 
             // tbURL
             // 
             tbURL.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            tbURL.Location = new Point(161, 51);
-            tbURL.Margin = new Padding(7, 8, 7, 8);
+            tbURL.Location = new Point(66, 19);
             tbURL.Name = "tbURL";
-            tbURL.Size = new Size(1334, 47);
+            tbURL.Size = new Size(552, 23);
             tbURL.TabIndex = 4;
             tbURL.Leave += tbURL_Leave;
             // 
             // btnBrowseFolder
             // 
             btnBrowseFolder.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            btnBrowseFolder.Location = new Point(1509, 43);
-            btnBrowseFolder.Margin = new Padding(7, 8, 7, 8);
+            btnBrowseFolder.Location = new Point(621, 16);
             btnBrowseFolder.Name = "btnBrowseFolder";
-            btnBrowseFolder.Size = new Size(243, 63);
+            btnBrowseFolder.Size = new Size(100, 23);
             btnBrowseFolder.TabIndex = 5;
             btnBrowseFolder.Text = "Browse Folder";
             btnBrowseFolder.UseVisualStyleBackColor = true;
@@ -120,49 +115,44 @@
             // tbFolder
             // 
             tbFolder.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            tbFolder.Location = new Point(161, 124);
-            tbFolder.Margin = new Padding(7, 8, 7, 8);
+            tbFolder.Location = new Point(66, 45);
             tbFolder.Name = "tbFolder";
-            tbFolder.Size = new Size(1334, 47);
+            tbFolder.Size = new Size(552, 23);
             tbFolder.TabIndex = 6;
             // 
             // pbDownload
             // 
             pbDownload.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            pbDownload.Location = new Point(176, 1193);
-            pbDownload.Margin = new Padding(7, 8, 7, 8);
+            pbDownload.Location = new Point(72, 436);
             pbDownload.Name = "pbDownload";
-            pbDownload.Size = new Size(1160, 63);
+            pbDownload.Size = new Size(478, 23);
             pbDownload.TabIndex = 7;
             // 
             // textProgress
             // 
             textProgress.AutoSize = true;
-            textProgress.Location = new Point(32, 1204);
-            textProgress.Margin = new Padding(7, 0, 7, 0);
+            textProgress.Location = new Point(13, 440);
             textProgress.Name = "textProgress";
-            textProgress.Size = new Size(133, 41);
+            textProgress.Size = new Size(52, 15);
             textProgress.TabIndex = 8;
             textProgress.Text = "Progress";
             // 
             // tbConsole
             // 
             tbConsole.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            tbConsole.Location = new Point(29, 277);
-            tbConsole.Margin = new Padding(7, 8, 7, 8);
+            tbConsole.Location = new Point(12, 108);
             tbConsole.Multiline = true;
             tbConsole.Name = "tbConsole";
             tbConsole.ReadOnly = true;
-            tbConsole.Size = new Size(1723, 908);
+            tbConsole.Size = new Size(712, 322);
             tbConsole.TabIndex = 9;
             // 
             // btnDefault
             // 
             btnDefault.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            btnDefault.Location = new Point(1509, 124);
-            btnDefault.Margin = new Padding(7, 8, 7, 8);
+            btnDefault.Location = new Point(621, 45);
             btnDefault.Name = "btnDefault";
-            btnDefault.Size = new Size(243, 63);
+            btnDefault.Size = new Size(100, 23);
             btnDefault.TabIndex = 10;
             btnDefault.Text = "Set as default";
             btnDefault.UseVisualStyleBackColor = true;
@@ -172,10 +162,9 @@
             // 
             cbQuality.Enabled = false;
             cbQuality.FormattingEnabled = true;
-            cbQuality.Location = new Point(589, 212);
-            cbQuality.Margin = new Padding(7, 8, 7, 8);
+            cbQuality.Location = new Point(243, 78);
             cbQuality.Name = "cbQuality";
-            cbQuality.Size = new Size(288, 49);
+            cbQuality.Size = new Size(121, 23);
             cbQuality.TabIndex = 11;
             cbQuality.Text = "N/A";
             cbQuality.SelectedValueChanged += cbQuality_SelectedValueChanged;
@@ -184,30 +173,27 @@
             // textQuality
             // 
             textQuality.AutoSize = true;
-            textQuality.Location = new Point(463, 207);
-            textQuality.Margin = new Padding(7, 0, 7, 0);
+            textQuality.Location = new Point(192, 81);
             textQuality.Name = "textQuality";
-            textQuality.Size = new Size(112, 41);
+            textQuality.Size = new Size(45, 15);
             textQuality.TabIndex = 12;
             textQuality.Text = "Quality";
             // 
             // textFPS
             // 
             textFPS.AutoSize = true;
-            textFPS.Location = new Point(891, 207);
-            textFPS.Margin = new Padding(7, 0, 7, 0);
+            textFPS.Location = new Point(370, 82);
             textFPS.Name = "textFPS";
-            textFPS.Size = new Size(66, 41);
+            textFPS.Size = new Size(26, 15);
             textFPS.TabIndex = 13;
             textFPS.Text = "FPS";
             // 
             // textFormat
             // 
             textFormat.AutoSize = true;
-            textFormat.Location = new Point(29, 212);
-            textFormat.Margin = new Padding(7, 0, 7, 0);
+            textFormat.Location = new Point(12, 81);
             textFormat.Name = "textFormat";
-            textFormat.Size = new Size(112, 41);
+            textFormat.Size = new Size(45, 15);
             textFormat.TabIndex = 14;
             textFormat.Text = "Format";
             // 
@@ -215,10 +201,9 @@
             // 
             cbFPS.Enabled = false;
             cbFPS.FormattingEnabled = true;
-            cbFPS.Location = new Point(971, 212);
-            cbFPS.Margin = new Padding(7, 8, 7, 8);
+            cbFPS.Location = new Point(400, 78);
             cbFPS.Name = "cbFPS";
-            cbFPS.Size = new Size(288, 49);
+            cbFPS.Size = new Size(121, 23);
             cbFPS.TabIndex = 15;
             cbFPS.Text = "N/A";
             cbFPS.KeyPress += cb_KeyPress;
@@ -227,10 +212,9 @@
             // 
             cbFormat.Enabled = false;
             cbFormat.FormattingEnabled = true;
-            cbFormat.Location = new Point(161, 209);
-            cbFormat.Margin = new Padding(7, 8, 7, 8);
+            cbFormat.Location = new Point(66, 76);
             cbFormat.Name = "cbFormat";
-            cbFormat.Size = new Size(288, 49);
+            cbFormat.Size = new Size(121, 23);
             cbFormat.TabIndex = 16;
             cbFormat.Text = "N/A";
             cbFormat.KeyPress += cb_KeyPress;
@@ -238,22 +222,20 @@
             // tbETA
             // 
             tbETA.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            tbETA.Location = new Point(1350, 1198);
-            tbETA.Margin = new Padding(7, 8, 7, 8);
+            tbETA.Location = new Point(556, 436);
             tbETA.Name = "tbETA";
             tbETA.ReadOnly = true;
-            tbETA.Size = new Size(145, 47);
+            tbETA.Size = new Size(62, 23);
             tbETA.TabIndex = 17;
             tbETA.Text = "ETA: N/A";
             // 
             // tbFilesize
             // 
             tbFilesize.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            tbFilesize.Location = new Point(1505, 215);
-            tbFilesize.Margin = new Padding(7, 8, 7, 8);
+            tbFilesize.Location = new Point(620, 79);
             tbFilesize.Name = "tbFilesize";
             tbFilesize.ReadOnly = true;
-            tbFilesize.Size = new Size(237, 47);
+            tbFilesize.Size = new Size(100, 23);
             tbFilesize.TabIndex = 18;
             tbFilesize.Text = "N/A";
             // 
@@ -261,18 +243,28 @@
             // 
             textEstimatedSize.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             textEstimatedSize.AutoSize = true;
-            textEstimatedSize.Location = new Point(1261, 218);
-            textEstimatedSize.Margin = new Padding(7, 0, 7, 0);
+            textEstimatedSize.Location = new Point(519, 80);
             textEstimatedSize.Name = "textEstimatedSize";
-            textEstimatedSize.Size = new Size(209, 41);
+            textEstimatedSize.Size = new Size(82, 15);
             textEstimatedSize.TabIndex = 19;
             textEstimatedSize.Text = "Estimated Size";
             // 
+            // btn_CopyToClipboard
+            // 
+            btn_CopyToClipboard.Location = new Point(599, 459);
+            btn_CopyToClipboard.Name = "btn_CopyToClipboard";
+            btn_CopyToClipboard.Size = new Size(121, 23);
+            btn_CopyToClipboard.TabIndex = 20;
+            btn_CopyToClipboard.Text = "Copy to Clipboard";
+            btn_CopyToClipboard.UseVisualStyleBackColor = true;
+            btn_CopyToClipboard.Click += button1_Click;
+            // 
             // ProgrammForm
             // 
-            AutoScaleDimensions = new SizeF(17F, 41F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1768, 1317);
+            ClientSize = new Size(735, 494);
+            Controls.Add(btn_CopyToClipboard);
             Controls.Add(textEstimatedSize);
             Controls.Add(tbFilesize);
             Controls.Add(tbETA);
@@ -293,9 +285,8 @@
             Controls.Add(textSaveTo);
             Controls.Add(textURL);
             Controls.Add(btnDownload);
-            Margin = new Padding(7, 8, 7, 8);
-            MaximumSize = new Size(1800, 1405);
-            MinimumSize = new Size(1800, 1405);
+            MaximumSize = new Size(751, 539);
+            MinimumSize = new Size(751, 533);
             Name = "ProgrammForm";
             Text = "OpenDownloader";
             Load += Form1_Load;
@@ -326,5 +317,6 @@
         private TextBox tbETA;
         private TextBox tbFilesize;
         private Label textEstimatedSize;
+        private Button btn_CopyToClipboard;
     }
 }

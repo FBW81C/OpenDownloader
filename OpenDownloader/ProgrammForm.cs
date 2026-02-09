@@ -58,7 +58,7 @@ namespace OpenDownloader
                 if (isSuccess)
                 {
                     Icon infoIcon = SystemIcons.Information;
-                    NotificationForm notification = new NotificationForm("YouTubeDonwloader", "Successful",  $"Successfully donwloaded file to:\n{folder}", infoIcon);
+                    NotificationForm notification = new NotificationForm("YouTubeDonwloader", "Successful", $"Successfully donwloaded file to:\n{folder}", infoIcon);
                     notification.Show();
                 }
                 else
@@ -230,6 +230,11 @@ namespace OpenDownloader
             {
                 cbFPS.Text = "N/A";
             }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            Clipboard.SetText(tbConsole.Text);
         }
     }
 }
