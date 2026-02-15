@@ -56,3 +56,7 @@ _ReSharper.Caches/
 
 # SonarQube
 .sonar/
+
+# Assets
+OpenDownloader/Assets/ffmpeg.exe
+OpenDownloader/Assets/yt-dlp.exe

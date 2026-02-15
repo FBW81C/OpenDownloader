@@ -1,11 +1,13 @@
 using System;
 using System.Diagnostics;
 using System.Runtime.Intrinsics.Arm;
+using System.Security.Policy;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using OpenDownloader.lib;
 using OpenDownloader.model;
 using OpenDownloader.ytdlpUtil;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
 
 namespace OpenDownloader
 {
@@ -113,9 +115,6 @@ namespace OpenDownloader
             {
                 MessageBox.Show($"Failed to load default directory because: {ex.Message}");
             }
-
-            cbFormat.Items.Clear();
-            cbFormat.Items.AddRange(["Orginal format", "MP4", "MOV", "WMV", "WEBM", "MP3 - Audio only", "OGG  - Audio only", "WAV  - Audio only", "WMA - Audio only"]);
         }
 
         private async void btnBrowseFolder_Click(object sender, EventArgs e)
@@ -177,34 +176,35 @@ namespace OpenDownloader
             cbQuality.Text = "Loading...";
             cbFPS.Text = "Loading...";
 
-            List<Detail> details = [];
             try
             {
-                details = await Task.Run(() => Service.GetFileInfoAsync(tbURL.Text));
+                //details = await Task.Run(() => Service.GetFileInfoAsync(tbURL.Text));
+                var video = await ytdlpExecution.DownloadVideoInfo(tbURL.Text);
+
+                cbQuality.DisplayMember = "Resolution";
+                cbQuality.ValueMember = "Resolution";
+                cbQuality.DataSource = video.Options
+                    .Select(o => o.Resolution)
+                    .Distinct()
+                    .ToList();
+
+                btnDownload.Enabled = true;
+                cbQuality.Enabled = true;
+
+                if (video.Options.Count > 0)
+                {
+                    cbQuality.SelectedIndex = 0;
+                }
+                else
+                {
+                    cbQuality.Enabled = false;
+                    cbQuality.Text = "N/A";
+                }
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.ToString());
                 return;
-            }
-
-            btnDownload.Enabled = true;
-            cbQuality.Enabled = true;
-            cbFormat.Enabled = true;
-            cbFormat.SelectedIndex = 0;
-
-            cbQuality.DisplayMember = "Quality";
-            cbQuality.ValueMember = "Quality";
-            cbQuality.DataSource = details;
-
-            if (details.Count > 0)
-            {
-                cbQuality.SelectedIndex = 0;
-            }
-            else
-            {
-                cbQuality.Enabled = false;
-                cbQuality.Text = "N/A";
             }
         }
 
