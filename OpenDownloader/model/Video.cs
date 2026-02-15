@@ -11,6 +11,7 @@ namespace OpenDownloader.model
         public string Title { get; set; }
         public string WebpageUrl { get; set; }
         public string ThumbnailUrl { get; set; }
+        public Image Thumbnail { get; set; }
 
         public List<VideoOption> Options { get; set; } = new();
     }

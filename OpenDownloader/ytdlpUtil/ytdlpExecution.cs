@@ -80,48 +80,6 @@ namespace OpenDownloader.ytdlpUtil
             }
         }
 
-        //public static async Task<List<Detail>> DownloadFileInfoAsync(string url)
-        //{
-        //    var process = new Process
-        //    {
-        //        StartInfo = new ProcessStartInfo
-        //        {
-        //            FileName = Constants.ytdlpPath,
-        //            Arguments = $"-F {url}",
-        //            RedirectStandardOutput = true,
-        //            RedirectStandardError = true,
-        //            UseShellExecute = false,
-        //            CreateNoWindow = true
-        //        },
-        //        EnableRaisingEvents = true
-        //    };
-
-        //    process.Start();
-
-        //    StreamReader reader = process.StandardOutput;
-        //    string output = reader.ReadToEnd();
-
-        //    await process.WaitForExitAsync();
-
-        //    Regex regex = new Regex(@"\b\d{3,4}x\d{3,4}\s*\d{2,3}\s*.{1}\s*~{0,1}\s*\d*.\d*(KiB|MiB|GiB|TiB)");
-
-        //    List<string> lines = [];
-        //    using (StringReader stringReader = new StringReader(output))
-        //    {
-        //        string line;
-        //        while ((line = stringReader.ReadLine()) != null)
-        //        {
-        //            Match match = regex.Match(line);
-        //            if (match.Success)
-        //            {
-        //                lines.Add(match.Value);
-        //            }
-        //        }
-        //    }
-           
-        //    return DetailParser.ParseToDetail(lines);
-        //}
-
         private static void ParseProgress(string output, IProgress<int> progress)
         {
             var match = Regex.Match(output, @"\b(\d{1,3})\.*\d*%");  // Searches for "XXX.X%"
@@ -202,7 +160,6 @@ namespace OpenDownloader.ytdlpUtil
                 video.Options.Add(option);
             }
 
-            // Duplikate eliminieren (gleiche Auflösung + FPS)
             // Eliminate duplicates (same resolution + fps)
             video.Options = video.Options
                 .GroupBy(o => new { o.Width, o.Height, o.Fps })

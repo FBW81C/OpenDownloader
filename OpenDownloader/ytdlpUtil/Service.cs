@@ -21,40 +21,5 @@ namespace OpenDownloader.ytdlpUtil
             var args = $"-P \"{folder.Replace("\\", "/")}\" -f \"bestvideo{quality??""}{fps??""}+bestaudio\" \"{url}\"";
             return await ytdlpExecution.DownloadFileAsync(args, progress);
         }
-        public static async Task<List<Detail>> GetFileInfoAsync(string url)
-        {
-            var list =  await ytdlpExecution.DownloadFileInfoAsync(url);
-
-            /*var strings = new List<string[]>();
-
-            foreach (var item in list)
-            {
-                strings.Add(item.Split("x"));
-            }
-
-            for (var i = 0; i < strings.Count; i++)
-            {
-                var currentitem = strings[i];
-                for ( var j = i+1; j < strings.Count; j++)
-                {
-                    var itemtocompare = strings[j];
-                    if (Int32.Parse(currentitem[0]) >= Int32.Parse(itemtocompare[0]))
-                    {
-                        strings[i] = itemtocompare;
-                        strings[j] = currentitem;
-                    }
-                }
-            }
-            strings.Reverse();
-
-            var sortedlist = new List<string>();
-            for (var i = 0;i < strings.Count; i++)
-            {
-                sortedlist.Add($"{strings[i][0]}x{strings[i][1]}");
-            }*/
-
-            //list.Add("worst");
-            return list;
-        }
     }
 }
