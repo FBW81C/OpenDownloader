@@ -149,6 +149,7 @@
             tbConsole.Multiline = true;
             tbConsole.Name = "tbConsole";
             tbConsole.ReadOnly = true;
+            tbConsole.ScrollBars = ScrollBars.Vertical;
             tbConsole.Size = new Size(486, 870);
             tbConsole.TabIndex = 9;
             tbConsole.WordWrap = false;

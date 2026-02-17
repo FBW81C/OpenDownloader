@@ -143,55 +143,5 @@ namespace OpenDownloader
         {
             Clipboard.SetText(tbConsole.Text);
         }
-
-        private void button1_Click_1(object sender, EventArgs e)
-        {
-            Image image = Image.FromFile(Path.Combine(Constants.ASSETS_PATH, "Logo", "Logo.png"));
-
-            var video = new Video
-            {
-                Thumbnail = image,
-                Title = $"Test Video Name 123 wow 4k Ultra HD {Guid.NewGuid()}",
-                Options = new List<VideoOption>
-                {
-                    new() {
-                        Width = 1920,
-                        Height = 1080,
-                        EstimatedSize = 10053344430,
-                        Fps = 60
-                    },
-                    new() {
-                        Width = 200,
-                        Height = 100,
-                        EstimatedSize = 10042340,
-                        Fps = 30
-                    },
-                    new() {
-                        Width = 1920,
-                        Height = 1080,
-                        EstimatedSize = 123000,
-                        Fps = 24
-                    },
-                    new() {
-                        Width = 123,
-                        Height = 313,
-                        EstimatedSize = 10040,
-                        Fps = 50
-                    }
-                }
-            };
-
-            var item = new DownloadItem(video)
-            {
-                Width = flowLayoutPanel1.ClientSize.Width - 5,
-            };
-
-            item.DownloadClicked += (_, option) =>
-            {
-                MessageBox.Show($"Click on {item.Title}, Option: {option.Resolution}, {option.Fps}");
-            };
-
-            flowLayoutPanel1.Controls.Add(item);
-        }
     }
 }
