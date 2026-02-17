@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Drawing.Imaging;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
@@ -112,7 +113,10 @@ namespace OpenDownloader.ytdlpUtil
             string json = await process.StandardOutput.ReadToEndAsync();
             await process.WaitForExitAsync();
 
-            return ParseVideo(json);
+            var video = ParseVideo(json);
+            await LoadThumbnailAsync(video);
+
+            return video;
         }
 
         private static Video ParseVideo(string json)
@@ -124,9 +128,7 @@ namespace OpenDownloader.ytdlpUtil
             {
                 Title = root.GetProperty("title").GetString(),
                 WebpageUrl = root.GetProperty("webpage_url").GetString(),
-                ThumbnailUrl = root.TryGetProperty("thumbnail", out var thumb)
-                    ? thumb.GetString()
-                    : null
+                ThumbnailUrl = SelectCompatibleThumbnailUrl(root)
             };
 
             var formats = root.GetProperty("formats");
@@ -169,6 +171,39 @@ namespace OpenDownloader.ytdlpUtil
                 .ToList();
 
             return video;
+        }
+
+        private static string SelectCompatibleThumbnailUrl(JsonElement root)
+        {
+            if (!root.TryGetProperty("thumbnails", out var thumbs))
+                return null;
+
+            var compatible = thumbs.EnumerateArray()
+                .Select(t => t.GetProperty("url").GetString())
+                .Where(url =>
+                    url.EndsWith(".jpg", StringComparison.OrdinalIgnoreCase) ||
+                    url.EndsWith(".jpeg", StringComparison.OrdinalIgnoreCase) ||
+                    url.EndsWith(".png", StringComparison.OrdinalIgnoreCase))
+                .FirstOrDefault();
+
+            return compatible;
+        }
+
+        private static async Task LoadThumbnailAsync(Video video)
+        {
+            if (string.IsNullOrWhiteSpace(video.ThumbnailUrl))
+            {
+                video.Thumbnail = Image.FromFile(Path.Combine(Constants.ASSETS_PATH, "Logo", "Logo.png"));
+                return;
+            }
+
+            using var http = new HttpClient();
+            var bytes = await http.GetByteArrayAsync(video.ThumbnailUrl);
+
+            using var ms = new MemoryStream(bytes);
+            using var img = Image.FromStream(ms);
+
+            video.Thumbnail = new Bitmap(img);
         }
     }
 }

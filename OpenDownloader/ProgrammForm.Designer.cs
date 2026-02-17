@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ProgrammForm));
-            btnDownload = new Button();
+            btn_downloadAll = new Button();
             textURL = new Label();
             textSaveTo = new Label();
             textCredits = new Label();
@@ -44,36 +44,39 @@
             tbETA = new TextBox();
             btn_CopyToClipboard = new Button();
             flowLayoutPanel1 = new FlowLayoutPanel();
-            button1 = new Button();
+            btn_Add = new Button();
             SuspendLayout();
             // 
-            // btnDownload
+            // btn_downloadAll
             // 
-            btnDownload.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            btnDownload.Enabled = false;
-            btnDownload.Location = new Point(869, 436);
-            btnDownload.Name = "btnDownload";
-            btnDownload.Size = new Size(100, 23);
-            btnDownload.TabIndex = 0;
-            btnDownload.Text = "Download";
-            btnDownload.UseVisualStyleBackColor = true;
-            btnDownload.Click += buttonDownoad;
+            btn_downloadAll.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btn_downloadAll.Enabled = false;
+            btn_downloadAll.Location = new Point(2074, 1192);
+            btn_downloadAll.Margin = new Padding(7, 8, 7, 8);
+            btn_downloadAll.Name = "btn_downloadAll";
+            btn_downloadAll.Size = new Size(241, 63);
+            btn_downloadAll.TabIndex = 0;
+            btn_downloadAll.Text = "Download All";
+            btn_downloadAll.UseVisualStyleBackColor = true;
+            btn_downloadAll.Click += btnDownloadAll_click;
             // 
             // textURL
             // 
             textURL.AutoSize = true;
-            textURL.Location = new Point(13, 19);
+            textURL.Location = new Point(32, 52);
+            textURL.Margin = new Padding(7, 0, 7, 0);
             textURL.Name = "textURL";
-            textURL.Size = new Size(28, 15);
+            textURL.Size = new Size(71, 41);
             textURL.TabIndex = 1;
             textURL.Text = "URL";
             // 
             // textSaveTo
             // 
             textSaveTo.AutoSize = true;
-            textSaveTo.Location = new Point(12, 45);
+            textSaveTo.Location = new Point(29, 123);
+            textSaveTo.Margin = new Padding(7, 0, 7, 0);
             textSaveTo.Name = "textSaveTo";
-            textSaveTo.Size = new Size(46, 15);
+            textSaveTo.Size = new Size(118, 41);
             textSaveTo.TabIndex = 2;
             textSaveTo.Text = "Save To";
             // 
@@ -81,27 +84,29 @@
             // 
             textCredits.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             textCredits.AutoSize = true;
-            textCredits.Location = new Point(787, 507);
+            textCredits.Location = new Point(1911, 1386);
+            textCredits.Margin = new Padding(7, 0, 7, 0);
             textCredits.Name = "textCredits";
-            textCredits.Size = new Size(177, 15);
+            textCredits.Size = new Size(449, 41);
             textCredits.TabIndex = 3;
             textCredits.Text = "OpenDownloader © by FBW81C";
             // 
             // tbURL
             // 
             tbURL.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            tbURL.Location = new Point(66, 19);
+            tbURL.Location = new Point(160, 52);
+            tbURL.Margin = new Padding(7, 8, 7, 8);
             tbURL.Name = "tbURL";
-            tbURL.Size = new Size(801, 23);
+            tbURL.Size = new Size(1641, 47);
             tbURL.TabIndex = 4;
-            tbURL.Leave += tbURL_Leave;
             // 
             // btnBrowseFolder
             // 
             btnBrowseFolder.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            btnBrowseFolder.Location = new Point(870, 16);
+            btnBrowseFolder.Location = new Point(2074, 44);
+            btnBrowseFolder.Margin = new Padding(7, 8, 7, 8);
             btnBrowseFolder.Name = "btnBrowseFolder";
-            btnBrowseFolder.Size = new Size(100, 23);
+            btnBrowseFolder.Size = new Size(243, 63);
             btnBrowseFolder.TabIndex = 5;
             btnBrowseFolder.Text = "Browse Folder";
             btnBrowseFolder.UseVisualStyleBackColor = true;
@@ -110,44 +115,51 @@
             // tbFolder
             // 
             tbFolder.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            tbFolder.Location = new Point(66, 45);
+            tbFolder.Location = new Point(160, 123);
+            tbFolder.Margin = new Padding(7, 8, 7, 8);
             tbFolder.Name = "tbFolder";
-            tbFolder.Size = new Size(801, 23);
+            tbFolder.Size = new Size(1900, 47);
             tbFolder.TabIndex = 6;
             // 
             // pbDownload
             // 
             pbDownload.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            pbDownload.Location = new Point(72, 436);
+            pbDownload.Location = new Point(175, 1192);
+            pbDownload.Margin = new Padding(7, 8, 7, 8);
             pbDownload.Name = "pbDownload";
-            pbDownload.Size = new Size(671, 23);
+            pbDownload.Size = new Size(1630, 63);
             pbDownload.TabIndex = 7;
             // 
             // textProgress
             // 
             textProgress.AutoSize = true;
-            textProgress.Location = new Point(13, 440);
+            textProgress.Location = new Point(32, 1203);
+            textProgress.Margin = new Padding(7, 0, 7, 0);
             textProgress.Name = "textProgress";
-            textProgress.Size = new Size(52, 15);
+            textProgress.Size = new Size(133, 41);
             textProgress.TabIndex = 8;
             textProgress.Text = "Progress";
             // 
             // tbConsole
             // 
             tbConsole.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            tbConsole.Location = new Point(749, 74);
+            tbConsole.BorderStyle = BorderStyle.FixedSingle;
+            tbConsole.Location = new Point(1819, 219);
+            tbConsole.Margin = new Padding(7, 8, 7, 8);
             tbConsole.Multiline = true;
             tbConsole.Name = "tbConsole";
             tbConsole.ReadOnly = true;
-            tbConsole.Size = new Size(220, 327);
+            tbConsole.Size = new Size(486, 870);
             tbConsole.TabIndex = 9;
+            tbConsole.WordWrap = false;
             // 
             // btnDefault
             // 
             btnDefault.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            btnDefault.Location = new Point(870, 45);
+            btnDefault.Location = new Point(2074, 123);
+            btnDefault.Margin = new Padding(7, 8, 7, 8);
             btnDefault.Name = "btnDefault";
-            btnDefault.Size = new Size(100, 23);
+            btnDefault.Size = new Size(243, 63);
             btnDefault.TabIndex = 10;
             btnDefault.Text = "Set as default";
             btnDefault.UseVisualStyleBackColor = true;
@@ -156,18 +168,20 @@
             // tbETA
             // 
             tbETA.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            tbETA.Location = new Point(749, 436);
+            tbETA.Location = new Point(1819, 1203);
+            tbETA.Margin = new Padding(7, 8, 7, 8);
             tbETA.Name = "tbETA";
             tbETA.ReadOnly = true;
-            tbETA.Size = new Size(118, 23);
+            tbETA.Size = new Size(241, 47);
             tbETA.TabIndex = 17;
             tbETA.Text = "ETA: N/A";
             // 
             // btn_CopyToClipboard
             // 
-            btn_CopyToClipboard.Location = new Point(848, 407);
+            btn_CopyToClipboard.Location = new Point(1819, 1109);
+            btn_CopyToClipboard.Margin = new Padding(7, 8, 7, 8);
             btn_CopyToClipboard.Name = "btn_CopyToClipboard";
-            btn_CopyToClipboard.Size = new Size(121, 23);
+            btn_CopyToClipboard.Size = new Size(496, 63);
             btn_CopyToClipboard.TabIndex = 20;
             btn_CopyToClipboard.Text = "Copy to Clipboard";
             btn_CopyToClipboard.UseVisualStyleBackColor = true;
@@ -175,30 +189,34 @@
             // 
             // flowLayoutPanel1
             // 
+            flowLayoutPanel1.AutoScroll = true;
+            flowLayoutPanel1.BackColor = SystemColors.ControlDark;
             flowLayoutPanel1.BorderStyle = BorderStyle.FixedSingle;
             flowLayoutPanel1.FlowDirection = FlowDirection.TopDown;
-            flowLayoutPanel1.Location = new Point(12, 80);
+            flowLayoutPanel1.Location = new Point(29, 219);
+            flowLayoutPanel1.Margin = new Padding(7, 8, 7, 8);
             flowLayoutPanel1.Name = "flowLayoutPanel1";
-            flowLayoutPanel1.Size = new Size(731, 350);
+            flowLayoutPanel1.Size = new Size(1772, 953);
             flowLayoutPanel1.TabIndex = 21;
             flowLayoutPanel1.WrapContents = false;
             // 
-            // button1
+            // btn_Add
             // 
-            button1.Location = new Point(749, 407);
-            button1.Name = "button1";
-            button1.Size = new Size(93, 23);
-            button1.TabIndex = 0;
-            button1.Text = "button1";
-            button1.UseVisualStyleBackColor = true;
-            button1.Click += button1_Click_1;
+            btn_Add.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btn_Add.Location = new Point(1811, 46);
+            btn_Add.Name = "btn_Add";
+            btn_Add.Size = new Size(249, 58);
+            btn_Add.TabIndex = 22;
+            btn_Add.Text = "Add Video";
+            btn_Add.UseVisualStyleBackColor = true;
+            btn_Add.Click += btn_Add_Click;
             // 
             // ProgrammForm
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(17F, 41F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(984, 494);
-            Controls.Add(button1);
+            ClientSize = new Size(2351, 1350);
+            Controls.Add(btn_Add);
             Controls.Add(flowLayoutPanel1);
             Controls.Add(btn_CopyToClipboard);
             Controls.Add(tbETA);
@@ -212,20 +230,20 @@
             Controls.Add(textCredits);
             Controls.Add(textSaveTo);
             Controls.Add(textURL);
-            Controls.Add(btnDownload);
+            Controls.Add(btn_downloadAll);
             Icon = (Icon)resources.GetObject("$this.Icon");
-            MaximumSize = new Size(1000, 1000);
-            MinimumSize = new Size(751, 533);
+            Margin = new Padding(7, 8, 7, 8);
+            MaximumSize = new Size(2383, 2581);
+            MinimumSize = new Size(1778, 1304);
             Name = "ProgrammForm";
             Text = "OpenDownloader";
-            Load += Form1_Load;
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
 
-        private Button btnDownload;
+        private Button btn_downloadAll;
         private Label textURL;
         private Label textSaveTo;
         private Label textCredits;
@@ -240,6 +258,6 @@
         private TextBox tbETA;
         private Button btn_CopyToClipboard;
         private FlowLayoutPanel flowLayoutPanel1;
-        private Button button1;
+        private Button btn_Add;
     }
 }

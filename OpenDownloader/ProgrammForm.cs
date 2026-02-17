@@ -15,67 +15,29 @@ namespace OpenDownloader
 {
     public partial class ProgrammForm : Form
     {
+        public List<Video> Videos { get; set; } = [];
+
         public ProgrammForm()
         {
             InitializeComponent();
+
+            try
+            {
+                var defaultDirFilePath = Path.Combine(Constants.SETTINGS_PATH, Constants.defaultDirectoryPathFileName);
+                if (File.Exists(defaultDirFilePath))
+                {
+                    tbFolder.Text = File.ReadAllText(defaultDirFilePath);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Failed to load default directory because: {ex.Message}");
+            }
         }
 
-        private async void buttonDownoad(object sender, EventArgs e)
+        private async void btnDownloadAll_click(object sender, EventArgs e)
         {
-            //string fileUrl = tbURL.Text;
-            //string folder = tbFolder.Text;
 
-            //if (string.IsNullOrEmpty(fileUrl))
-            //{
-            //    MessageBox.Show("Specifed download url is empty!");
-            //    return;
-            //}
-            //if (string.IsNullOrEmpty(folder))
-            //{
-            //    MessageBox.Show("Specifed download folder is empty!");
-            //    return;
-            //}
-            //if (!Directory.Exists(folder))
-            //{
-            //    MessageBox.Show("Specifed download folder doesn't exist!");
-            //    return;
-            //}
-
-            //try
-            //{
-            //    pbDownload.Value = 0;
-            //    tbConsole.Clear();
-            //    var quality = (cbQuality.SelectedItem as Detail)?.Quality;
-
-            //    var fps = cbFPS.SelectedItem;
-
-            //    var arguments = new Dictionary<string, string>
-            //    {
-            //        { "quality", quality?.ToString()??"Best" },
-            //        { "fps", fps?.ToString()??"Best" }
-            //    };
-            //    bool isSuccess = await Service.DownloadFileWithProgressAsync(fileUrl, folder, arguments, new Progress<int>(percent =>
-            //    {
-            //        pbDownload.Value = percent;
-            //    }));
-
-            //    if (isSuccess)
-            //    {
-            //        Icon infoIcon = SystemIcons.Information;
-            //        NotificationForm notification = new NotificationForm("YouTubeDonwloader", "Successful", $"Successfully donwloaded file to:\n{folder}", infoIcon);
-            //        notification.Show();
-            //    }
-            //    else
-            //    {
-            //        Icon infoIcon = SystemIcons.Error;
-            //        NotificationForm notification = new NotificationForm("YouTubeDonwloader", "Error", $"Failed donwloaded file!\ncheck output window for more information", infoIcon);
-            //        notification.Show();
-            //    }
-            //}
-            //catch (Exception ex)
-            //{
-            //    MessageBox.Show($"Failed to download file: {ex.Message}");
-            //}
         }
 
         public void AppendConsoleOutput(string? data)
@@ -100,22 +62,6 @@ namespace OpenDownloader
             if (match.Success)
             {
                 tbETA.Text = match.Value;
-            }
-        }
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-            try
-            {
-                var defaultDirFilePath = Path.Combine(Constants.SETTINGS_PATH, Constants.defaultDirectoryPathFileName);
-                if (File.Exists(defaultDirFilePath))
-                {
-                    tbFolder.Text = File.ReadAllText(defaultDirFilePath);
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Failed to load default directory because: {ex.Message}");
             }
         }
 
@@ -153,35 +99,44 @@ namespace OpenDownloader
             e.KeyChar = (char)Keys.None;
         }
 
-        private async void tbURL_Leave(object sender, EventArgs e)
+        private async void btn_Add_Click(object sender, EventArgs e)
         {
-            if (Constants.lastUrl == tbURL.Text)
-            {
-                return;
-            }
+            btn_downloadAll.Enabled = false;
 
-            var isUrl = UrlValidator.IsUrl(tbURL.Text);
-            btnDownload.Enabled = false;
-            Constants.lastUrl = tbURL.Text;
-
-            if (!isUrl)
+            if (!UrlValidator.IsUrl(tbURL.Text))
             {
                 return;
             }
 
             try
             {
-                var video = await ytdlpExecution.DownloadVideoInfo(tbURL.Text);
-                var json = JsonSerializer.Serialize(video);
-                File.WriteAllText("C:\\DEV\\OpenDownloader\\OpenDownloader\\Assets\\test.txt", json);
+                btn_Add.Enabled = false;
+                btn_Add.Text = "Loading...";
 
-                btnDownload.Enabled = true;
+                var video = await ytdlpExecution.DownloadVideoInfo(tbURL.Text);
+                Videos.Add(video);
+
+                var item = new DownloadItem(video)
+                {
+                    Width = flowLayoutPanel1.ClientSize.Width - 20,
+                };
+
+                item.DownloadClicked += (_, option) =>
+                {
+                    MessageBox.Show($"Click on {item.Title}, Option: {option.Resolution}, {option.Fps}");
+                };
+
+                flowLayoutPanel1.Controls.Add(item);
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.ToString());
-                return;
             }
+
+            btn_downloadAll.Enabled = true;
+            tbURL.Text = "";
+            btn_Add.Enabled = true;
+            btn_Add.Text = "Add Video";
         }
 
         private void btnClipboard_Click(object sender, EventArgs e)
@@ -191,7 +146,7 @@ namespace OpenDownloader
 
         private void button1_Click_1(object sender, EventArgs e)
         {
-            Image image = Image.FromFile("C:\\DEV\\OpenDownloader\\OpenDownloader\\Assets\\logo\\Logo.png");
+            Image image = Image.FromFile(Path.Combine(Constants.ASSETS_PATH, "Logo", "Logo.png"));
 
             var video = new Video
             {
