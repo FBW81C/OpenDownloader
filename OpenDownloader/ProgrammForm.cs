@@ -113,6 +113,16 @@ namespace OpenDownloader
                 btn_Add.Enabled = false;
                 btn_Add.Text = "Loading...";
 
+                var path = tbFolder.Text;
+                if (!Path.Exists(path))
+                {
+                    MessageBox.Show("Invalid path", "Path doesn't exist", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    btn_downloadAll.Enabled = true;
+                    btn_Add.Enabled = true;
+                    btn_Add.Text = "Add Video";
+                    return;
+                }
+
                 var video = await ytdlpExecution.DownloadVideoInfo(tbURL.Text);
                 Videos.Add(video);
 
@@ -121,9 +131,13 @@ namespace OpenDownloader
                     Width = flowLayoutPanel1.ClientSize.Width - 20,
                 };
 
-                item.DownloadClicked += (_, option) =>
+                item.DownloadClicked += async (_, option) =>
                 {
-                    MessageBox.Show($"Click on {item.Title}, Option: {option.Resolution}, {option.Fps}");
+                    item.ProgressBar.Value = 0;
+                    await ytdlpExecution.DownloadFileAsync(video, option, path, new Progress<int>(percent => 
+                    { 
+                        item.ProgressBar.Value = percent;
+                    }));
                 };
 
                 flowLayoutPanel1.Controls.Add(item);

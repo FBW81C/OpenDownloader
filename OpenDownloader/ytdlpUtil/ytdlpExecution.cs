@@ -15,8 +15,14 @@ namespace OpenDownloader.ytdlpUtil
 {
     internal static class ytdlpExecution
     {
-        public static async Task<bool> DownloadFileAsync(string arguments, IProgress<int> progress)
+        public static async Task DownloadFileAsync(
+            Video video, 
+            VideoOption option,
+            string path,
+            IProgress<int> progress)
         {
+            var args = $"-P {path.Replace("\\", "/")} {video.WebpageUrl}";
+
             try
             {
                 var process = new Process
@@ -24,7 +30,7 @@ namespace OpenDownloader.ytdlpUtil
                     StartInfo = new ProcessStartInfo
                     {
                         FileName = Constants.ytdlpPath,
-                        Arguments = arguments,
+                        Arguments = args,
                         RedirectStandardOutput = true,
                         RedirectStandardError = true,
                         UseShellExecute = false,
@@ -33,30 +39,15 @@ namespace OpenDownloader.ytdlpUtil
                     EnableRaisingEvents = true
                 };
 
-                bool isSuccess = true;
-
                 process.OutputDataReceived += (sender, args) =>
                 {
                     if (args.Data != null)
                     {
                         ParseProgress(args.Data, progress);
-                        Program.programForm.AppendConsoleOutput(args.Data);
-                        if (args.Data.Contains("ETA"))
-                        {
-                            Program.programForm.SetETA(args.Data);
-                        }
                     }
                 };
                 process.ErrorDataReceived += (sender, args) =>
                 {
-                    if (args.Data != null)
-                    {
-                        if (args.Data.ToLower().Contains("error"))
-                        {
-                            isSuccess = false;
-                        }
-                        Program.programForm.AppendConsoleOutput(args.Data);
-                    }
                 };
 
                 process.Start();
@@ -66,18 +57,10 @@ namespace OpenDownloader.ytdlpUtil
 
                 await process.WaitForExitAsync();
 
-                if (process.ExitCode != 0)
-                {
-                    return false;
-                }
-
-                return isSuccess;
-
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Error: {ex.Message}");
-                return false;
             }
         }
 

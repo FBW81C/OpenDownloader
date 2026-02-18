@@ -20,6 +20,11 @@ namespace OpenDownloader
         public Video Video;
         public VideoOption SelectedVideoOption;
 
+        // Controls
+        public ProgressBar ProgressBar { get { return pb_progress; } }
+        // Actions
+        public event Func<object?, VideoOption, Task>? DownloadClicked;
+
         public DownloadItem(Video video)
         {
             InitializeComponent();
@@ -47,11 +52,19 @@ namespace OpenDownloader
             }
         }
 
-        public event EventHandler<VideoOption>? DownloadClicked;
 
-        private void btnDownload_Click(object sender, EventArgs e)
+        private async void btnDownload_Click(object sender, EventArgs e)
         {
-            DownloadClicked?.Invoke(this, Video.Options[0]); // For test reasons [0]
+            btn_download.Enabled = false;
+            btn_download.Text = "Loading...";
+
+            if (DownloadClicked != null)
+            {
+                await DownloadClicked(this, Video.Options[0]);
+            }
+
+            btn_download.Enabled = true;
+            btn_download.Text = "Download";
         }
 
         private void cb_quality_SelectedValueChanged(object sender, EventArgs e)
