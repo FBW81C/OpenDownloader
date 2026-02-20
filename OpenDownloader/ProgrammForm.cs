@@ -35,36 +35,6 @@ namespace OpenDownloader
             }
         }
 
-        private async void btnDownloadAll_click(object sender, EventArgs e)
-        {
-
-        }
-
-        public void AppendConsoleOutput(string? data)
-        {
-            if (data != null)
-            {
-                if (tbConsole.InvokeRequired)
-                {
-                    tbConsole.Invoke(new Action(() => tbConsole.AppendText(data + Environment.NewLine)));
-                }
-                else
-                {
-                    tbConsole.AppendText(data + Environment.NewLine);
-                }
-            }
-        }
-
-        public void SetETA(string data)
-        {
-            Regex regex = new Regex("ETA *\\d{2}:\\d{2}");
-            Match match = regex.Match(data);
-            if (match.Success)
-            {
-                tbETA.Text = match.Value;
-            }
-        }
-
         private async void btnBrowseFolder_Click(object sender, EventArgs e)
         {
             using (FolderBrowserDialog dialog = new FolderBrowserDialog())
@@ -101,8 +71,6 @@ namespace OpenDownloader
 
         private async void btn_Add_Click(object sender, EventArgs e)
         {
-            btn_downloadAll.Enabled = false;
-
             if (!UrlValidator.IsUrl(tbURL.Text))
             {
                 return;
@@ -117,7 +85,6 @@ namespace OpenDownloader
                 if (!Path.Exists(path))
                 {
                     MessageBox.Show("Invalid path", "Path doesn't exist", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                    btn_downloadAll.Enabled = true;
                     btn_Add.Enabled = true;
                     btn_Add.Text = "Add Video";
                     return;
@@ -134,10 +101,19 @@ namespace OpenDownloader
                 item.DownloadClicked += async (_, option) =>
                 {
                     item.ProgressBar.Value = 0;
-                    await ytdlpExecution.DownloadFileAsync(video, option, path, new Progress<int>(percent => 
-                    { 
-                        item.ProgressBar.Value = percent;
-                    }));
+                    await ytdlpExecution.DownloadFileAsync(
+                        video, 
+                        option, 
+                        path, 
+                        new Progress<int>(percent => 
+                        { 
+                            item.ProgressBar.Value = percent;
+                        }),
+                        new Progress<string>(data =>
+                        {
+                            item.SetETA(data);
+                        }
+                        ));
                 };
 
                 flowLayoutPanel1.Controls.Add(item);
@@ -147,15 +123,9 @@ namespace OpenDownloader
                 MessageBox.Show(ex.ToString());
             }
 
-            btn_downloadAll.Enabled = true;
             tbURL.Text = "";
             btn_Add.Enabled = true;
             btn_Add.Text = "Add Video";
-        }
-
-        private void btnClipboard_Click(object sender, EventArgs e)
-        {
-            Clipboard.SetText(tbConsole.Text);
         }
     }
 }

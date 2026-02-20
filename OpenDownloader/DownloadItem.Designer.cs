@@ -33,9 +33,9 @@
             cb_quality = new ComboBox();
             cb_fps = new ComboBox();
             btn_download = new Button();
-            lbl_estimatedSize = new Label();
             lbl_estimatedSizeValue = new Label();
             pb_progress = new ProgressBar();
+            tb_ETA = new TextBox();
             ((System.ComponentModel.ISupportInitialize)pb_thumbnail).BeginInit();
             SuspendLayout();
             // 
@@ -86,19 +86,10 @@
             btn_download.UseVisualStyleBackColor = true;
             btn_download.Click += btnDownload_Click;
             // 
-            // lbl_estimatedSize
-            // 
-            lbl_estimatedSize.AutoSize = true;
-            lbl_estimatedSize.Location = new Point(449, 12);
-            lbl_estimatedSize.Name = "lbl_estimatedSize";
-            lbl_estimatedSize.Size = new Size(81, 15);
-            lbl_estimatedSize.TabIndex = 5;
-            lbl_estimatedSize.Text = "Estimated size";
-            // 
             // lbl_estimatedSizeValue
             // 
             lbl_estimatedSizeValue.AutoSize = true;
-            lbl_estimatedSizeValue.Location = new Point(449, 38);
+            lbl_estimatedSizeValue.Location = new Point(446, 38);
             lbl_estimatedSizeValue.Name = "lbl_estimatedSizeValue";
             lbl_estimatedSizeValue.Size = new Size(38, 15);
             lbl_estimatedSizeValue.TabIndex = 6;
@@ -111,15 +102,24 @@
             pb_progress.Size = new Size(328, 10);
             pb_progress.TabIndex = 7;
             // 
+            // tb_ETA
+            // 
+            tb_ETA.Location = new Point(445, 56);
+            tb_ETA.Name = "tb_ETA";
+            tb_ETA.ReadOnly = true;
+            tb_ETA.Size = new Size(82, 23);
+            tb_ETA.TabIndex = 8;
+            tb_ETA.Text = "ETA: N/A";
+            // 
             // DownloadItem
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.Menu;
             BorderStyle = BorderStyle.FixedSingle;
+            Controls.Add(tb_ETA);
             Controls.Add(pb_progress);
             Controls.Add(lbl_estimatedSizeValue);
-            Controls.Add(lbl_estimatedSize);
             Controls.Add(btn_download);
             Controls.Add(cb_fps);
             Controls.Add(cb_quality);
@@ -139,8 +139,8 @@
         private ComboBox cb_quality;
         private ComboBox cb_fps;
         private Button btn_download;
-        private Label lbl_estimatedSize;
         private Label lbl_estimatedSizeValue;
         private ProgressBar pb_progress;
+        private TextBox tb_ETA;
     }
 }

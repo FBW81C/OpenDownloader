@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ProgrammForm));
-            btn_downloadAll = new Button();
             textURL = new Label();
             textSaveTo = new Label();
             textCredits = new Label();
@@ -37,27 +36,10 @@
             btnBrowseFolder = new Button();
             folderBrowserDialog1 = new FolderBrowserDialog();
             tbFolder = new TextBox();
-            pbDownload = new ProgressBar();
-            textProgress = new Label();
-            tbConsole = new TextBox();
             btnDefault = new Button();
-            tbETA = new TextBox();
-            btn_CopyToClipboard = new Button();
             flowLayoutPanel1 = new FlowLayoutPanel();
             btn_Add = new Button();
             SuspendLayout();
-            // 
-            // btn_downloadAll
-            // 
-            btn_downloadAll.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            btn_downloadAll.Enabled = false;
-            btn_downloadAll.Location = new Point(861, 436);
-            btn_downloadAll.Name = "btn_downloadAll";
-            btn_downloadAll.Size = new Size(96, 23);
-            btn_downloadAll.TabIndex = 0;
-            btn_downloadAll.Text = "Download All";
-            btn_downloadAll.UseVisualStyleBackColor = true;
-            btn_downloadAll.Click += btnDownloadAll_click;
             // 
             // textURL
             // 
@@ -81,7 +63,7 @@
             // 
             textCredits.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             textCredits.AutoSize = true;
-            textCredits.Location = new Point(784, 468);
+            textCredits.Location = new Point(786, 438);
             textCredits.Name = "textCredits";
             textCredits.Size = new Size(177, 15);
             textCredits.TabIndex = 3;
@@ -114,36 +96,6 @@
             tbFolder.Size = new Size(792, 23);
             tbFolder.TabIndex = 6;
             // 
-            // pbDownload
-            // 
-            pbDownload.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            pbDownload.Location = new Point(72, 436);
-            pbDownload.Name = "pbDownload";
-            pbDownload.Size = new Size(678, 23);
-            pbDownload.TabIndex = 7;
-            // 
-            // textProgress
-            // 
-            textProgress.AutoSize = true;
-            textProgress.Location = new Point(13, 440);
-            textProgress.Name = "textProgress";
-            textProgress.Size = new Size(52, 15);
-            textProgress.TabIndex = 8;
-            textProgress.Text = "Progress";
-            // 
-            // tbConsole
-            // 
-            tbConsole.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            tbConsole.BorderStyle = BorderStyle.FixedSingle;
-            tbConsole.Location = new Point(749, 80);
-            tbConsole.Multiline = true;
-            tbConsole.Name = "tbConsole";
-            tbConsole.ReadOnly = true;
-            tbConsole.ScrollBars = ScrollBars.Vertical;
-            tbConsole.Size = new Size(208, 320);
-            tbConsole.TabIndex = 9;
-            tbConsole.WordWrap = false;
-            // 
             // btnDefault
             // 
             btnDefault.Anchor = AnchorStyles.Top | AnchorStyles.Right;
@@ -155,27 +107,6 @@
             btnDefault.UseVisualStyleBackColor = true;
             btnDefault.Click += btnDefault_Click;
             // 
-            // tbETA
-            // 
-            tbETA.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            tbETA.Location = new Point(754, 437);
-            tbETA.Name = "tbETA";
-            tbETA.ReadOnly = true;
-            tbETA.Size = new Size(102, 23);
-            tbETA.TabIndex = 17;
-            tbETA.Text = "ETA: N/A";
-            // 
-            // btn_CopyToClipboard
-            // 
-            btn_CopyToClipboard.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            btn_CopyToClipboard.Location = new Point(749, 406);
-            btn_CopyToClipboard.Name = "btn_CopyToClipboard";
-            btn_CopyToClipboard.Size = new Size(208, 23);
-            btn_CopyToClipboard.TabIndex = 20;
-            btn_CopyToClipboard.Text = "Copy to Clipboard";
-            btn_CopyToClipboard.UseVisualStyleBackColor = true;
-            btn_CopyToClipboard.Click += btnClipboard_Click;
-            // 
             // flowLayoutPanel1
             // 
             flowLayoutPanel1.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
@@ -185,7 +116,7 @@
             flowLayoutPanel1.FlowDirection = FlowDirection.TopDown;
             flowLayoutPanel1.Location = new Point(12, 80);
             flowLayoutPanel1.Name = "flowLayoutPanel1";
-            flowLayoutPanel1.Size = new Size(731, 350);
+            flowLayoutPanel1.Size = new Size(949, 350);
             flowLayoutPanel1.TabIndex = 21;
             flowLayoutPanel1.WrapContents = false;
             // 
@@ -205,22 +136,16 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(975, 492);
+            ClientSize = new Size(975, 462);
             Controls.Add(btn_Add);
             Controls.Add(flowLayoutPanel1);
-            Controls.Add(btn_CopyToClipboard);
-            Controls.Add(tbETA);
             Controls.Add(btnDefault);
-            Controls.Add(tbConsole);
-            Controls.Add(textProgress);
-            Controls.Add(pbDownload);
             Controls.Add(tbFolder);
             Controls.Add(btnBrowseFolder);
             Controls.Add(tbURL);
             Controls.Add(textCredits);
             Controls.Add(textSaveTo);
             Controls.Add(textURL);
-            Controls.Add(btn_downloadAll);
             Icon = (Icon)resources.GetObject("$this.Icon");
             MaximumSize = new Size(991, 969);
             MinimumSize = new Size(742, 404);
@@ -231,8 +156,6 @@
         }
 
         #endregion
-
-        private Button btn_downloadAll;
         private Label textURL;
         private Label textSaveTo;
         private Label textCredits;
@@ -240,12 +163,7 @@
         private Button btnBrowseFolder;
         private FolderBrowserDialog folderBrowserDialog1;
         private TextBox tbFolder;
-        private ProgressBar pbDownload;
-        private Label textProgress;
-        private TextBox tbConsole;
         private Button btnDefault;
-        private TextBox tbETA;
-        private Button btn_CopyToClipboard;
         private FlowLayoutPanel flowLayoutPanel1;
         private Button btn_Add;
     }

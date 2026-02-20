@@ -7,6 +7,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Windows.Forms.Design.AxImporter;
@@ -35,12 +36,16 @@ namespace OpenDownloader
             lbl_title.Text = video.Title;
 
             // Resolutions
-            //var qualities = video.Options.Select(o => o.Resolution).ToArray();
             cb_quality.Items.Clear();
             cb_quality.Items.AddRange(video.Options.ToArray());
             cb_quality.DisplayMember = "Resolution";
             if (cb_quality.Items.Count > 0)
-                cb_quality.SelectedIndex = 0;
+            {
+                var startOption = video.Options[0];
+                cb_quality.SelectedItem = startOption;
+                SelectedVideoOption = startOption;
+            }
+
 
             // FPS
             if (cb_quality.Items.Count > 0)
@@ -60,7 +65,7 @@ namespace OpenDownloader
 
             if (DownloadClicked != null)
             {
-                await DownloadClicked(this, Video.Options[0]);
+                await DownloadClicked(this, SelectedVideoOption);
             }
 
             btn_download.Enabled = true;
@@ -76,11 +81,23 @@ namespace OpenDownloader
                 throw new ArgumentException("Could should not get here");
             }
 
+            SelectedVideoOption = option;
+
             cb_fps.Items.Clear();
             cb_fps.Items.AddRange([option.Fps]);
             cb_fps.SelectedIndex = 0;
 
             lbl_estimatedSizeValue.Text = option.EstimatedSize.HasValue ? FilesizeParser.ReadableFileSize(option.EstimatedSize.Value) : "N/A";
+        }
+
+        public void SetETA(string data)
+        {
+            Regex regex = new Regex("ETA *\\d{2}:\\d{2}");
+            Match match = regex.Match(data);
+            if (match.Success)
+            {
+                tb_ETA.Text = match.Value;
+            }
         }
     }
 }

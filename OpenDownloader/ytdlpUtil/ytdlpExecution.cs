@@ -19,7 +19,8 @@ namespace OpenDownloader.ytdlpUtil
             Video video, 
             VideoOption option,
             string path,
-            IProgress<int> progress)
+            IProgress<int> progress,
+            IProgress<string> etaProgress)
         {
             var args = $"-P {path.Replace("\\", "/")} {video.WebpageUrl}";
 
@@ -44,6 +45,10 @@ namespace OpenDownloader.ytdlpUtil
                     if (args.Data != null)
                     {
                         ParseProgress(args.Data, progress);
+                        if (args.Data.Contains("ETA"))
+                        {
+                            etaProgress?.Report(args.Data);
+                        }
                     }
                 };
                 process.ErrorDataReceived += (sender, args) =>
