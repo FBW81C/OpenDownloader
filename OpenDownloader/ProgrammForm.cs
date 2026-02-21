@@ -80,6 +80,7 @@ namespace OpenDownloader
             {
                 btn_Add.Enabled = false;
                 btn_Add.Text = "Loading...";
+                tb_output.Clear();
 
                 var path = tbFolder.Text;
                 if (!Path.Exists(path))
@@ -90,12 +91,15 @@ namespace OpenDownloader
                     return;
                 }
 
-                var video = await ytdlpExecution.DownloadVideoInfo(tbURL.Text);
+                var video = await ytdlpExecution.DownloadVideoInfo(tbURL.Text, new Progress<string>(data =>
+                {
+                    tb_output.AppendText(data + Environment.NewLine);
+                }));
                 Videos.Add(video);
 
                 var item = new DownloadItem(video)
                 {
-                    Width = flowLayoutPanel1.ClientSize.Width - 20,
+                    Width = flowLayoutPanel1.ClientSize.Width - 6,
                 };
 
                 item.DownloadClicked += async (_, option) =>
@@ -120,7 +124,7 @@ namespace OpenDownloader
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.ToString());
+                MessageBox.Show(ex.Message);
             }
 
             tbURL.Text = "";

@@ -7,8 +7,6 @@ using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using OpenDownloader.lib;
 using OpenDownloader.model;
 
 namespace OpenDownloader.ytdlpUtil
@@ -22,7 +20,11 @@ namespace OpenDownloader.ytdlpUtil
             IProgress<int> progress,
             IProgress<string> etaProgress)
         {
-            var args = $"-P {path.Replace("\\", "/")} {video.WebpageUrl}";
+            var args =
+                $"-P {path.Replace("\\", "/")} {video.WebpageUrl} " +
+                $"-f \"bestvideo[vcodec^=avc1][height={option.Height}][width={option.Width}][fps={option.Fps}]" +
+                $"+bestaudio[acodec^=mp4a]/best\" " +
+                video.WebpageUrl;
 
             try
             {
@@ -81,7 +83,10 @@ namespace OpenDownloader.ytdlpUtil
             }
         }
 
-        public static async Task<Video> DownloadVideoInfo(string url)
+        public static async Task<Video> DownloadVideoInfo(
+            string url,
+            IProgress<string> output
+            )
         {
             var process = new Process
             {
@@ -96,10 +101,39 @@ namespace OpenDownloader.ytdlpUtil
                 }
             };
 
-            process.Start();
 
-            string json = await process.StandardOutput.ReadToEndAsync();
+            var jsonBuilder = new StringBuilder();
+            var errorBuilder = new StringBuilder();
+
+            process.OutputDataReceived += (s, e) =>
+            {
+                if (e.Data != null)
+                {
+                    jsonBuilder.AppendLine(e.Data);
+                }
+            };
+            process.ErrorDataReceived += (s, e) =>
+            {
+                if (!string.IsNullOrEmpty(e.Data))
+                {
+                    errorBuilder.AppendLine(e.Data);
+                    output?.Report(e.Data);
+                }
+            };
+
+            process.Start();
+            process.BeginOutputReadLine();
+            process.BeginErrorReadLine();
+
             await process.WaitForExitAsync();
+
+            if (process.ExitCode != 0)
+            {
+                throw new InvalidOperationException(
+                    $"yt-dlp failed (exit code {process.ExitCode}):\n{errorBuilder}");
+            }
+
+            var json = jsonBuilder.ToString();
 
             var video = ParseVideo(json);
             await LoadThumbnailAsync(video);

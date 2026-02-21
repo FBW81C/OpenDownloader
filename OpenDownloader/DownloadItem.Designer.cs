@@ -36,6 +36,7 @@
             lbl_estimatedSizeValue = new Label();
             pb_progress = new ProgressBar();
             tb_ETA = new TextBox();
+            lbl_FPS = new Label();
             ((System.ComponentModel.ISupportInitialize)pb_thumbnail).BeginInit();
             SuspendLayout();
             // 
@@ -43,7 +44,7 @@
             // 
             pb_thumbnail.Location = new Point(0, 0);
             pb_thumbnail.Name = "pb_thumbnail";
-            pb_thumbnail.Size = new Size(106, 67);
+            pb_thumbnail.Size = new Size(136, 84);
             pb_thumbnail.SizeMode = PictureBoxSizeMode.Zoom;
             pb_thumbnail.TabIndex = 0;
             pb_thumbnail.TabStop = false;
@@ -51,7 +52,7 @@
             // lbl_title
             // 
             lbl_title.AutoSize = true;
-            lbl_title.Location = new Point(111, 12);
+            lbl_title.Location = new Point(142, 13);
             lbl_title.Name = "lbl_title";
             lbl_title.Size = new Size(38, 15);
             lbl_title.TabIndex = 1;
@@ -61,7 +62,7 @@
             // 
             cb_quality.DropDownStyle = ComboBoxStyle.DropDownList;
             cb_quality.FormattingEnabled = true;
-            cb_quality.Location = new Point(111, 35);
+            cb_quality.Location = new Point(142, 34);
             cb_quality.Name = "cb_quality";
             cb_quality.Size = new Size(121, 23);
             cb_quality.TabIndex = 2;
@@ -71,14 +72,14 @@
             // 
             cb_fps.DropDownStyle = ComboBoxStyle.DropDownList;
             cb_fps.FormattingEnabled = true;
-            cb_fps.Location = new Point(238, 35);
+            cb_fps.Location = new Point(301, 34);
             cb_fps.Name = "cb_fps";
             cb_fps.Size = new Size(121, 23);
             cb_fps.TabIndex = 3;
             // 
             // btn_download
             // 
-            btn_download.Location = new Point(365, 34);
+            btn_download.Location = new Point(428, 34);
             btn_download.Name = "btn_download";
             btn_download.Size = new Size(75, 23);
             btn_download.TabIndex = 4;
@@ -89,7 +90,7 @@
             // lbl_estimatedSizeValue
             // 
             lbl_estimatedSizeValue.AutoSize = true;
-            lbl_estimatedSizeValue.Location = new Point(446, 38);
+            lbl_estimatedSizeValue.Location = new Point(511, 38);
             lbl_estimatedSizeValue.Name = "lbl_estimatedSizeValue";
             lbl_estimatedSizeValue.Size = new Size(38, 15);
             lbl_estimatedSizeValue.TabIndex = 6;
@@ -97,19 +98,28 @@
             // 
             // pb_progress
             // 
-            pb_progress.Location = new Point(111, 63);
+            pb_progress.Location = new Point(142, 63);
             pb_progress.Name = "pb_progress";
-            pb_progress.Size = new Size(328, 10);
+            pb_progress.Size = new Size(361, 10);
             pb_progress.TabIndex = 7;
             // 
             // tb_ETA
             // 
-            tb_ETA.Location = new Point(445, 56);
+            tb_ETA.Location = new Point(511, 55);
             tb_ETA.Name = "tb_ETA";
             tb_ETA.ReadOnly = true;
             tb_ETA.Size = new Size(82, 23);
             tb_ETA.TabIndex = 8;
             tb_ETA.Text = "ETA: N/A";
+            // 
+            // lbl_FPS
+            // 
+            lbl_FPS.AutoSize = true;
+            lbl_FPS.Location = new Point(269, 37);
+            lbl_FPS.Name = "lbl_FPS";
+            lbl_FPS.Size = new Size(26, 15);
+            lbl_FPS.TabIndex = 9;
+            lbl_FPS.Text = "FPS";
             // 
             // DownloadItem
             // 
@@ -117,6 +127,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.Menu;
             BorderStyle = BorderStyle.FixedSingle;
+            Controls.Add(lbl_FPS);
             Controls.Add(tb_ETA);
             Controls.Add(pb_progress);
             Controls.Add(lbl_estimatedSizeValue);
@@ -126,7 +137,7 @@
             Controls.Add(lbl_title);
             Controls.Add(pb_thumbnail);
             Name = "DownloadItem";
-            Size = new Size(582, 84);
+            Size = new Size(600, 83);
             ((System.ComponentModel.ISupportInitialize)pb_thumbnail).EndInit();
             ResumeLayout(false);
             PerformLayout();
@@ -142,5 +153,6 @@
         private Label lbl_estimatedSizeValue;
         private ProgressBar pb_progress;
         private TextBox tb_ETA;
+        private Label lbl_FPS;
     }
 }
