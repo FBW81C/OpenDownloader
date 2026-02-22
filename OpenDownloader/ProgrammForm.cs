@@ -106,11 +106,11 @@ namespace OpenDownloader
                 {
                     item.ProgressBar.Value = 0;
                     await ytdlpExecution.DownloadFileAsync(
-                        video, 
-                        option, 
-                        path, 
-                        new Progress<int>(percent => 
-                        { 
+                        video,
+                        option,
+                        path,
+                        new Progress<int>(percent =>
+                        {
                             item.ProgressBar.Value = percent;
                         }),
                         new Progress<string>(data =>
@@ -130,6 +130,11 @@ namespace OpenDownloader
             tbURL.Text = "";
             btn_Add.Enabled = true;
             btn_Add.Text = "Add Video";
+        }
+
+        private void btn_copyToClipboard_Click(object sender, EventArgs e)
+        {
+            Clipboard.SetText(tb_output.Text);
         }
     }
 }

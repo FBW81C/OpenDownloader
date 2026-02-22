@@ -40,6 +40,7 @@
             flowLayoutPanel1 = new FlowLayoutPanel();
             btn_Add = new Button();
             tb_output = new TextBox();
+            btn_copyToClipboard = new Button();
             SuspendLayout();
             // 
             // textURL
@@ -140,14 +141,26 @@
             tb_output.Multiline = true;
             tb_output.Name = "tb_output";
             tb_output.ReadOnly = true;
-            tb_output.Size = new Size(203, 382);
+            tb_output.Size = new Size(203, 353);
             tb_output.TabIndex = 23;
+            // 
+            // btn_copyToClipboard
+            // 
+            btn_copyToClipboard.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            btn_copyToClipboard.Location = new Point(624, 439);
+            btn_copyToClipboard.Name = "btn_copyToClipboard";
+            btn_copyToClipboard.Size = new Size(203, 23);
+            btn_copyToClipboard.TabIndex = 24;
+            btn_copyToClipboard.Text = "Copy To Clipboard";
+            btn_copyToClipboard.UseVisualStyleBackColor = true;
+            btn_copyToClipboard.Click += btn_copyToClipboard_Click;
             // 
             // ProgrammForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(841, 494);
+            Controls.Add(btn_copyToClipboard);
             Controls.Add(tb_output);
             Controls.Add(btn_Add);
             Controls.Add(flowLayoutPanel1);
@@ -179,5 +192,6 @@
         private FlowLayoutPanel flowLayoutPanel1;
         private Button btn_Add;
         private TextBox tb_output;
+        private Button btn_copyToClipboard;
     }
 }
