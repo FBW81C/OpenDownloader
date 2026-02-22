@@ -136,5 +136,25 @@ namespace OpenDownloader
         {
             Clipboard.SetText(tb_output.Text);
         }
+
+        private void aboutOpenClickerToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string path = Path.Combine(Constants.TEXTS_PATH, "about.txt");
+
+            if (File.Exists(path))
+            {
+                string content = File.ReadAllText(path);
+                MessageBox.Show(content, $"About {Constants.APPLICATION_NAME}", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else
+            {
+                MessageBox.Show("About-File not found!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void gitHubToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Process.Start("explorer", Constants.LINK_GITHUB);
+        }
     }
 }
