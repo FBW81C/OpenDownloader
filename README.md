@@ -2,7 +2,7 @@
 
 **OpenDownloader** is a free and open-source video downloader for Windows.  
 
-![Logo OpenDownloader](https://github.com/FBW81C/OpenDownloader/blob/main/Assets/logo/Logo.png)
+![Logo OpenDownloader](https://github.com/FBW81C/OpenDownloader/blob/main/OpenDownloader/Assets/logo/Logo.png)
 
 [![Release Version Badge](https://img.shields.io/github/v/release/FBW81C/OpenDownloader)](https://github.com/FBW81C/OpenDownloader/releases)
 [![Downloads@latest](https://img.shields.io/github/downloads/FBW81C/OpenDownloader/latest/total)](https://github.com/FBW81C/OpenDownloader/releases/latest)
