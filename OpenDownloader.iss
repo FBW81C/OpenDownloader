@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "OpenDownloader"
-#define MyAppVersion "1.1"
+#define MyAppVersion "2.0"
 #define MyAppPublisher "FBW81C"
 #define MyAppURL "https://github.com/FBW81C/OpenDownloader"
 #define MyAppExeName "OpenDownloader.exe"
