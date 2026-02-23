@@ -28,8 +28,8 @@ All functionality runs **locally and without telemetry**.
 
 ## Dependencies
 - **.NET 8 (Core)**
-- yt-dlp.exe (https://github.com/yt-dlp/yt-dlp)
-- ffmpeg.exe (https://www.ffmpeg.org/)
+- yt-dlp.exe, yt-dlp 2026.02.21 (executable from [github.com/yt-dlp/yt-dlp](https://github.com/yt-dlp/yt-dlp/releases/tag/2026.02.21))
+- ffmpeg.exe, ffmpeg-n8.0.1-64-g15504610b0-win64-lgpl-8.0.zip (executable from [github.com/BtbN/FFmpeg-Builds/](https://github.com/BtbN/FFmpeg-Builds/releases/tag/autobuild-2026-02-22-12-59)) (https://www.ffmpeg.org/)
 
 yt-dlp and ffmpeg are already compiled with the Installer. Compile it yourself if you want to manage it manually.
 
