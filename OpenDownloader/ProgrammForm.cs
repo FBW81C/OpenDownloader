@@ -73,7 +73,9 @@ namespace OpenDownloader
         {
             if (!UrlValidator.IsUrl(tbURL.Text))
             {
-                return;
+                var result = MessageBox.Show("URL doesn't seem to be in a URL format", "Invalid URL", MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation);
+                if (result == DialogResult.Cancel)
+                    return;
             }
 
             try
@@ -97,26 +99,37 @@ namespace OpenDownloader
                 }));
                 Videos.Add(video);
 
-                var item = new DownloadItem(video)
-                {
-                    Width = flowLayoutPanel1.ClientSize.Width - 6,
-                };
+                var item = new DownloadItem(video) { Width = flowLayoutPanel1.ClientSize.Width - 6 };
 
                 item.DownloadClicked += async (_, request) =>
                 {
-                    item.ProgressBar.Value = 0;
-                    await ytdlpExecution.DownloadFileAsync(
-                        request,
-                        path,
-                        new Progress<int>(percent =>
-                        {
-                            item.ProgressBar.Value = percent;
-                        }),
-                        new Progress<string>(data =>
-                        {
-                            item.SetETA(data);
-                        }
-                        ));
+                    try
+                    {
+                        await ytdlpExecution.DownloadFileAsync(
+                            request,
+                            path,
+                            new Progress<string>(data =>
+                            {
+                                item.UpdateProgress(data);
+                            })
+                        );
+
+                        notifyIcon1.ShowBalloonTip(
+                            3000,
+                            "Download finished",
+                            "The download completed successfully.",
+                            ToolTipIcon.Info
+                        );
+                    }
+                    catch (Exception ex)
+                    {
+                        notifyIcon1.ShowBalloonTip(
+                            5000,
+                            "Download failed",
+                            "Check output panel for more information!",
+                            ToolTipIcon.Error
+                        );
+                    }
                 };
 
                 flowLayoutPanel1.Controls.Add(item);
@@ -133,7 +146,8 @@ namespace OpenDownloader
 
         private void btn_copyToClipboard_Click(object sender, EventArgs e)
         {
-            Clipboard.SetText(tb_output.Text);
+            if (!string.IsNullOrEmpty(tb_output.Text))
+                Clipboard.SetText(tb_output.Text);
         }
 
         private void aboutOpenClickerToolStripMenuItem_Click(object sender, EventArgs e)

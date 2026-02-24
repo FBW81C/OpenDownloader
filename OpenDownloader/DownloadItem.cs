@@ -11,8 +11,6 @@ namespace OpenDownloader
         public Video Video;
         public VideoOption SelectedVideoOption;
 
-        // Controls
-        public ProgressBar ProgressBar { get { return pb_progress; } }
         // Actions
         public event Func<object?, DownloadRequest, Task>? DownloadClicked;
 
@@ -61,6 +59,7 @@ namespace OpenDownloader
         {
             btn_download.Enabled = false;
             btn_download.Text = "Loading...";
+            pb_progress.Value = 0;
 
             if (DownloadClicked != null && SelectedVideoOption != null)
             {
@@ -97,13 +96,32 @@ namespace OpenDownloader
             lbl_estimatedSizeValue.Text = option.EstimatedSize.HasValue ? FilesizeParser.ReadableFileSize(option.EstimatedSize.Value) : "N/A";
         }
 
-        public void SetETA(string data)
+        // Updates internal values like ETA or progressbar
+        public void UpdateProgress(string data)
+        {
+            SetETA(data);
+            SetProgress(data);
+        }
+
+        private void SetETA(string data)
         {
             Regex regex = new Regex("ETA *\\d{2}:\\d{2}");
             Match match = regex.Match(data);
             if (match.Success)
             {
                 tb_ETA.Text = match.Value;
+            }
+        }
+
+        private void SetProgress(string data)
+        {
+            var match = Regex.Match(data, @"\b(\d{1,3})\.*\d*%");  // Searches for "XXX.X%"
+            if (match.Success)
+            {
+                if (int.TryParse(match.Groups[1].Value, out int percent))
+                {
+                    pb_progress.Value = percent;
+                }
             }
         }
     }

@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.Drawing.Imaging;
-using System.Linq;
+﻿using System.Diagnostics;
 using System.Text;
 using System.Text.Json;
-using System.Text.RegularExpressions;
 using OpenDownloader.model;
 
 namespace OpenDownloader.ytdlpUtil
@@ -16,8 +10,7 @@ namespace OpenDownloader.ytdlpUtil
         public static async Task DownloadFileAsync(
             DownloadRequest request, 
             string path,
-            IProgress<int> progress,
-            IProgress<string> etaProgress)
+            IProgress<string> output)
         {
 
             var option = request.Option;
@@ -43,60 +36,51 @@ namespace OpenDownloader.ytdlpUtil
                     $"-f \"bestaudio[acodec^=mp4a]/bestaudio\"";
             }
 
-            try
+            output.Report($"[GUI] Executing: yt-dlp.exe {args}");
+
+            var process = new Process
             {
-                var process = new Process
+                StartInfo = new ProcessStartInfo
                 {
-                    StartInfo = new ProcessStartInfo
-                    {
-                        FileName = Constants.ytdlpPath,
-                        Arguments = args,
-                        RedirectStandardOutput = true,
-                        RedirectStandardError = true,
-                        UseShellExecute = false,
-                        CreateNoWindow = true
-                    },
-                    EnableRaisingEvents = true
-                };
+                    FileName = Constants.ytdlpPath,
+                    Arguments = args,
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true,
+                    UseShellExecute = false,
+                    CreateNoWindow = true
+                },
+                EnableRaisingEvents = true
+            };
 
-                process.OutputDataReceived += (sender, args) =>
-                {
-                    if (args.Data != null)
-                    {
-                        ParseProgress(args.Data, progress);
-                        if (args.Data.Contains("ETA"))
-                        {
-                            etaProgress?.Report(args.Data);
-                        }
-                    }
-                };
-                process.ErrorDataReceived += (sender, args) =>
-                {
-                };
+            var errorBuilder = new StringBuilder();
 
-                process.Start();
-
-                process.BeginOutputReadLine();
-                process.BeginErrorReadLine();
-
-                await process.WaitForExitAsync();
-
-            }
-            catch (Exception ex)
+            process.OutputDataReceived += (sender, args) =>
             {
-                MessageBox.Show($"Error: {ex.Message}");
-            }
-        }
-
-        private static void ParseProgress(string output, IProgress<int> progress)
-        {
-            var match = Regex.Match(output, @"\b(\d{1,3})\.*\d*%");  // Searches for "XXX.X%"
-            if (match.Success)
-            {
-                if (int.TryParse(match.Groups[1].Value, out int percent))
+                if (args.Data != null)
                 {
-                    progress.Report(percent);
+                    output.Report(args.Data);
                 }
+            };
+            process.ErrorDataReceived += (sender, args) =>
+            {
+                if (!string.IsNullOrEmpty(args.Data))
+                {
+                    errorBuilder.AppendLine(args.Data);
+                    output.Report(args.Data);
+                }
+            };
+
+            process.Start();
+
+            process.BeginOutputReadLine();
+            process.BeginErrorReadLine();
+
+            await process.WaitForExitAsync();
+
+            if (process.ExitCode != 0)
+            {
+                throw new InvalidOperationException(
+                    $"yt-dlp failed (exit code {process.ExitCode}):\n{errorBuilder}");
             }
         }
 
@@ -105,19 +89,21 @@ namespace OpenDownloader.ytdlpUtil
             IProgress<string> output
             )
         {
+            var args = $"-J {url}";
+
+            output.Report($"[GUI] Executing: yt-dlp.exe {args}");
             var process = new Process
             {
                 StartInfo = new ProcessStartInfo
                 {
                     FileName = Constants.ytdlpPath,
-                    Arguments = $"-J {url}",
+                    Arguments = args,
                     RedirectStandardOutput = true,
                     RedirectStandardError = true,
                     UseShellExecute = false,
                     CreateNoWindow = true
                 }
             };
-
 
             var jsonBuilder = new StringBuilder();
             var errorBuilder = new StringBuilder();
@@ -153,7 +139,7 @@ namespace OpenDownloader.ytdlpUtil
             var json = jsonBuilder.ToString();
 
             var video = ParseVideo(json);
-            await LoadThumbnailAsync(video);
+            await LoadThumbnailAsync(video, output);
 
             return video;
         }
@@ -228,15 +214,17 @@ namespace OpenDownloader.ytdlpUtil
             return compatible;
         }
 
-        private static async Task LoadThumbnailAsync(Video video)
+        private static async Task LoadThumbnailAsync(Video video, IProgress<string> output)
         {
             if (string.IsNullOrWhiteSpace(video.ThumbnailUrl))
             {
+                output.Report($"[GUI] No thumbnail found!");
                 video.Thumbnail = Image.FromFile(Path.Combine(Constants.ASSETS_PATH, "Logo", "Logo.png"));
                 return;
             }
 
             using var http = new HttpClient();
+            output.Report($"[GUI] Fetching thumbnail: {video.ThumbnailUrl}");
             var bytes = await http.GetByteArrayAsync(video.ThumbnailUrl);
 
             using var ms = new MemoryStream(bytes);
