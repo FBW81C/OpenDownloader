@@ -14,7 +14,7 @@ namespace OpenDownloader
         // Controls
         public ProgressBar ProgressBar { get { return pb_progress; } }
         // Actions
-        public event Func<object?, VideoOption, Task>? DownloadClicked;
+        public event Func<object?, DownloadRequest, Task>? DownloadClicked;
 
         public DownloadItem(Video video)
         {
@@ -36,7 +36,6 @@ namespace OpenDownloader
                 SelectedVideoOption = startOption;
             }
 
-
             // FPS
             if (cb_quality.Items.Count > 0)
             {
@@ -45,17 +44,35 @@ namespace OpenDownloader
                 cb_fps.Items.AddRange([fps]);
                 cb_fps.SelectedIndex = 0;
             }
-        }
 
+            // Download Mode
+            var modes = new Dictionary<DownloadMode, string>() 
+            {
+                { DownloadMode.VideoWithAudio, "Video + Audio"},
+                { DownloadMode.VideoOnly, "Video"},
+                { DownloadMode.AudioOnly, "Audio"},
+            };
+            cb_mode.Items.Clear();
+            cb_mode.DataSource = Enum.GetValues(typeof(DownloadMode));
+            cb_mode.SelectedItem = DownloadMode.VideoWithAudio;
+        }
 
         private async void btnDownload_Click(object sender, EventArgs e)
         {
             btn_download.Enabled = false;
             btn_download.Text = "Loading...";
 
-            if (DownloadClicked != null)
+            if (DownloadClicked != null && SelectedVideoOption != null)
             {
-                await DownloadClicked(this, SelectedVideoOption);
+                var mode = (DownloadMode)cb_mode.SelectedItem;
+                var request = new DownloadRequest
+                {
+                    Video = Video,
+                    Option = SelectedVideoOption,
+                    Mode = mode
+                };
+
+                await DownloadClicked(this, request);
             }
 
             btn_download.Enabled = true;

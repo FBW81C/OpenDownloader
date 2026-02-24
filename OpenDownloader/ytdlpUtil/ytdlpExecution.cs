@@ -14,17 +14,34 @@ namespace OpenDownloader.ytdlpUtil
     internal static class ytdlpExecution
     {
         public static async Task DownloadFileAsync(
-            Video video, 
-            VideoOption option,
+            DownloadRequest request, 
             string path,
             IProgress<int> progress,
             IProgress<string> etaProgress)
         {
-            var args =
-                $"-P {path.Replace("\\", "/")} {video.WebpageUrl} " +
-                $"-f \"bestvideo[vcodec^=avc1][height={option.Height}][width={option.Width}][fps={option.Fps}]" +
-                $"+bestaudio[acodec^=mp4a]/best\" " +
-                video.WebpageUrl;
+
+            var option = request.Option;
+            var video = request.Video;
+            var mode = request.Mode;
+
+            var args = $"-P \"{path.Replace("\\", "/")}\" \"{video.WebpageUrl}\" ";
+            
+            if (request.Mode == DownloadMode.VideoWithAudio)
+            {
+                args +=
+                    $"-f \"bestvideo[vcodec^=avc1][height={option.Height}][width={option.Width}][fps={option.Fps}]" +
+                    $"+bestaudio[acodec^=mp4a]/best\"";
+            } 
+            else if (request.Mode == DownloadMode.VideoOnly)
+            {
+                args +=
+                    $"-f \"bestvideo[vcodec^=avc1][height={option.Height}][width={option.Width}][fps={option.Fps}]\"";
+            } 
+            else
+            {
+                args +=
+                    $"-f \"bestaudio[acodec^=mp4a]/bestaudio\"";
+            }
 
             try
             {

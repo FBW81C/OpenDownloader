@@ -102,12 +102,11 @@ namespace OpenDownloader
                     Width = flowLayoutPanel1.ClientSize.Width - 6,
                 };
 
-                item.DownloadClicked += async (_, option) =>
+                item.DownloadClicked += async (_, request) =>
                 {
                     item.ProgressBar.Value = 0;
                     await ytdlpExecution.DownloadFileAsync(
-                        video,
-                        option,
+                        request,
                         path,
                         new Progress<int>(percent =>
                         {
