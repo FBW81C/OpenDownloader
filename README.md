@@ -43,6 +43,5 @@ yt-dlp and ffmpeg are already compiled with the Installer. Compile it yourself i
 
 ## Links
 - GitHub: https://github.com/FBW81C/OpenDownloader  
-- YouTube: https://www.youtube.com/@FBW81C  
 
 Free Software, Hell Yeah!
