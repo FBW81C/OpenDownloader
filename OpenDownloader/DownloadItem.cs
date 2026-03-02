@@ -11,6 +11,11 @@ namespace OpenDownloader
         public Video Video;
         public VideoOption SelectedVideoOption;
 
+        // Log
+        private LogForm logWindow;
+        List<string> logBuffer = new();
+
+
         // Actions
         public event Func<object?, DownloadRequest, Task>? DownloadClicked;
 
@@ -44,7 +49,7 @@ namespace OpenDownloader
             }
 
             // Download Mode
-            var modes = new Dictionary<DownloadMode, string>() 
+            var modes = new Dictionary<DownloadMode, string>()
             {
                 { DownloadMode.VideoWithAudio, "Video + Audio"},
                 { DownloadMode.VideoOnly, "Video"},
@@ -71,7 +76,11 @@ namespace OpenDownloader
                     Mode = mode
                 };
 
+                SetOutputText($"----- Start {DateTime.Now} -----");
+
                 await DownloadClicked(this, request);
+
+                SetOutputText($"----- End {DateTime.Now} -----");
             }
 
             btn_download.Enabled = true;
@@ -96,11 +105,17 @@ namespace OpenDownloader
             lbl_estimatedSizeValue.Text = option.EstimatedSize.HasValue ? FilesizeParser.ReadableFileSize(option.EstimatedSize.Value) : "N/A";
         }
 
+        private void btn_openLog_Click(object sender, EventArgs e)
+        {
+            ShowLogWindow();
+        }
+
         // Updates internal values like ETA or progressbar
         public void UpdateProgress(string data)
         {
             SetETA(data);
             SetProgress(data);
+            SetOutputText(data);
         }
 
         private void SetETA(string data)
@@ -123,6 +138,30 @@ namespace OpenDownloader
                     pb_progress.Value = percent;
                 }
             }
+        }
+
+        private void SetOutputText(string data)
+        {
+            logBuffer.Add(data);
+
+            if (logWindow != null && !logWindow.IsDisposed)
+            {
+                logWindow?.Append(data);
+            }
+        }
+
+        private void ShowLogWindow()
+        {
+            if (logWindow == null || logWindow.IsDisposed)
+                logWindow = new LogForm(Video.Title);
+
+            foreach (var line in logBuffer)
+            {
+                logWindow.Append(line);
+            }
+
+            logWindow.Show();
+            logWindow.BringToFront();
         }
     }
 }

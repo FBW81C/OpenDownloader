@@ -19,6 +19,8 @@ namespace OpenDownloader
 
             CreateSettingsFolderIfNotExist();
 
+            // TODO: Check for yt-dlp and ffmpeg updates
+
             programForm = new ProgrammForm();
             Application.Run(programForm);
         }

@@ -8,7 +8,6 @@ namespace OpenDownloader.model;
 public enum DownloadMode
 {
     VideoWithAudio,
-    VideoAndAudio,
     VideoOnly,
     AudioOnly
 }
