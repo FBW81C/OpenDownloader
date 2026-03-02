@@ -34,6 +34,7 @@
             btn_save = new Button();
             lbl_log = new Label();
             lbl_title = new Label();
+            saveFileDialog = new SaveFileDialog();
             SuspendLayout();
             // 
             // rtb_log
@@ -42,29 +43,31 @@
             rtb_log.Location = new Point(12, 57);
             rtb_log.Name = "rtb_log";
             rtb_log.ReadOnly = true;
-            rtb_log.Size = new Size(776, 341);
+            rtb_log.Size = new Size(754, 335);
             rtb_log.TabIndex = 0;
             rtb_log.Text = "";
             // 
             // btn_clipboard
             // 
             btn_clipboard.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            btn_clipboard.Location = new Point(611, 404);
+            btn_clipboard.Location = new Point(589, 398);
             btn_clipboard.Name = "btn_clipboard";
             btn_clipboard.Size = new Size(177, 34);
             btn_clipboard.TabIndex = 1;
             btn_clipboard.Text = "Copy to Clipboard";
             btn_clipboard.UseVisualStyleBackColor = true;
+            btn_clipboard.Click += btn_clipboard_Click;
             // 
             // btn_save
             // 
             btn_save.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            btn_save.Location = new Point(493, 404);
+            btn_save.Location = new Point(471, 398);
             btn_save.Name = "btn_save";
             btn_save.Size = new Size(112, 34);
             btn_save.TabIndex = 2;
             btn_save.Text = "Save";
             btn_save.UseVisualStyleBackColor = true;
+            btn_save.Click += btn_save_Click;
             // 
             // lbl_log
             // 
@@ -85,18 +88,24 @@
             lbl_title.TabIndex = 4;
             lbl_title.Text = "label1";
             // 
+            // saveFileDialog
+            // 
+            saveFileDialog.DefaultExt = "txt";
+            saveFileDialog.FileName = "log";
+            saveFileDialog.Title = "Saving log";
+            // 
             // LogForm
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(778, 444);
             Controls.Add(lbl_title);
             Controls.Add(lbl_log);
             Controls.Add(btn_save);
             Controls.Add(btn_clipboard);
             Controls.Add(rtb_log);
             Icon = (Icon)resources.GetObject("$this.Icon");
-            MaximumSize = new Size(822, 506);
+            MaximumSize = new Size(1000, 1000);
             MinimumSize = new Size(400, 400);
             Name = "LogForm";
             Text = "Download Log";
@@ -111,5 +120,6 @@
         private Button btn_save;
         private Label lbl_log;
         private Label lbl_title;
+        private SaveFileDialog saveFileDialog;
     }
 }

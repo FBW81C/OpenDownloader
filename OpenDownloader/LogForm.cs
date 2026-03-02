@@ -24,7 +24,34 @@ namespace OpenDownloader
             if (InvokeRequired)
                 Invoke(new Action<string>(Append), text);
             else
-                    rtb_log.AppendText(text + Environment.NewLine);
+                rtb_log.AppendText(text + Environment.NewLine);
+        }
+
+        private void btn_clipboard_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(rtb_log.Text))
+                return;
+
+            Clipboard.SetText(rtb_log.Text);
+        }
+
+        private void btn_save_Click(object sender, EventArgs e)
+        {
+            var result = saveFileDialog.ShowDialog();
+
+            if (result != DialogResult.OK)
+                return;
+
+            var path = saveFileDialog.FileName;
+
+            try
+            {
+                File.WriteAllText(path, rtb_log.Text);
+            } 
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
     }
 }
