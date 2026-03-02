@@ -195,6 +195,17 @@ namespace OpenDownloader.ytdlpUtil
                 .ThenByDescending(o => o.Fps)
                 .ToList();
 
+
+            int? bestHeight = null;
+            if (video.Options.Count > 0)
+            {
+                var best = video.Options[0];
+                best.AdditionalInfo = "Best";
+
+                var worst = video.Options[^1];
+                worst.AdditionalInfo = "Worst";
+            }
+
             return video;
         }
 

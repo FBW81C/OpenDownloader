@@ -13,6 +13,7 @@ namespace OpenDownloader.model
         public int Fps { get; set; }
         public long? EstimatedSize { get; set; }
         public string FormatId { get; set; }
-        public string Resolution => $"{Width}x{Height}";
+        public string? AdditionalInfo { get; set; }
+        public string Resolution => $"{Width}x{Height} {(AdditionalInfo != null ? $"({AdditionalInfo})" : "")}";
     }
 }
