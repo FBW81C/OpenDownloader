@@ -40,6 +40,7 @@
             // rtb_log
             // 
             rtb_log.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            rtb_log.BackColor = SystemColors.ControlLight;
             rtb_log.Location = new Point(12, 57);
             rtb_log.Name = "rtb_log";
             rtb_log.ReadOnly = true;

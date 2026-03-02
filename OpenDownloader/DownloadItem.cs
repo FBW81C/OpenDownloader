@@ -49,15 +49,17 @@ namespace OpenDownloader
             }
 
             // Download Mode
-            var modes = new Dictionary<DownloadMode, string>()
+            var modes = new ComboboxItem<DownloadMode>[] 
             {
-                { DownloadMode.VideoWithAudio, "Video + Audio"},
-                { DownloadMode.VideoOnly, "Video"},
-                { DownloadMode.AudioOnly, "Audio"},
+                new() {Text = "Video & Audio", Value = DownloadMode.VideoWithAudio},
+                new() {Text = "Video", Value = DownloadMode.VideoOnly},
+                new() {Text = "Audio", Value = DownloadMode.AudioOnly}
             };
             cb_mode.Items.Clear();
-            cb_mode.DataSource = Enum.GetValues(typeof(DownloadMode));
-            cb_mode.SelectedItem = DownloadMode.VideoWithAudio;
+            cb_mode.Items.AddRange(modes);
+            cb_mode.SelectedIndex = 0;
+            cb_mode.DisplayMember = "Text";
+            cb_mode.ValueMember = "Value";
         }
 
         private async void btnDownload_Click(object sender, EventArgs e)
@@ -66,21 +68,27 @@ namespace OpenDownloader
             btn_download.Text = "Loading...";
             pb_progress.Value = 0;
 
-            if (DownloadClicked != null && SelectedVideoOption != null)
+            var mode = cb_mode.SelectedItem as ComboboxItem<DownloadMode>;
+
+            if (DownloadClicked != null && 
+                SelectedVideoOption != null &&
+                mode != null)
             {
-                var mode = (DownloadMode)cb_mode.SelectedItem;
                 var request = new DownloadRequest
                 {
                     Video = Video,
                     Option = SelectedVideoOption,
-                    Mode = mode
+                    Mode = mode.Value
                 };
 
-                SetOutputText($"----- Start {DateTime.Now} -----");
+                var startTime = DateTime.Now;
+                SetOutputText($"----- Start: {startTime}");
 
                 await DownloadClicked(this, request);
 
-                SetOutputText($"----- End {DateTime.Now} -----");
+                var endTime = DateTime.Now;
+                SetOutputText($"----- End: {endTime}");
+                SetOutputText($"----- Duration: {endTime - startTime}");
             }
 
             btn_download.Enabled = true;
