@@ -18,22 +18,63 @@ namespace OpenDownloader.ytdlpUtil
             var mode = request.Mode;
 
             var args = $"-P \"{path.Replace("\\", "/")}\" \"{video.WebpageUrl}\" ";
-            
+
+            // TODO: Doesn't really work, why? idk
+            //string formatArg = option.Type switch
+            //{
+            //    VideoOptionType.Best => "bestvideo+bestaudio/best",
+            //    VideoOptionType.Worst => "worstvideo+worstaudio/worst",
+            //    _ => $"best-f \"video[format_id={option.FormatId}]+bestaudio/best"
+            //};
+            //args += $"-f \"{formatArg}\"";
+
             if (request.Mode == DownloadMode.VideoWithAudio)
             {
-                args +=
-                    $"-f \"bestvideo[vcodec^=avc1][height={option.Height}][width={option.Width}][fps={option.Fps}]" +
-                    $"+bestaudio[acodec^=mp4a]/best\"";
-            } 
+                if (option.Type == VideoOptionType.Best)
+                {
+                    args += "-f \"bestvideo+bestaudio/best\"";
+                } 
+                else if (option.Type == VideoOptionType.Worst)
+                {
+                    args += "-f \"worstvideo+worstaudio/worst\"";
+                } 
+                else
+                {
+                    args +=
+                           $"-f \"bestvideo[vcodec^=avc1][height={option.Height}][width={option.Width}][fps={option.Fps}]" +
+                           $"+bestaudio[acodec^=mp4a]/best\"";
+                }
+            }
             else if (request.Mode == DownloadMode.VideoOnly)
             {
-                args +=
-                    $"-f \"bestvideo[vcodec^=avc1][height={option.Height}][width={option.Width}][fps={option.Fps}]\"";
-            } 
+                if (option.Type == VideoOptionType.Best)
+                {
+                    args += "-f \"bestvideo/best\"";
+                }
+                else if (option.Type == VideoOptionType.Worst)
+                {
+                    args += "-f \"worstvideo/worst\"";
+                }
+                else
+                {
+                    args +=
+                        $"-f \"bestvideo[vcodec^=avc1][height={option.Height}][width={option.Width}][fps={option.Fps}]\"";
+                }
+            }
             else
             {
-                args +=
-                    $"-f \"bestaudio[acodec^=mp4a]/bestaudio\"";
+                if (option.Type == VideoOptionType.Best)
+                {
+                    args += "-f \"bestaudio/best\"";
+                }
+                else if (option.Type == VideoOptionType.Worst)
+                {
+                    args += "-f \"worstaudio/worst\"";
+                }
+                else
+                {
+                    args += $"-f \"bestaudio[acodec^=mp4a]/bestaudio\"";
+                }
             }
 
             output.Report($"[GUI] Executing: yt-dlp.exe {args}");
@@ -138,13 +179,13 @@ namespace OpenDownloader.ytdlpUtil
 
             var json = jsonBuilder.ToString();
 
-            var video = ParseVideo(json);
+            var video = ParseVideo(json, output);
             await LoadThumbnailAsync(video, output);
 
             return video;
         }
 
-        private static Video ParseVideo(string json)
+        private static Video ParseVideo(string json, IProgress<string> output)
         {
             using var doc = JsonDocument.Parse(json);
             var root = doc.RootElement;
@@ -153,66 +194,88 @@ namespace OpenDownloader.ytdlpUtil
             {
                 Title = root.GetProperty("title").GetString(),
                 WebpageUrl = root.GetProperty("webpage_url").GetString(),
-                ThumbnailUrl = SelectCompatibleThumbnailUrl(root)
+                ThumbnailUrl = SelectCompatibleThumbnailUrl(root, output)
             };
 
             var formats = root.GetProperty("formats");
 
-            foreach (var f in formats.EnumerateArray())
+            try
             {
-                // Only Video-Streams
-                if (f.GetProperty("vcodec").GetString() == "none")
-                    continue;
-
-                if (!f.TryGetProperty("height", out var h) || h.ValueKind == JsonValueKind.Null)
-                    continue;
-
-                if (!f.TryGetProperty("fps", out var fps) || fps.ValueKind == JsonValueKind.Null)
-                    continue;
-
-                var option = new VideoOption
+                foreach (var f in formats.EnumerateArray())
                 {
-                    Width = f.GetProperty("width").GetInt32(),
-                    Height = h.GetInt32(),
-                    Fps = fps.GetInt32(),
-                    FormatId = f.GetProperty("format_id").GetString(),
-                    EstimatedSize =
-                        f.TryGetProperty("filesize", out var fs) && fs.ValueKind != JsonValueKind.Null
-                            ? fs.GetInt64()
-                            : f.TryGetProperty("filesize_approx", out var fsa)
-                                ? fsa.GetInt64()
-                                : null
-                };
+                    // Only Video-Streams
+                    if (f.GetProperty("vcodec").GetString() == "none")
+                        continue;
 
-                video.Options.Add(option);
-            }
+                    if (!f.TryGetProperty("height", out var h) || h.ValueKind == JsonValueKind.Null)
+                        continue;
 
-            // Eliminate duplicates (same resolution + fps)
-            video.Options = video.Options
-                .GroupBy(o => new { o.Width, o.Height, o.Fps })
-                .Select(g => g.First())
-                .OrderByDescending(o => o.Height)
-                .ThenByDescending(o => o.Fps)
-                .ToList();
+                    if (!f.TryGetProperty("fps", out var fps) || fps.ValueKind == JsonValueKind.Null)
+                        continue;
 
+                    var option = new VideoOption
+                    {
+                        Width = f.GetProperty("width").GetInt32(),
+                        Height = h.GetInt32(),
+                        Fps = fps.GetInt32(),
+                        FormatId = f.GetProperty("format_id").GetString(),
+                        EstimatedSize =
+                            f.TryGetProperty("filesize", out var fs) && fs.ValueKind != JsonValueKind.Null
+                                ? fs.GetInt64()
+                                : f.TryGetProperty("filesize_approx", out var fsa)
+                                    ? fsa.GetInt64()
+                                    : null
+                    };
 
-            int? bestHeight = null;
-            if (video.Options.Count > 0)
+                    video.Options.Add(option);
+                }
+
+                // Eliminate duplicates (same resolution + fps)
+                video.Options = video.Options
+                    .GroupBy(o => new { o.Width, o.Height, o.Fps })
+                    .Select(g => g.First())
+                    .OrderByDescending(o => o.Height)
+                    .ThenByDescending(o => o.Fps)
+                    .ToList();
+
+                if (video.Options.Count > 1)
+                {
+                    var best = video.Options[0];
+                    best.AdditionalInfo = "Best";
+
+                    var worst = video.Options[^1];
+                    worst.AdditionalInfo = "Worst";
+                }
+            } 
+            catch (Exception ex)
             {
-                var best = video.Options[0];
-                best.AdditionalInfo = "Best";
-
-                var worst = video.Options[^1];
-                worst.AdditionalInfo = "Worst";
+                // An error occured while reading formats, maybe wrong datatype or missing property
+                // -> Only set best and worst option
+                output.Report($"[GUI] failed parsing JSON: {ex.Message}");
             }
+
+            video.Options.Insert(0, new VideoOption
+            {
+                Type = VideoOptionType.Best,
+                AdditionalInfo = "auto"
+            });
+
+            video.Options.Add(new VideoOption
+            {
+                Type = VideoOptionType.Worst,
+                AdditionalInfo = "auto"
+            });
 
             return video;
         }
 
-        private static string SelectCompatibleThumbnailUrl(JsonElement root)
+        private static string SelectCompatibleThumbnailUrl(JsonElement root, IProgress<string> output)
         {
             if (!root.TryGetProperty("thumbnails", out var thumbs))
-                return null;
+            {
+                output.Report($"[GUI] No thumbnails found");
+                return string.Empty;
+            }
 
             var compatible = thumbs.EnumerateArray()
                 .Select(t => t.GetProperty("url").GetString())
@@ -222,6 +285,12 @@ namespace OpenDownloader.ytdlpUtil
                     url.EndsWith(".png", StringComparison.OrdinalIgnoreCase))
                 .FirstOrDefault();
 
+            if (compatible == null)
+            {
+                output.Report($"[GUI] No compatible thumbnails found");
+                return string.Empty;
+            }
+
             return compatible;
         }
 
@@ -229,19 +298,27 @@ namespace OpenDownloader.ytdlpUtil
         {
             if (string.IsNullOrWhiteSpace(video.ThumbnailUrl))
             {
-                output.Report($"[GUI] No thumbnail found!");
+                output.Report($"[GUI] No thumbnail found, loading dummy thumbnail");
                 video.Thumbnail = Image.FromFile(Path.Combine(Constants.ASSETS_PATH, "Logo", "Logo.png"));
                 return;
             }
 
-            using var http = new HttpClient();
-            output.Report($"[GUI] Fetching thumbnail: {video.ThumbnailUrl}");
-            var bytes = await http.GetByteArrayAsync(video.ThumbnailUrl);
+            try
+            {
+                using var http = new HttpClient();
+                output.Report($"[GUI] Fetching thumbnail: {video.ThumbnailUrl}");
+                var bytes = await http.GetByteArrayAsync(video.ThumbnailUrl);
 
-            using var ms = new MemoryStream(bytes);
-            using var img = Image.FromStream(ms);
+                using var ms = new MemoryStream(bytes);
+                using var img = Image.FromStream(ms);
 
-            video.Thumbnail = new Bitmap(img);
+                video.Thumbnail = new Bitmap(img);
+            } 
+            catch (Exception ex)
+            {
+                output.Report($"[GUI] Failed fetching thumbnail, loading dummy thumbnail: {ex.Message}");
+                video.Thumbnail = Image.FromFile(Path.Combine(Constants.ASSETS_PATH, "Logo", "Logo.png"));
+            }
         }
     }
 }

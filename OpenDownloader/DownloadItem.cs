@@ -29,22 +29,22 @@ namespace OpenDownloader
             lbl_title.Text = video.Title;
 
             // Resolutions
+            var startOption = video.Options[0];
+
             cb_quality.Items.Clear();
             cb_quality.Items.AddRange(video.Options.ToArray());
             cb_quality.DisplayMember = "Resolution";
             if (cb_quality.Items.Count > 0)
             {
-                var startOption = video.Options[0];
                 cb_quality.SelectedItem = startOption;
                 SelectedVideoOption = startOption;
             }
 
             // FPS
-            if (cb_quality.Items.Count > 0)
+            if (cb_quality.Items.Count > 0 && startOption.Fps != null)
             {
-                var fps = video.Options[0].Fps;
                 cb_fps.Items.Clear();
-                cb_fps.Items.AddRange([fps]);
+                cb_fps.Items.AddRange([startOption.Fps]);
                 cb_fps.SelectedIndex = 0;
             }
 
@@ -107,8 +107,11 @@ namespace OpenDownloader
             SelectedVideoOption = option;
 
             cb_fps.Items.Clear();
-            cb_fps.Items.AddRange([option.Fps]);
-            cb_fps.SelectedIndex = 0;
+            if (option.Fps != null)
+            {
+                cb_fps.Items.AddRange([option.Fps]);
+                cb_fps.SelectedIndex = 0;
+            }
 
             lbl_estimatedSizeValue.Text = option.EstimatedSize.HasValue ? FilesizeParser.ReadableFileSize(option.EstimatedSize.Value) : "N/A";
         }
