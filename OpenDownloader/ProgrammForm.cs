@@ -99,7 +99,7 @@ namespace OpenDownloader
                 }));
                 Videos.Add(video);
 
-                var item = new DownloadItem(video) { Width = flowLayoutPanel1.ClientSize.Width - 6 };
+                var item = new DownloadItem(video) { Width = flowLayoutPanel1.ClientSize.Width - 14 };
 
                 item.DownloadClicked += async (_, request) =>
                 {
