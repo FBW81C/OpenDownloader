@@ -4,6 +4,7 @@ setlocal enabledelayedexpansion
 :: ===== CONFIGURATION =====
 set PROJECT_DIR=%~dp0
 set ISS_FILE=%PROJECT_DIR%OpenDownloader.iss
+set ISS_FILE_NODEPENDENCIES=%PROJECT_DIR%OpenDownloader_nodependencies.iss
 set INSTALLER_OUTPUT_DIR=%PROJECT_DIR%Installers
 set INNO_SETUP_PATH="C:\Program Files (x86)\Inno Setup 6\ISCC.exe"
 
@@ -49,6 +50,25 @@ if exist "%PROJECT_DIR%Output\OpenDownloaderInstaller.exe" (
     move /Y "%PROJECT_DIR%Output\OpenDownloaderInstaller.exe" "%INSTALLER_OUTPUT_DIR%\OpenDownloaderInstaller_v%VERSION%.exe"
 	echo.
     echo Installer saved to: %INSTALLER_OUTPUT_DIR%\OpenDownloaderInstaller_v%VERSION%.exe
+) else (
+    echo ERROR: Could not find generated installer file.
+)
+
+:: ===== COMPILE INSTALLER NO DEPENDENCIES =====
+echo.
+echo Compiling installer no depedencies...
+%INNO_SETUP_PATH% "%ISS_FILE_NODEPENDENCIES%"
+if errorlevel 1 (
+    echo ERROR: Inno Setup compilation failed.
+    pause
+    exit /b 1
+)
+
+:: ===== MOVE INSTALLER NO DEPENDENCIES TO Installers FOLDER =====
+if exist "%PROJECT_DIR%Output\OpenDownloaderInstaller_nodependencies.exe" (
+    move /Y "%PROJECT_DIR%Output\OpenDownloaderInstaller_nodependencies.exe" "%INSTALLER_OUTPUT_DIR%\OpenDownloaderInstaller_v%VERSION%_nodependencies.exe"
+	echo.
+    echo Installer saved to: %INSTALLER_OUTPUT_DIR%\OpenDownloaderInstaller_v%VERSION%_nodependencies.exe
 ) else (
     echo ERROR: Could not find generated installer file.
 )

@@ -19,63 +19,36 @@ namespace OpenDownloader.ytdlpUtil
 
             var args = $"-P \"{path.Replace("\\", "/")}\" \"{video.WebpageUrl}\" ";
 
-            // TODO: Doesn't really work, why? idk
-            //string formatArg = option.Type switch
-            //{
-            //    VideoOptionType.Best => "bestvideo+bestaudio/best",
-            //    VideoOptionType.Worst => "worstvideo+worstaudio/worst",
-            //    _ => $"best-f \"video[format_id={option.FormatId}]+bestaudio/best"
-            //};
-            //args += $"-f \"{formatArg}\"";
-
+            var formatArg = "";
             if (request.Mode == DownloadMode.VideoWithAudio)
             {
-                if (option.Type == VideoOptionType.Best)
+                formatArg = option.Type switch
                 {
-                    args += "-f \"bestvideo+bestaudio/best\"";
-                } 
-                else if (option.Type == VideoOptionType.Worst)
-                {
-                    args += "-f \"worstvideo+worstaudio/worst\"";
-                } 
-                else
-                {
-                    args +=
-                           $"-f \"bestvideo[vcodec^=avc1][height={option.Height}][width={option.Width}][fps={option.Fps}]" +
-                           $"+bestaudio[acodec^=mp4a]/best\"";
-                }
+                    VideoOptionType.Best => "bestvideo+bestaudio/best",
+                    VideoOptionType.Worst => "worstvideo+worstaudio/worst",
+                    _ => $"bestvideo[vcodec^=avc1][height={option.Height}][width={option.Width}][fps={option.Fps}]" +
+                               $"+bestaudio[acodec^=mp4a]/best"
+                };
             }
             else if (request.Mode == DownloadMode.VideoOnly)
             {
-                if (option.Type == VideoOptionType.Best)
+                formatArg = option.Type switch
                 {
-                    args += "-f \"bestvideo/best\"";
-                }
-                else if (option.Type == VideoOptionType.Worst)
-                {
-                    args += "-f \"worstvideo/worst\"";
-                }
-                else
-                {
-                    args +=
-                        $"-f \"bestvideo[vcodec^=avc1][height={option.Height}][width={option.Width}][fps={option.Fps}]\"";
-                }
+                    VideoOptionType.Best => "bestvideo/best",
+                    VideoOptionType.Worst => "worstvideo/worst",
+                    _ => $"bestvideo[vcodec^=avc1][height={option.Height}][width={option.Width}][fps={option.Fps}]"
+                };
             }
             else
             {
-                if (option.Type == VideoOptionType.Best)
+                formatArg = option.Type switch
                 {
-                    args += "-f \"bestaudio/best\"";
-                }
-                else if (option.Type == VideoOptionType.Worst)
-                {
-                    args += "-f \"worstaudio/worst\"";
-                }
-                else
-                {
-                    args += $"-f \"bestaudio[acodec^=mp4a]/bestaudio\"";
-                }
+                    VideoOptionType.Best => "bestaudio/best",
+                    VideoOptionType.Worst => "worstaudio/worst",
+                    _ => $"bestaudio[acodec^=mp4a]/bestaudio"
+                };
             }
+            args += $"-f \"{formatArg}\"";
 
             output.Report($"[GUI] Executing: yt-dlp.exe {args}");
 

@@ -58,7 +58,7 @@ _ReSharper.Caches/
 .sonar/
 
 # Assets
-OpenDownloader/Assets/ffmpeg.exe
-OpenDownloader/Assets/yt-dlp.exe
+OpenDownloader/Assets/dependencies/ffmpeg.exe
+OpenDownloader/Assets/dependencies/yt-dlp.exe
 Installers/
 Output/
