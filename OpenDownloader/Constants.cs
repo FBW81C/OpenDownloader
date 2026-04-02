@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using OpenDownloader.model;
 
 namespace OpenDownloader;
 public static class Constants
@@ -19,8 +20,14 @@ public static class Constants
     public readonly static string ytdlpPath = Path.Combine(DEPENDENCIES_PATH, "yt-dlp.exe");
     public readonly static string ffmpegPath = Path.Combine(DEPENDENCIES_PATH, "ffmpeg.exe");
 
-    public readonly static string SETTINGS_PATH = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), APPLICATION_FOLDER_NAME);
-    public readonly static string defaultDirectoryPathFileName = "defaultDir.sys";
+    public readonly static string SETTINGS_PATH = Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+            APPLICATION_FOLDER_NAME,
+            "settings.json"
+        );
+    public static Settings Settings { get; set; }
+    public readonly static string LOG_FILENAME_TEMPLATE = "log_#Title#.txt";
 
     public readonly static string LINK_GITHUB = $"https://github.com/FBW81C/{APPLICATION_NAME}";
+
 }

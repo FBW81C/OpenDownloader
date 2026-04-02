@@ -154,6 +154,7 @@ namespace OpenDownloader
         private void SetOutputText(string data)
         {
             logBuffer.Add(data);
+            AppendLog(data);
 
             if (logWindow != null && !logWindow.IsDisposed)
             {
@@ -173,6 +174,16 @@ namespace OpenDownloader
 
             logWindow.Show();
             logWindow.BringToFront();
+        }
+
+        private void AppendLog(string data)
+        {
+            if (!Constants.Settings.AutoSaveLog) return;
+
+            var filename = Constants.LOG_FILENAME_TEMPLATE.Replace("#Title#", Title);
+            var filePath = Path.Combine(Constants.Settings.LogSaveDirectory, filename);
+
+            File.AppendAllLines(filePath, [data]);
         }
     }
 }

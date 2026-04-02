@@ -1,15 +1,8 @@
-using System;
 using System.Diagnostics;
-using System.Runtime.Intrinsics.Arm;
-using System.Security.Policy;
 using System.Text.Json;
-using System.Text.Json.Serialization;
-using System.Text.RegularExpressions;
-using System.Windows.Forms;
 using OpenDownloader.lib;
 using OpenDownloader.model;
 using OpenDownloader.ytdlpUtil;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
 
 namespace OpenDownloader
 {
@@ -23,10 +16,10 @@ namespace OpenDownloader
 
             try
             {
-                var defaultDirFilePath = Path.Combine(Constants.SETTINGS_PATH, Constants.defaultDirectoryPathFileName);
-                if (File.Exists(defaultDirFilePath))
+                var path = Constants.Settings.DefaultSaveDirectory;
+                if (!string.IsNullOrEmpty(path) && Directory.Exists(path))
                 {
-                    tbFolder.Text = File.ReadAllText(defaultDirFilePath);
+                    tbFolder.Text = path;
                 }
             }
             catch (Exception ex)
@@ -54,19 +47,15 @@ namespace OpenDownloader
         {
             try
             {
-                File.WriteAllText(Path.Combine(Constants.SETTINGS_PATH, Constants.defaultDirectoryPathFileName), tbFolder.Text);
+                Constants.Settings.DefaultSaveDirectory = tbFolder.Text;
+                var json = JsonSerializer.Serialize(Constants.Settings);
+                File.WriteAllText(Constants.SETTINGS_PATH, json);
                 MessageBox.Show($"Successfully set path '{tbFolder.Text}' as default");
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Failed to set path as default because: {ex.Message}");
             }
-        }
-
-        private void cb_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            // Prohibit user from chaning text in Combobox
-            e.KeyChar = (char)Keys.None;
         }
 
         private async void btn_Add_Click(object sender, EventArgs e)
@@ -114,8 +103,7 @@ namespace OpenDownloader
                             })
                         );
 
-                        notifyIcon1.ShowBalloonTip(
-                            3000,
+                        SendNotification(
                             "Download finished",
                             "The download completed successfully.",
                             ToolTipIcon.Info
@@ -123,8 +111,7 @@ namespace OpenDownloader
                     }
                     catch (Exception ex)
                     {
-                        notifyIcon1.ShowBalloonTip(
-                            5000,
+                        SendNotification(
                             "Download failed",
                             "Check output panel for more information!",
                             ToolTipIcon.Error
@@ -168,6 +155,19 @@ namespace OpenDownloader
         private void gitHubToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Process.Start("explorer", Constants.LINK_GITHUB);
+        }
+
+        private void SendNotification(string title, string message, ToolTipIcon icon)
+        {
+            if (Constants.Settings.ShowNotifications)
+            {
+                notifyIcon1.ShowBalloonTip(
+                    Constants.Settings.NotificationDurationMs,
+                    title,
+                    message,
+                    icon
+                );
+            }
         }
     }
 }

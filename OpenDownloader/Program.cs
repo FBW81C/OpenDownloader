@@ -1,3 +1,4 @@
+using System.Text.Json;
 using OpenDownloader.model;
 
 namespace OpenDownloader
@@ -13,7 +14,7 @@ namespace OpenDownloader
             ApplicationConfiguration.Initialize();
 
             EnsureIntegrity();
-            CreateSettingsFolderIfNotExist();
+            LoadSettings();
 
             // TODO: Check for yt-dlp and ffmpeg updates
 
@@ -21,12 +22,28 @@ namespace OpenDownloader
             Application.Run(programForm);
         }
 
-        public static void CreateSettingsFolderIfNotExist()
+        public static void LoadSettings()
         {
-            if (!Directory.Exists(Constants.SETTINGS_PATH))
+            try
             {
-                Directory.CreateDirectory(Constants.SETTINGS_PATH);
+                if (File.Exists(Constants.SETTINGS_PATH))
+                {
+                    var json = File.ReadAllText(Constants.SETTINGS_PATH);
+                    var settings = JsonSerializer.Deserialize<Settings>(json);
+
+                    if (settings != null)
+                    {
+                        Constants.Settings = settings;
+                        return;
+                    }
+                }
+            } 
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Settings could not be loaded from \"{Constants.SETTINGS_PATH}\"\nLoading default settings\n\nReason:\n{ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+
+            Constants.Settings = new Settings();
         }
         public static void EnsureIntegrity()
         {
