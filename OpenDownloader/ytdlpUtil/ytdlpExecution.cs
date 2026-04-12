@@ -170,10 +170,11 @@ namespace OpenDownloader.ytdlpUtil
                 ThumbnailUrl = SelectCompatibleThumbnailUrl(root, output)
             };
 
-            var formats = root.GetProperty("formats");
 
             try
             {
+                var formats = root.GetProperty("formats");
+
                 foreach (var f in formats.EnumerateArray())
                 {
                     // Only Video-Streams
