@@ -22,19 +22,28 @@ namespace OpenDownloader
 
             // Notifications
             cb_showNotifications.Checked = settings.ShowNotifications;
-            tb_notificationDuration.Value = settings.NotificationDurationSec;
+            sb_notificationDuration.Value = settings.NotificationDurationSec;
             if (!settings.ShowNotifications)
             {
-                tb_notificationDuration.Enabled = false;
+                sb_notificationDuration.Enabled = false;
             }
 
+            // Auto Save Log
+            cb_autoSaveLogs.Checked = settings.AutoSaveLog;
+            tb_logSaveDirectory.Text = settings.LogSaveDirectory;
+            if (!settings.AutoSaveLog)
+            {
+                tb_logSaveDirectory.Enabled = false;
+                btn_browseLogFolder.Enabled = false;
+            }
         }
 
         private void cb_showNotifications_CheckedChanged(object sender, EventArgs e)
         {
             bool isChecked = cb_showNotifications.Checked;
 
-            tb_notificationDuration.Enabled = isChecked;
+            sb_notificationDuration.Enabled = isChecked;
+
             LocalSettings.ShowNotifications = isChecked;
         }
 
@@ -50,15 +59,34 @@ namespace OpenDownloader
 
         private void tb_notificationDuration_ValueChanged(object sender, EventArgs e)
         {
-            LocalSettings.NotificationDurationSec = tb_notificationDuration.Value;
+            LocalSettings.NotificationDurationSec = sb_notificationDuration.Value;
         }
 
         private void cb_autoSaveLogs_CheckedChanged(object sender, EventArgs e)
         {
             bool isChecked = cb_autoSaveLogs.Checked;
 
-            //tb_notificationDuration.Enabled = isChecked;
+            tb_logSaveDirectory.Enabled = isChecked;
+            btn_browseLogFolder.Enabled = isChecked;
+
             LocalSettings.AutoSaveLog = isChecked;
+        }
+
+        private void btn_browseLogFolder_Click(object sender, EventArgs e)
+        {
+            var result = folderBrowserDialog1.ShowDialog();
+
+            if (result == DialogResult.OK)
+            {
+                var path = folderBrowserDialog1.SelectedPath;
+
+                LocalSettings.LogSaveDirectory = path;
+                tb_logSaveDirectory.Text = path;
+            } 
+            else
+            {
+                return;
+            }
         }
     }
 }
