@@ -32,91 +32,130 @@
             btn_save = new Button();
             btn_cancel = new Button();
             gb_notifications = new GroupBox();
-            cb_showNotifications = new CheckBox();
-            tb_notificationDuration = new TrackBar();
             lbl_notificationDuration = new Label();
+            tb_notificationDuration = new TrackBar();
+            cb_showNotifications = new CheckBox();
+            gb_logs = new GroupBox();
+            cb_autoSaveLogs = new CheckBox();
             gb_notifications.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)tb_notificationDuration).BeginInit();
+            gb_logs.SuspendLayout();
             SuspendLayout();
             // 
             // btn_save
             // 
             btn_save.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            btn_save.Location = new Point(1020, 1054);
+            btn_save.Location = new Point(415, 378);
+            btn_save.Margin = new Padding(1);
             btn_save.Name = "btn_save";
-            btn_save.Size = new Size(188, 58);
+            btn_save.Size = new Size(77, 23);
             btn_save.TabIndex = 0;
             btn_save.Text = "Save";
             btn_save.UseVisualStyleBackColor = true;
+            btn_save.Click += btn_save_Click;
             // 
             // btn_cancel
             // 
             btn_cancel.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            btn_cancel.Location = new Point(826, 1054);
+            btn_cancel.Location = new Point(336, 378);
+            btn_cancel.Margin = new Padding(1);
             btn_cancel.Name = "btn_cancel";
-            btn_cancel.Size = new Size(188, 58);
+            btn_cancel.Size = new Size(77, 23);
             btn_cancel.TabIndex = 1;
             btn_cancel.Text = "Cancel";
             btn_cancel.UseVisualStyleBackColor = true;
             // 
             // gb_notifications
             // 
+            gb_notifications.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             gb_notifications.Controls.Add(lbl_notificationDuration);
             gb_notifications.Controls.Add(tb_notificationDuration);
             gb_notifications.Controls.Add(cb_showNotifications);
-            gb_notifications.Location = new Point(12, 12);
+            gb_notifications.Location = new Point(10, 10);
+            gb_notifications.Margin = new Padding(1);
             gb_notifications.Name = "gb_notifications";
-            gb_notifications.Size = new Size(918, 395);
+            gb_notifications.Padding = new Padding(1);
+            gb_notifications.Size = new Size(482, 120);
             gb_notifications.TabIndex = 2;
             gb_notifications.TabStop = false;
             gb_notifications.Text = "Notifications";
             // 
-            // cb_showNotifications
+            // lbl_notificationDuration
             // 
-            cb_showNotifications.AutoSize = true;
-            cb_showNotifications.Location = new Point(27, 68);
-            cb_showNotifications.Name = "cb_showNotifications";
-            cb_showNotifications.Size = new Size(304, 45);
-            cb_showNotifications.TabIndex = 0;
-            cb_showNotifications.Text = "Show Notifications";
-            cb_showNotifications.UseVisualStyleBackColor = true;
+            lbl_notificationDuration.AutoSize = true;
+            lbl_notificationDuration.Location = new Point(11, 60);
+            lbl_notificationDuration.Margin = new Padding(1, 0, 1, 0);
+            lbl_notificationDuration.Name = "lbl_notificationDuration";
+            lbl_notificationDuration.Size = new Size(147, 15);
+            lbl_notificationDuration.TabIndex = 2;
+            lbl_notificationDuration.Text = "Notification Duration (sec)";
             // 
             // tb_notificationDuration
             // 
             tb_notificationDuration.AccessibleName = "";
-            tb_notificationDuration.Location = new Point(27, 190);
+            tb_notificationDuration.Location = new Point(11, 76);
+            tb_notificationDuration.Margin = new Padding(1);
             tb_notificationDuration.Maximum = 20;
             tb_notificationDuration.Minimum = 1;
             tb_notificationDuration.Name = "tb_notificationDuration";
-            tb_notificationDuration.Size = new Size(546, 114);
+            tb_notificationDuration.Size = new Size(225, 45);
             tb_notificationDuration.TabIndex = 1;
             tb_notificationDuration.Value = 1;
+            tb_notificationDuration.ValueChanged += tb_notificationDuration_ValueChanged;
             // 
-            // lbl_notificationDuration
+            // cb_showNotifications
             // 
-            lbl_notificationDuration.AutoSize = true;
-            lbl_notificationDuration.Location = new Point(27, 134);
-            lbl_notificationDuration.Name = "lbl_notificationDuration";
-            lbl_notificationDuration.Size = new Size(364, 41);
-            lbl_notificationDuration.TabIndex = 2;
-            lbl_notificationDuration.Text = "Notification Duration (sec)";
+            cb_showNotifications.AutoSize = true;
+            cb_showNotifications.Location = new Point(11, 27);
+            cb_showNotifications.Margin = new Padding(1);
+            cb_showNotifications.Name = "cb_showNotifications";
+            cb_showNotifications.Size = new Size(126, 19);
+            cb_showNotifications.TabIndex = 0;
+            cb_showNotifications.Text = "Show Notifications";
+            cb_showNotifications.UseVisualStyleBackColor = true;
+            cb_showNotifications.CheckedChanged += cb_showNotifications_CheckedChanged;
+            // 
+            // gb_logs
+            // 
+            gb_logs.Controls.Add(cb_autoSaveLogs);
+            gb_logs.Location = new Point(12, 135);
+            gb_logs.Name = "gb_logs";
+            gb_logs.Size = new Size(478, 163);
+            gb_logs.TabIndex = 3;
+            gb_logs.TabStop = false;
+            gb_logs.Text = "Logs";
+            // 
+            // cb_autoSaveLogs
+            // 
+            cb_autoSaveLogs.AutoSize = true;
+            cb_autoSaveLogs.Location = new Point(9, 35);
+            cb_autoSaveLogs.Name = "cb_autoSaveLogs";
+            cb_autoSaveLogs.Size = new Size(107, 19);
+            cb_autoSaveLogs.TabIndex = 0;
+            cb_autoSaveLogs.Text = "Auto Save Logs";
+            cb_autoSaveLogs.UseVisualStyleBackColor = true;
+            cb_autoSaveLogs.CheckedChanged += cb_autoSaveLogs_CheckedChanged;
             // 
             // SettingsForm
             // 
             AcceptButton = btn_save;
-            AutoScaleDimensions = new SizeF(17F, 41F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             CancelButton = btn_cancel;
-            ClientSize = new Size(1220, 1124);
+            ClientSize = new Size(502, 411);
+            Controls.Add(gb_logs);
             Controls.Add(gb_notifications);
             Controls.Add(btn_cancel);
             Controls.Add(btn_save);
             Icon = (Icon)resources.GetObject("$this.Icon");
+            Margin = new Padding(1);
             Name = "SettingsForm";
             Text = "OpenDownloader Settings";
             gb_notifications.ResumeLayout(false);
             gb_notifications.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)tb_notificationDuration).EndInit();
+            gb_logs.ResumeLayout(false);
+            gb_logs.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -128,5 +167,7 @@
         private CheckBox cb_showNotifications;
         private TrackBar tb_notificationDuration;
         private Label lbl_notificationDuration;
+        private GroupBox gb_logs;
+        private CheckBox cb_autoSaveLogs;
     }
 }

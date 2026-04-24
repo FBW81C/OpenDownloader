@@ -11,8 +11,20 @@ public class Settings
     public string DefaultSaveDirectory { get; set; } = string.Empty;
     // Notifications
     public bool ShowNotifications { get; set; } = true;
-    public int NotificationDurationMs { get; set; } = 3000;
+    public int NotificationDurationSec { get; set; } = 3;
     // Logging
     public bool AutoSaveLog { get; set; } = false;
     public string LogSaveDirectory { get; set; } = string.Empty;
+
+    public Settings Clone()
+    {
+        return new Settings
+        {
+            DefaultSaveDirectory = DefaultSaveDirectory,
+            ShowNotifications = ShowNotifications,
+            NotificationDurationSec = NotificationDurationSec,
+            AutoSaveLog = AutoSaveLog,
+            LogSaveDirectory = LogSaveDirectory
+        };
+    }
 }

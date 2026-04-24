@@ -162,12 +162,18 @@ namespace OpenDownloader
             if (Constants.Settings.ShowNotifications)
             {
                 notifyIcon1.ShowBalloonTip(
-                    Constants.Settings.NotificationDurationMs,
+                    Constants.Settings.NotificationDurationSec * 1000,
                     title,
                     message,
                     icon
                 );
             }
+        }
+
+        private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var settingsForm = new SettingsForm(Constants.Settings);
+            settingsForm.ShowDialog();
         }
     }
 }

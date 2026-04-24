@@ -47,6 +47,7 @@
             gitHubToolStripMenuItem = new ToolStripMenuItem();
             aboutToolStripMenuItem1 = new ToolStripMenuItem();
             notifyIcon1 = new NotifyIcon(components);
+            settingsToolStripMenuItem = new ToolStripMenuItem();
             menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
@@ -165,7 +166,7 @@
             // menuStrip1
             // 
             menuStrip1.ImageScalingSize = new Size(24, 24);
-            menuStrip1.Items.AddRange(new ToolStripItem[] { aboutToolStripMenuItem });
+            menuStrip1.Items.AddRange(new ToolStripItem[] { aboutToolStripMenuItem, settingsToolStripMenuItem });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
             menuStrip1.Size = new Size(937, 24);
@@ -198,6 +199,13 @@
             notifyIcon1.BalloonTipIcon = ToolTipIcon.Info;
             notifyIcon1.Icon = (Icon)resources.GetObject("notifyIcon1.Icon");
             notifyIcon1.Visible = true;
+            // 
+            // settingsToolStripMenuItem
+            // 
+            settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
+            settingsToolStripMenuItem.Size = new Size(61, 20);
+            settingsToolStripMenuItem.Text = "Settings";
+            settingsToolStripMenuItem.Click += settingsToolStripMenuItem_Click;
             // 
             // ProgrammForm
             // 
@@ -246,5 +254,6 @@
         private ToolStripMenuItem gitHubToolStripMenuItem;
         private ToolStripMenuItem aboutToolStripMenuItem1;
         private NotifyIcon notifyIcon1;
+        private ToolStripMenuItem settingsToolStripMenuItem;
     }
 }
