@@ -170,12 +170,15 @@ namespace OpenDownloader
         private void ShowLogWindow()
         {
             if (logWindow == null || logWindow.IsDisposed)
+            {
                 logWindow = new LogForm(Video.Title);
 
-            foreach (var line in logBuffer)
-            {
-                logWindow.Append(line);
+                foreach (var line in logBuffer)
+                {
+                    logWindow.Append(line);
+                }
             }
+
 
             logWindow.Show();
             logWindow.BringToFront();
