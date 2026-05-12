@@ -6,12 +6,18 @@ GitHub: https://github.com/FBW81C/OpenDownloader
 
 Features:
 - Downloading Videos
-- Default path
 - FPS selection
 - Quality selection
+- Mode selection (Video & Audio, Video, Audio)
 - Estimated file size
 - ETA
 - Log
+- Settings
+  - Default save directory
+  - Show notifications (yes/no)
+  - Notification duration sec (1-10)
+  - Auto save log (yes/no)
+  - Log save directory
 
 Dependencies:
 - .NET 8 (Core)
