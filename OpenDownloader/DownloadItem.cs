@@ -46,14 +46,14 @@ namespace OpenDownloader
                 cb_fps.Items.Clear();
                 cb_fps.Items.AddRange([startOption.Fps]);
                 cb_fps.SelectedIndex = 0;
-            }
+            } 
 
             // Download Mode
-            var modes = new ComboboxItem<DownloadMode>[] 
+            var modes = new ComboboxItem<DownloadMode>[]
             {
-                new() {Text = "Video & Audio", Value = DownloadMode.VideoWithAudio},
-                new() {Text = "Video", Value = DownloadMode.VideoOnly},
-                new() {Text = "Audio", Value = DownloadMode.AudioOnly}
+            new() {Text = "Video & Audio", Value = DownloadMode.VideoWithAudio},
+            new() {Text = "Video", Value = DownloadMode.VideoOnly},
+            new() {Text = "Audio", Value = DownloadMode.AudioOnly}
             };
             cb_mode.Items.Clear();
             cb_mode.Items.AddRange(modes);
@@ -111,9 +111,14 @@ namespace OpenDownloader
             {
                 cb_fps.Items.AddRange([option.Fps]);
                 cb_fps.SelectedIndex = 0;
+                cb_fps.Enabled = true;
+            } 
+            else
+            {
+                cb_fps.Enabled = false;
             }
 
-            lbl_estimatedSizeValue.Text = option.EstimatedSize.HasValue ? FilesizeParser.ReadableFileSize(option.EstimatedSize.Value) : "N/A";
+            lbl_estimatedSizeValue.Text = option.EstimatedSize.HasValue ? $"~{FilesizeParser.ReadableFileSize(option.EstimatedSize.Value)}" : "N/A";
         }
 
         private void btn_openLog_Click(object sender, EventArgs e)
