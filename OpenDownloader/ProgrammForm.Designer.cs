@@ -46,8 +46,8 @@
             aboutToolStripMenuItem = new ToolStripMenuItem();
             gitHubToolStripMenuItem = new ToolStripMenuItem();
             aboutToolStripMenuItem1 = new ToolStripMenuItem();
-            notifyIcon1 = new NotifyIcon(components);
             settingsToolStripMenuItem = new ToolStripMenuItem();
+            notifyIcon1 = new NotifyIcon(components);
             menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
@@ -125,7 +125,9 @@
             flowLayoutPanel1.BorderStyle = BorderStyle.FixedSingle;
             flowLayoutPanel1.FlowDirection = FlowDirection.TopDown;
             flowLayoutPanel1.Location = new Point(12, 94);
+            flowLayoutPanel1.Margin = new Padding(0);
             flowLayoutPanel1.Name = "flowLayoutPanel1";
+            flowLayoutPanel1.Padding = new Padding(3);
             flowLayoutPanel1.Size = new Size(649, 432);
             flowLayoutPanel1.TabIndex = 21;
             flowLayoutPanel1.WrapContents = false;
@@ -194,18 +196,18 @@
             aboutToolStripMenuItem1.Text = "About OpenDownloader";
             aboutToolStripMenuItem1.Click += aboutOpenClickerToolStripMenuItem_Click;
             // 
-            // notifyIcon1
-            // 
-            notifyIcon1.BalloonTipIcon = ToolTipIcon.Info;
-            notifyIcon1.Icon = (Icon)resources.GetObject("notifyIcon1.Icon");
-            notifyIcon1.Visible = true;
-            // 
             // settingsToolStripMenuItem
             // 
             settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
             settingsToolStripMenuItem.Size = new Size(61, 20);
             settingsToolStripMenuItem.Text = "Settings";
             settingsToolStripMenuItem.Click += settingsToolStripMenuItem_Click;
+            // 
+            // notifyIcon1
+            // 
+            notifyIcon1.BalloonTipIcon = ToolTipIcon.Info;
+            notifyIcon1.Icon = (Icon)resources.GetObject("notifyIcon1.Icon");
+            notifyIcon1.Visible = true;
             // 
             // ProgrammForm
             // 
