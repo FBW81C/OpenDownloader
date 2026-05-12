@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using OpenDownloader.model;
@@ -52,7 +53,15 @@ namespace OpenDownloader
             // Sync local settings with external
             Constants.Settings = LocalSettings;
 
-            // TODO: Write to file
+            try
+            {
+                var json = JsonSerializer.Serialize(Constants.Settings);
+                File.WriteAllText(Constants.SETTINGS_PATH, json);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Could not save settings to: \"{Constants.SETTINGS_PATH}\"\nSettings will be applied until application restart\n\nReason:\n{ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
 
             Close();
         }

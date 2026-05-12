@@ -49,7 +49,7 @@
             // btn_save
             // 
             btn_save.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            btn_save.Location = new Point(415, 378);
+            btn_save.Location = new Point(382, 303);
             btn_save.Margin = new Padding(1);
             btn_save.Name = "btn_save";
             btn_save.Size = new Size(77, 23);
@@ -61,7 +61,7 @@
             // btn_cancel
             // 
             btn_cancel.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            btn_cancel.Location = new Point(336, 378);
+            btn_cancel.Location = new Point(303, 303);
             btn_cancel.Margin = new Padding(1);
             btn_cancel.Name = "btn_cancel";
             btn_cancel.Size = new Size(77, 23);
@@ -79,7 +79,7 @@
             gb_notifications.Margin = new Padding(1);
             gb_notifications.Name = "gb_notifications";
             gb_notifications.Padding = new Padding(1);
-            gb_notifications.Size = new Size(482, 120);
+            gb_notifications.Size = new Size(449, 120);
             gb_notifications.TabIndex = 2;
             gb_notifications.TabStop = false;
             gb_notifications.Text = "Notifications";
@@ -128,7 +128,7 @@
             gb_logs.Controls.Add(cb_autoSaveLogs);
             gb_logs.Location = new Point(12, 135);
             gb_logs.Name = "gb_logs";
-            gb_logs.Size = new Size(478, 110);
+            gb_logs.Size = new Size(445, 110);
             gb_logs.TabIndex = 3;
             gb_logs.TabStop = false;
             gb_logs.Text = "Logs";
@@ -145,7 +145,7 @@
             // btn_browseLogFolder
             // 
             btn_browseLogFolder.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            btn_browseLogFolder.Location = new Point(324, 73);
+            btn_browseLogFolder.Location = new Point(291, 73);
             btn_browseLogFolder.Name = "btn_browseLogFolder";
             btn_browseLogFolder.Size = new Size(101, 23);
             btn_browseLogFolder.TabIndex = 2;
@@ -158,7 +158,7 @@
             tb_logSaveDirectory.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             tb_logSaveDirectory.Location = new Point(6, 74);
             tb_logSaveDirectory.Name = "tb_logSaveDirectory";
-            tb_logSaveDirectory.Size = new Size(312, 23);
+            tb_logSaveDirectory.Size = new Size(279, 23);
             tb_logSaveDirectory.TabIndex = 1;
             // 
             // cb_autoSaveLogs
@@ -178,13 +178,16 @@
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             CancelButton = btn_cancel;
-            ClientSize = new Size(502, 411);
+            ClientSize = new Size(469, 336);
             Controls.Add(gb_logs);
             Controls.Add(gb_notifications);
             Controls.Add(btn_cancel);
             Controls.Add(btn_save);
             Icon = (Icon)resources.GetObject("$this.Icon");
             Margin = new Padding(1);
+            MaximizeBox = false;
+            MinimizeBox = false;
+            MinimumSize = new Size(485, 375);
             Name = "SettingsForm";
             Text = "OpenDownloader Settings";
             gb_notifications.ResumeLayout(false);
