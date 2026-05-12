@@ -14,6 +14,7 @@ namespace OpenDownloader
             ApplicationConfiguration.Initialize();
 
             EnsureIntegrity();
+            CreateSettingsFolder();
             LoadSettings();
 
             // TODO: Check for yt-dlp and ffmpeg updates
@@ -26,9 +27,9 @@ namespace OpenDownloader
         {
             try
             {
-                if (File.Exists(Constants.SETTINGS_PATH))
+                if (File.Exists(Constants.SETTINGS_FILE_PATH))
                 {
-                    var json = File.ReadAllText(Constants.SETTINGS_PATH);
+                    var json = File.ReadAllText(Constants.SETTINGS_FILE_PATH);
                     var settings = JsonSerializer.Deserialize<Settings>(json);
 
                     if (settings != null)
@@ -40,7 +41,7 @@ namespace OpenDownloader
             } 
             catch (Exception ex)
             {
-                MessageBox.Show($"Settings could not be loaded from \"{Constants.SETTINGS_PATH}\"\nLoading default settings\n\nReason:\n{ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Settings could not be loaded from \"{Constants.SETTINGS_FILE_PATH}\"\nLoading default settings\n\nReason:\n{ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
             Constants.Settings = new Settings();
@@ -55,6 +56,13 @@ namespace OpenDownloader
             if (!File.Exists(Constants.ffmpegPath))
             {
                 MessageBox.Show($"ffmpeg.exe not found!\nyt-dlp.exe will run with limited functionality.\nReinstall OpenDownloader to fix issue or copy ffmpeg.exe to \"{Constants.ffmpegPath}\"", $"Warning", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
+        public static void CreateSettingsFolder()
+        {
+            if (!Directory.Exists(Constants.SETTINGS_PATH))
+            {
+                Directory.CreateDirectory(Constants.SETTINGS_PATH);
             }
         }
     }

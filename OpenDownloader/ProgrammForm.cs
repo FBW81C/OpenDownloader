@@ -49,7 +49,7 @@ namespace OpenDownloader
             {
                 Constants.Settings.DefaultSaveDirectory = tbFolder.Text;
                 var json = JsonSerializer.Serialize(Constants.Settings);
-                File.WriteAllText(Constants.SETTINGS_PATH, json);
+                File.WriteAllText(Constants.SETTINGS_FILE_PATH, json);
                 MessageBox.Show($"Successfully set path '{tbFolder.Text}' as default");
             }
             catch (Exception ex)

@@ -22,7 +22,10 @@ public static class Constants
 
     public readonly static string SETTINGS_PATH = Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-            APPLICATION_FOLDER_NAME,
+            APPLICATION_FOLDER_NAME
+        );
+    public readonly static string SETTINGS_FILE_PATH = Path.Combine(
+            SETTINGS_PATH,
             "settings.json"
         );
     public static Settings Settings { get; set; }
