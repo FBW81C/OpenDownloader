@@ -88,7 +88,7 @@ namespace OpenDownloader
                 }));
                 Videos.Add(video);
 
-                var item = new DownloadItem(video) { Width = flowLayoutPanel1.ClientSize.Width - 6};
+                var item = new DownloadItem(video) { Width = flowLayoutPanel1.ClientSize.Width - 12};
 
                 item.DownloadClicked += async (_, request) =>
                 {
@@ -117,6 +117,13 @@ namespace OpenDownloader
                             ToolTipIcon.Error
                         );
                     }
+                };
+
+                item.DeleteClicked += (sender, _) =>
+                {
+                    var control = (DownloadItem)sender!;
+                    flowLayoutPanel1.Controls.Remove(control);
+                    control.Dispose();
                 };
 
                 flowLayoutPanel1.Controls.Add(item);

@@ -15,9 +15,9 @@ namespace OpenDownloader
         private LogForm logWindow;
         List<string> logBuffer = new();
 
-
         // Actions
         public event Func<object?, DownloadRequest, Task>? DownloadClicked;
+        public event EventHandler? DeleteClicked;
 
         public DownloadItem(Video video)
         {
@@ -46,7 +46,7 @@ namespace OpenDownloader
                 cb_fps.Items.Clear();
                 cb_fps.Items.AddRange([startOption.Fps]);
                 cb_fps.SelectedIndex = 0;
-            } 
+            }
 
             // Download Mode
             var modes = new ComboboxItem<DownloadMode>[]
@@ -65,12 +65,13 @@ namespace OpenDownloader
         private async void btnDownload_Click(object sender, EventArgs e)
         {
             btn_download.Enabled = false;
+            btn_delete.Enabled = false;
             btn_download.Text = "Loading...";
             pb_progress.Value = 0;
 
             var mode = cb_mode.SelectedItem as ComboboxItem<DownloadMode>;
 
-            if (DownloadClicked != null && 
+            if (DownloadClicked != null &&
                 SelectedVideoOption != null &&
                 mode != null)
             {
@@ -93,6 +94,7 @@ namespace OpenDownloader
 
             btn_download.Enabled = true;
             btn_download.Text = "Download";
+            btn_delete.Enabled = true;
         }
 
         private void cb_quality_SelectedValueChanged(object sender, EventArgs e)
@@ -112,7 +114,7 @@ namespace OpenDownloader
                 cb_fps.Items.AddRange([option.Fps]);
                 cb_fps.SelectedIndex = 0;
                 cb_fps.Enabled = true;
-            } 
+            }
             else
             {
                 cb_fps.Enabled = false;
@@ -192,6 +194,11 @@ namespace OpenDownloader
             var filePath = Path.Combine(Constants.Settings.LogSaveDirectory, filename);
 
             File.AppendAllLines(filePath, [data]);
+        }
+
+        private void btn_delete_Click(object sender, EventArgs e)
+        {
+            DeleteClicked?.Invoke(this, EventArgs.Empty);
         }
     }
 }
