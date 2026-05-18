@@ -73,7 +73,7 @@
             // 
             textCredits.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             textCredits.AutoSize = true;
-            textCredits.Location = new Point(746, 541);
+            textCredits.Location = new Point(785, 541);
             textCredits.Name = "textCredits";
             textCredits.Size = new Size(177, 15);
             textCredits.TabIndex = 3;
@@ -84,13 +84,13 @@
             tbURL.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             tbURL.Location = new Point(66, 28);
             tbURL.Name = "tbURL";
-            tbURL.Size = new Size(647, 23);
+            tbURL.Size = new Size(791, 23);
             tbURL.TabIndex = 4;
             // 
             // btnBrowseFolder
             // 
             btnBrowseFolder.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            btnBrowseFolder.Location = new Point(825, 28);
+            btnBrowseFolder.Location = new Point(757, 57);
             btnBrowseFolder.Name = "btnBrowseFolder";
             btnBrowseFolder.Size = new Size(100, 23);
             btnBrowseFolder.TabIndex = 5;
@@ -103,13 +103,13 @@
             tbFolder.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             tbFolder.Location = new Point(66, 57);
             tbFolder.Name = "tbFolder";
-            tbFolder.Size = new Size(754, 23);
+            tbFolder.Size = new Size(686, 23);
             tbFolder.TabIndex = 6;
             // 
             // btnDefault
             // 
             btnDefault.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            btnDefault.Location = new Point(825, 57);
+            btnDefault.Location = new Point(867, 57);
             btnDefault.Name = "btnDefault";
             btnDefault.Size = new Size(100, 23);
             btnDefault.TabIndex = 10;
@@ -135,7 +135,7 @@
             // btn_Add
             // 
             btn_Add.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            btn_Add.Location = new Point(717, 28);
+            btn_Add.Location = new Point(864, 28);
             btn_Add.Margin = new Padding(1);
             btn_Add.Name = "btn_Add";
             btn_Add.Size = new Size(103, 23);
@@ -151,7 +151,7 @@
             tb_output.Multiline = true;
             tb_output.Name = "tb_output";
             tb_output.ReadOnly = true;
-            tb_output.Size = new Size(257, 403);
+            tb_output.Size = new Size(296, 403);
             tb_output.TabIndex = 23;
             // 
             // btn_copyToClipboard
@@ -159,7 +159,7 @@
             btn_copyToClipboard.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             btn_copyToClipboard.Location = new Point(666, 503);
             btn_copyToClipboard.Name = "btn_copyToClipboard";
-            btn_copyToClipboard.Size = new Size(259, 23);
+            btn_copyToClipboard.Size = new Size(298, 23);
             btn_copyToClipboard.TabIndex = 24;
             btn_copyToClipboard.Text = "Copy To Clipboard";
             btn_copyToClipboard.UseVisualStyleBackColor = true;
@@ -171,7 +171,7 @@
             menuStrip1.Items.AddRange(new ToolStripItem[] { aboutToolStripMenuItem, settingsToolStripMenuItem });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
-            menuStrip1.Size = new Size(937, 24);
+            menuStrip1.Size = new Size(976, 24);
             menuStrip1.TabIndex = 25;
             menuStrip1.Text = "menuStrip1";
             // 
@@ -213,7 +213,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(937, 565);
+            ClientSize = new Size(976, 565);
             Controls.Add(btn_copyToClipboard);
             Controls.Add(tb_output);
             Controls.Add(btn_Add);
@@ -228,8 +228,8 @@
             Controls.Add(menuStrip1);
             Icon = (Icon)resources.GetObject("$this.Icon");
             MainMenuStrip = menuStrip1;
-            MaximumSize = new Size(1073, 951);
-            MinimumSize = new Size(639, 386);
+            MaximumSize = new Size(1200, 1200);
+            MinimumSize = new Size(690, 386);
             Name = "ProgrammForm";
             Text = "OpenDownloader";
             menuStrip1.ResumeLayout(false);
