@@ -45,10 +45,9 @@
             // 
             // pb_thumbnail
             // 
-            pb_thumbnail.Location = new Point(-2, -3);
-            pb_thumbnail.Margin = new Padding(7, 8, 7, 8);
+            pb_thumbnail.Location = new Point(-1, -1);
             pb_thumbnail.Name = "pb_thumbnail";
-            pb_thumbnail.Size = new Size(330, 230);
+            pb_thumbnail.Size = new Size(136, 84);
             pb_thumbnail.SizeMode = PictureBoxSizeMode.Zoom;
             pb_thumbnail.TabIndex = 0;
             pb_thumbnail.TabStop = false;
@@ -56,10 +55,9 @@
             // lbl_title
             // 
             lbl_title.AutoSize = true;
-            lbl_title.Location = new Point(345, 36);
-            lbl_title.Margin = new Padding(7, 0, 7, 0);
+            lbl_title.Location = new Point(142, 13);
             lbl_title.Name = "lbl_title";
-            lbl_title.Size = new Size(97, 41);
+            lbl_title.Size = new Size(38, 15);
             lbl_title.TabIndex = 1;
             lbl_title.Text = "label1";
             // 
@@ -67,10 +65,9 @@
             // 
             cb_quality.DropDownStyle = ComboBoxStyle.DropDownList;
             cb_quality.FormattingEnabled = true;
-            cb_quality.Location = new Point(345, 93);
-            cb_quality.Margin = new Padding(7, 8, 7, 8);
+            cb_quality.Location = new Point(142, 34);
             cb_quality.Name = "cb_quality";
-            cb_quality.Size = new Size(288, 49);
+            cb_quality.Size = new Size(121, 23);
             cb_quality.TabIndex = 2;
             cb_quality.SelectedValueChanged += cb_quality_SelectedValueChanged;
             // 
@@ -78,18 +75,16 @@
             // 
             cb_fps.DropDownStyle = ComboBoxStyle.DropDownList;
             cb_fps.FormattingEnabled = true;
-            cb_fps.Location = new Point(731, 93);
-            cb_fps.Margin = new Padding(7, 8, 7, 8);
+            cb_fps.Location = new Point(301, 34);
             cb_fps.Name = "cb_fps";
-            cb_fps.Size = new Size(288, 49);
+            cb_fps.Size = new Size(121, 23);
             cb_fps.TabIndex = 3;
             // 
             // btn_download
             // 
-            btn_download.Location = new Point(1360, 93);
-            btn_download.Margin = new Padding(7, 8, 7, 8);
+            btn_download.Location = new Point(560, 34);
             btn_download.Name = "btn_download";
-            btn_download.Size = new Size(182, 63);
+            btn_download.Size = new Size(75, 23);
             btn_download.TabIndex = 4;
             btn_download.Text = "Download";
             btn_download.UseVisualStyleBackColor = true;
@@ -98,28 +93,25 @@
             // lbl_estimatedSizeValue
             // 
             lbl_estimatedSizeValue.AutoSize = true;
-            lbl_estimatedSizeValue.Location = new Point(1355, 36);
-            lbl_estimatedSizeValue.Margin = new Padding(7, 0, 7, 0);
+            lbl_estimatedSizeValue.Location = new Point(558, 13);
             lbl_estimatedSizeValue.Name = "lbl_estimatedSizeValue";
-            lbl_estimatedSizeValue.Size = new Size(97, 41);
+            lbl_estimatedSizeValue.Size = new Size(38, 15);
             lbl_estimatedSizeValue.TabIndex = 6;
             lbl_estimatedSizeValue.Text = "label1";
             // 
             // pb_progress
             // 
-            pb_progress.Location = new Point(345, 172);
-            pb_progress.Margin = new Padding(7, 8, 7, 8);
+            pb_progress.Location = new Point(142, 63);
             pb_progress.Name = "pb_progress";
-            pb_progress.Size = new Size(806, 27);
+            pb_progress.Size = new Size(332, 10);
             pb_progress.TabIndex = 7;
             // 
             // tb_ETA
             // 
-            tb_ETA.Location = new Point(1163, 159);
-            tb_ETA.Margin = new Padding(7, 8, 7, 8);
+            tb_ETA.Location = new Point(479, 58);
             tb_ETA.Name = "tb_ETA";
             tb_ETA.ReadOnly = true;
-            tb_ETA.Size = new Size(179, 47);
+            tb_ETA.Size = new Size(76, 23);
             tb_ETA.TabIndex = 8;
             tb_ETA.TabStop = false;
             tb_ETA.Text = "ETA: N/A";
@@ -127,10 +119,9 @@
             // lbl_FPS
             // 
             lbl_FPS.AutoSize = true;
-            lbl_FPS.Location = new Point(653, 101);
-            lbl_FPS.Margin = new Padding(7, 0, 7, 0);
+            lbl_FPS.Location = new Point(269, 37);
             lbl_FPS.Name = "lbl_FPS";
-            lbl_FPS.Size = new Size(66, 41);
+            lbl_FPS.Size = new Size(26, 15);
             lbl_FPS.TabIndex = 9;
             lbl_FPS.Text = "FPS";
             // 
@@ -138,18 +129,18 @@
             // 
             cb_mode.DropDownStyle = ComboBoxStyle.DropDownList;
             cb_mode.FormattingEnabled = true;
-            cb_mode.Location = new Point(1035, 93);
-            cb_mode.Margin = new Padding(5);
+            cb_mode.Location = new Point(426, 34);
+            cb_mode.Margin = new Padding(2, 2, 2, 2);
             cb_mode.Name = "cb_mode";
-            cb_mode.Size = new Size(308, 49);
+            cb_mode.Size = new Size(129, 23);
             cb_mode.TabIndex = 10;
             // 
             // btn_openLog
             // 
-            btn_openLog.Location = new Point(1440, 159);
-            btn_openLog.Margin = new Padding(5);
+            btn_openLog.Location = new Point(593, 58);
+            btn_openLog.Margin = new Padding(2, 2, 2, 2);
             btn_openLog.Name = "btn_openLog";
-            btn_openLog.Size = new Size(102, 63);
+            btn_openLog.Size = new Size(42, 23);
             btn_openLog.TabIndex = 11;
             btn_openLog.Text = "Log";
             btn_openLog.UseVisualStyleBackColor = true;
@@ -158,17 +149,16 @@
             // btn_delete
             // 
             btn_delete.Image = Properties.Resources.delete;
-            btn_delete.Location = new Point(1556, 93);
-            btn_delete.Margin = new Padding(7, 8, 7, 8);
+            btn_delete.Location = new Point(638, 34);
             btn_delete.Name = "btn_delete";
-            btn_delete.Size = new Size(63, 63);
+            btn_delete.Size = new Size(23, 23);
             btn_delete.TabIndex = 12;
             btn_delete.UseVisualStyleBackColor = true;
             btn_delete.Click += btn_delete_Click;
             // 
             // DownloadItem
             // 
-            AutoScaleDimensions = new SizeF(17F, 41F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.Menu;
             BorderStyle = BorderStyle.FixedSingle;
@@ -184,9 +174,9 @@
             Controls.Add(cb_quality);
             Controls.Add(lbl_title);
             Controls.Add(pb_thumbnail);
-            Margin = new Padding(0, 0, 0, 16);
+            Margin = new Padding(0, 0, 0, 6);
             Name = "DownloadItem";
-            Size = new Size(1625, 230);
+            Size = new Size(669, 84);
             ((System.ComponentModel.ISupportInitialize)pb_thumbnail).EndInit();
             ResumeLayout(false);
             PerformLayout();

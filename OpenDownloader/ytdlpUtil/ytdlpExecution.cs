@@ -7,7 +7,7 @@ namespace OpenDownloader.ytdlpUtil
 {
     internal static class ytdlpExecution
     {
-        public static async Task DownloadFileAsync(
+        public static async Task<string> DownloadFileAsync(
             DownloadRequest request, 
             string path,
             IProgress<string> output)
@@ -17,7 +17,7 @@ namespace OpenDownloader.ytdlpUtil
             var video = request.Video;
             var mode = request.Mode;
 
-            var args = $"-P \"{path.Replace("\\", "/")}\" \"{video.WebpageUrl}\" ";
+            var args = $"-P \"{path.Replace("\\", "/")}\" --print \"after_move:filepath:%(filepath)s\" \"{video.WebpageUrl}\"";
 
             var formatArg = "";
             if (request.Mode == DownloadMode.VideoWithAudio)
@@ -48,7 +48,8 @@ namespace OpenDownloader.ytdlpUtil
                     _ => $"bestaudio[acodec^=mp4a]/bestaudio"
                 };
             }
-            args += $"-f \"{formatArg}\"";
+            args +=
+                $" -f \"{formatArg}\"";
 
             output.Report($"[GUI] Executing: yt-dlp.exe {args}");
 
@@ -68,19 +69,26 @@ namespace OpenDownloader.ytdlpUtil
 
             var errorBuilder = new StringBuilder();
 
-            process.OutputDataReceived += (sender, args) =>
+            string? finalFilePath = null;
+            process.OutputDataReceived += (sender, e) =>
             {
-                if (args.Data != null)
+                if (e.Data == null) return;
+              
+                output.Report(e.Data);
+
+                const string prefix = "filepath:";
+
+                if (e.Data.StartsWith(prefix))
                 {
-                    output.Report(args.Data);
+                    finalFilePath = e.Data.Substring(prefix.Length);
                 }
             };
-            process.ErrorDataReceived += (sender, args) =>
+            process.ErrorDataReceived += (sender, e) =>
             {
-                if (!string.IsNullOrEmpty(args.Data))
+                if (!string.IsNullOrEmpty(e.Data))
                 {
-                    errorBuilder.AppendLine(args.Data);
-                    output.Report(args.Data);
+                    errorBuilder.AppendLine(e.Data);
+                    output.Report(e.Data);
                 }
             };
 
@@ -90,12 +98,20 @@ namespace OpenDownloader.ytdlpUtil
             process.BeginErrorReadLine();
 
             await process.WaitForExitAsync();
+            process.WaitForExit();
 
             if (process.ExitCode != 0)
             {
                 throw new InvalidOperationException(
                     $"yt-dlp failed (exit code {process.ExitCode}):\n{errorBuilder}");
             }
+
+            if (string.IsNullOrEmpty(finalFilePath) || !File.Exists(finalFilePath))
+            {
+                throw new InvalidOperationException("Final file path not captured.");
+            }
+
+            return finalFilePath;
         }
 
         public static async Task<Video> DownloadVideoInfo(

@@ -54,50 +54,45 @@
             // textURL
             // 
             textURL.AutoSize = true;
-            textURL.Location = new Point(29, 85);
-            textURL.Margin = new Padding(7, 0, 7, 0);
+            textURL.Location = new Point(12, 31);
             textURL.Name = "textURL";
-            textURL.Size = new Size(71, 41);
+            textURL.Size = new Size(28, 15);
             textURL.TabIndex = 1;
             textURL.Text = "URL";
             // 
             // textSaveTo
             // 
             textSaveTo.AutoSize = true;
-            textSaveTo.Location = new Point(29, 164);
-            textSaveTo.Margin = new Padding(7, 0, 7, 0);
+            textSaveTo.Location = new Point(12, 60);
             textSaveTo.Name = "textSaveTo";
-            textSaveTo.Size = new Size(118, 41);
+            textSaveTo.Size = new Size(46, 15);
             textSaveTo.TabIndex = 2;
             textSaveTo.Text = "Save To";
             // 
             // textCredits
             // 
-            textCredits.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            textCredits.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             textCredits.AutoSize = true;
-            textCredits.Location = new Point(1906, 1479);
-            textCredits.Margin = new Padding(7, 0, 7, 0);
+            textCredits.Location = new Point(12, 482);
             textCredits.Name = "textCredits";
-            textCredits.Size = new Size(449, 41);
+            textCredits.Size = new Size(177, 15);
             textCredits.TabIndex = 3;
             textCredits.Text = "OpenDownloader © by FBW81C";
             // 
             // tbURL
             // 
             tbURL.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            tbURL.Location = new Point(160, 77);
-            tbURL.Margin = new Padding(7, 8, 7, 8);
+            tbURL.Location = new Point(66, 28);
             tbURL.Name = "tbURL";
-            tbURL.Size = new Size(1915, 47);
+            tbURL.Size = new Size(746, 23);
             tbURL.TabIndex = 4;
             // 
             // btnBrowseFolder
             // 
             btnBrowseFolder.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            btnBrowseFolder.Location = new Point(1838, 156);
-            btnBrowseFolder.Margin = new Padding(7, 8, 7, 8);
+            btnBrowseFolder.Location = new Point(712, 57);
             btnBrowseFolder.Name = "btnBrowseFolder";
-            btnBrowseFolder.Size = new Size(243, 63);
+            btnBrowseFolder.Size = new Size(100, 23);
             btnBrowseFolder.TabIndex = 5;
             btnBrowseFolder.Text = "Browse Folder";
             btnBrowseFolder.UseVisualStyleBackColor = true;
@@ -106,19 +101,17 @@
             // tbFolder
             // 
             tbFolder.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            tbFolder.Location = new Point(160, 156);
-            tbFolder.Margin = new Padding(7, 8, 7, 8);
+            tbFolder.Location = new Point(66, 57);
             tbFolder.Name = "tbFolder";
-            tbFolder.Size = new Size(1660, 47);
+            tbFolder.Size = new Size(641, 23);
             tbFolder.TabIndex = 6;
             // 
             // btnDefault
             // 
             btnDefault.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            btnDefault.Location = new Point(2106, 156);
-            btnDefault.Margin = new Padding(7, 8, 7, 8);
+            btnDefault.Location = new Point(816, 56);
             btnDefault.Name = "btnDefault";
-            btnDefault.Size = new Size(243, 63);
+            btnDefault.Size = new Size(100, 23);
             btnDefault.TabIndex = 10;
             btnDefault.Text = "Set as default";
             btnDefault.UseVisualStyleBackColor = true;
@@ -131,21 +124,21 @@
             flowLayoutPanel1.BackColor = SystemColors.ControlDark;
             flowLayoutPanel1.BorderStyle = BorderStyle.FixedSingle;
             flowLayoutPanel1.FlowDirection = FlowDirection.TopDown;
-            flowLayoutPanel1.Location = new Point(29, 257);
+            flowLayoutPanel1.Location = new Point(12, 94);
             flowLayoutPanel1.Margin = new Padding(0);
             flowLayoutPanel1.Name = "flowLayoutPanel1";
-            flowLayoutPanel1.Padding = new Padding(7, 8, 7, 8);
-            flowLayoutPanel1.Size = new Size(1650, 1177);
+            flowLayoutPanel1.Padding = new Padding(3);
+            flowLayoutPanel1.Size = new Size(675, 378);
             flowLayoutPanel1.TabIndex = 21;
             flowLayoutPanel1.WrapContents = false;
             // 
             // btn_Add
             // 
             btn_Add.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            btn_Add.Location = new Point(2098, 77);
-            btn_Add.Margin = new Padding(2, 3, 2, 3);
+            btn_Add.Location = new Point(816, 28);
+            btn_Add.Margin = new Padding(1);
             btn_Add.Name = "btn_Add";
-            btn_Add.Size = new Size(250, 63);
+            btn_Add.Size = new Size(100, 23);
             btn_Add.TabIndex = 22;
             btn_Add.Text = "Add Video";
             btn_Add.UseVisualStyleBackColor = true;
@@ -154,21 +147,19 @@
             // tb_output
             // 
             tb_output.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            tb_output.Location = new Point(1838, 257);
-            tb_output.Margin = new Padding(7, 8, 7, 8);
+            tb_output.Location = new Point(690, 94);
             tb_output.Multiline = true;
             tb_output.Name = "tb_output";
             tb_output.ReadOnly = true;
-            tb_output.Size = new Size(492, 1095);
+            tb_output.Size = new Size(229, 378);
             tb_output.TabIndex = 23;
             // 
             // btn_copyToClipboard
             // 
             btn_copyToClipboard.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            btn_copyToClipboard.Location = new Point(1838, 1375);
-            btn_copyToClipboard.Margin = new Padding(7, 8, 7, 8);
+            btn_copyToClipboard.Location = new Point(690, 474);
             btn_copyToClipboard.Name = "btn_copyToClipboard";
-            btn_copyToClipboard.Size = new Size(503, 63);
+            btn_copyToClipboard.Size = new Size(229, 23);
             btn_copyToClipboard.TabIndex = 24;
             btn_copyToClipboard.Text = "Copy To Clipboard";
             btn_copyToClipboard.UseVisualStyleBackColor = true;
@@ -180,8 +171,7 @@
             menuStrip1.Items.AddRange(new ToolStripItem[] { aboutToolStripMenuItem, settingsToolStripMenuItem });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
-            menuStrip1.Padding = new Padding(15, 5, 0, 5);
-            menuStrip1.Size = new Size(2370, 55);
+            menuStrip1.Size = new Size(931, 24);
             menuStrip1.TabIndex = 25;
             menuStrip1.Text = "menuStrip1";
             // 
@@ -189,27 +179,27 @@
             // 
             aboutToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { gitHubToolStripMenuItem, aboutToolStripMenuItem1 });
             aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            aboutToolStripMenuItem.Size = new Size(124, 45);
+            aboutToolStripMenuItem.Size = new Size(52, 20);
             aboutToolStripMenuItem.Text = "About";
             // 
             // gitHubToolStripMenuItem
             // 
             gitHubToolStripMenuItem.Name = "gitHubToolStripMenuItem";
-            gitHubToolStripMenuItem.Size = new Size(510, 54);
+            gitHubToolStripMenuItem.Size = new Size(203, 22);
             gitHubToolStripMenuItem.Text = "GitHub";
             gitHubToolStripMenuItem.Click += gitHubToolStripMenuItem_Click;
             // 
             // aboutToolStripMenuItem1
             // 
             aboutToolStripMenuItem1.Name = "aboutToolStripMenuItem1";
-            aboutToolStripMenuItem1.Size = new Size(510, 54);
+            aboutToolStripMenuItem1.Size = new Size(203, 22);
             aboutToolStripMenuItem1.Text = "About OpenDownloader";
             aboutToolStripMenuItem1.Click += aboutOpenClickerToolStripMenuItem_Click;
             // 
             // settingsToolStripMenuItem
             // 
             settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
-            settingsToolStripMenuItem.Size = new Size(149, 45);
+            settingsToolStripMenuItem.Size = new Size(61, 20);
             settingsToolStripMenuItem.Text = "Settings";
             settingsToolStripMenuItem.Click += settingsToolStripMenuItem_Click;
             // 
@@ -221,9 +211,9 @@
             // 
             // ProgrammForm
             // 
-            AutoScaleDimensions = new SizeF(17F, 41F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(2370, 1544);
+            ClientSize = new Size(931, 510);
             Controls.Add(btn_copyToClipboard);
             Controls.Add(tb_output);
             Controls.Add(btn_Add);
@@ -238,9 +228,8 @@
             Controls.Add(menuStrip1);
             Icon = (Icon)resources.GetObject("$this.Icon");
             MainMenuStrip = menuStrip1;
-            Margin = new Padding(7, 8, 7, 8);
-            MaximumSize = new Size(2869, 3127);
-            MinimumSize = new Size(1630, 903);
+            MaximumSize = new Size(1191, 1169);
+            MinimumSize = new Size(712, 549);
             Name = "ProgrammForm";
             Text = "OpenDownloader";
             menuStrip1.ResumeLayout(false);

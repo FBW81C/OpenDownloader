@@ -94,7 +94,7 @@ namespace OpenDownloader
                 {
                     try
                     {
-                        await ytdlpExecution.DownloadFileAsync(
+                        var finalFilePath = await ytdlpExecution.DownloadFileAsync(
                             request,
                             path,
                             new Progress<string>(data =>
@@ -108,6 +108,8 @@ namespace OpenDownloader
                             "The download completed successfully.",
                             ToolTipIcon.Info
                         );
+                        
+                        Process.Start("explorer.exe", "/select, \"" + finalFilePath + "\"");
                     }
                     catch (Exception ex)
                     {
