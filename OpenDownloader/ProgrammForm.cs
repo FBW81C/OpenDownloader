@@ -105,7 +105,7 @@ namespace OpenDownloader
 
                         SendNotification(
                             "Download finished",
-                            "The download completed successfully.",
+                            $"{request.Video.Title}\nThe download completed successfully",
                             ToolTipIcon.Info
                         );
                         
