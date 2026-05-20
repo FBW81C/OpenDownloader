@@ -17,7 +17,7 @@ namespace OpenDownloader.ytdlpUtil
             var video = request.Video;
             var mode = request.Mode;
 
-            var args = $"-P \"{path.Replace("\\", "/")}\" --print \"after_move:filepath:%(filepath)s\" \"{video.WebpageUrl}\"";
+            var args = $"-P \"{path.Replace("\\", "/")}\" --restrict-filenames --progress --newline --print \"after_move:filepath:%(filepath)s\" \"{video.WebpageUrl}\"";
 
             var formatArg = "";
             if (request.Mode == DownloadMode.VideoWithAudio)
@@ -72,15 +72,17 @@ namespace OpenDownloader.ytdlpUtil
             string? finalFilePath = null;
             process.OutputDataReceived += (sender, e) =>
             {
-                if (e.Data == null) return;
-              
-                output.Report(e.Data);
-
-                const string prefix = "filepath:";
-
-                if (e.Data.StartsWith(prefix))
+                if (e.Data != null)
                 {
-                    finalFilePath = e.Data.Substring(prefix.Length);
+                    output.Report(e.Data);
+
+                    const string prefix = "filepath:";
+
+                    if (e.Data.StartsWith(prefix))
+                    {
+                        finalFilePath = e.Data.Substring(prefix.Length);
+                        output.Report($"[DEBUG] finalFilePath = '{finalFilePath}'");
+                    }
                 }
             };
             process.ErrorDataReceived += (sender, e) =>
@@ -102,13 +104,16 @@ namespace OpenDownloader.ytdlpUtil
 
             if (process.ExitCode != 0)
             {
-                throw new InvalidOperationException(
-                    $"yt-dlp failed (exit code {process.ExitCode}):\n{errorBuilder}");
+                var message = $"yt-dlp failed (exit code {process.ExitCode}):\n{errorBuilder}";
+                output.Report($"[ERROR] {message}");
+                throw new InvalidOperationException(message);
             }
 
             if (string.IsNullOrEmpty(finalFilePath) || !File.Exists(finalFilePath))
             {
-                throw new InvalidOperationException("Final file path not captured.");
+                var message = $"Final file path not captured.";
+                output.Report($"[GUI ERROR] {message}");
+                throw new InvalidOperationException(message);
             }
 
             return finalFilePath;
