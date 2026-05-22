@@ -18,6 +18,11 @@ Features:
   - Notification duration sec (1-10)
   - Auto save log (yes/no)
   - Log save directory
+  - After download
+    - Always navigate to file
+    - Naviagte to file when notification clicked
+    - Open file
+    - Nothing
 
 Dependencies:
 - .NET 8 (Core)

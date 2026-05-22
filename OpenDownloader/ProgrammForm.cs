@@ -142,7 +142,11 @@ namespace OpenDownloader
                 }
                 else if (Constants.Settings.AfterDownload == AfterDownloadOptions.OpenFile)
                 {
-                    Process.Start(finalFilePath);
+                    Process.Start(new ProcessStartInfo
+                    {
+                        FileName = finalFilePath,
+                        UseShellExecute = true
+                    });
                 }
                 else if (Constants.Settings.AfterDownload == AfterDownloadOptions.NaviagteOnNotificationClick)
                 {
