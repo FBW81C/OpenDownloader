@@ -2,17 +2,22 @@ using System.Diagnostics;
 using System.Text.Json;
 using OpenDownloader.lib;
 using OpenDownloader.model;
+using OpenDownloader.model.Settings;
 using OpenDownloader.ytdlpUtil;
 
 namespace OpenDownloader
 {
     public partial class ProgrammForm : Form
     {
-        public List<Video> Videos { get; set; } = [];
+        // Notification
+        private string? _pendingNotificationPath;
 
         public ProgrammForm()
         {
             InitializeComponent();
+            
+            // Execute on Form construction
+            notifyIcon1.BalloonTipClicked += NotifyIcon1_MouseClick;
 
             try
             {
@@ -67,77 +72,120 @@ namespace OpenDownloader
                     return;
             }
 
+            btn_Add.Enabled = false;
+            btn_Add.Text = "Loading...";
+            tb_output.Clear();
+
+            var path = tbFolder.Text;
+            if (!Path.Exists(path))
+            {
+                MessageBox.Show("Invalid path", "Path doesn't exist", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                btn_Add.Enabled = true;
+                btn_Add.Text = "Add Video";
+                return;
+            }
+
+            Video? video = null;
             try
             {
-                btn_Add.Enabled = false;
-                btn_Add.Text = "Loading...";
-                tb_output.Clear();
-
-                var path = tbFolder.Text;
-                if (!Path.Exists(path))
-                {
-                    MessageBox.Show("Invalid path", "Path doesn't exist", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                    btn_Add.Enabled = true;
-                    btn_Add.Text = "Add Video";
-                    return;
-                }
-
-                var video = await ytdlpExecution.DownloadVideoInfo(tbURL.Text, new Progress<string>(data =>
+                video = await ytdlpExecution.DownloadVideoInfo(tbURL.Text, new Progress<string>(data =>
                 {
                     tb_output.AppendText(data + Environment.NewLine);
                 }));
-                Videos.Add(video);
-
-                var item = new DownloadItem(video) { Width = flowLayoutPanel1.ClientSize.Width - 12};
-
-                item.DownloadClicked += async (_, request) =>
-                {
-                    try
-                    {
-                        var finalFilePath = await ytdlpExecution.DownloadFileAsync(
-                            request,
-                            path,
-                            new Progress<string>(data =>
-                            {
-                                item.UpdateProgress(data);
-                            })
-                        );
-
-                        SendNotification(
-                            "Download finished",
-                            $"{request.Video.Title}\nThe download completed successfully",
-                            ToolTipIcon.Info
-                        );
-                        
-                        Process.Start("explorer.exe", "/select, \"" + finalFilePath + "\"");
-                    }
-                    catch (Exception ex)
-                    {
-                        SendNotification(
-                            "Download failed",
-                            "Check output panel for more information!",
-                            ToolTipIcon.Error
-                        );
-                    }
-                };
-
-                item.DeleteClicked += (sender, _) =>
-                {
-                    var control = (DownloadItem)sender!;
-                    flowLayoutPanel1.Controls.Remove(control);
-                    control.Dispose();
-                };
-
-                flowLayoutPanel1.Controls.Add(item);
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show($"Failed downloading video info, reason:\n\n{ex.Message}", "Download Video Info", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                tbURL.Text = "";
+                btn_Add.Enabled = true;
+                btn_Add.Text = "Add Video";
+                return;
             }
+
+            var item = new DownloadItem(video) { Width = flowLayoutPanel1.ClientSize.Width - 12};
+
+            item.DownloadClicked += async (_, request) =>
+            {
+                string? finalFilePath = null;
+                try
+                {
+                    finalFilePath = await ytdlpExecution.DownloadFileAsync(
+                        request,
+                        path,
+                        new Progress<string>(data =>
+                        {
+                            item.UpdateProgress(data);
+                        })
+                    );
+                }
+                catch (Exception ex)
+                {
+                    SendNotification(
+                        "Download failed",
+                        "Check output panel for more information!",
+                        ToolTipIcon.Error
+                    );
+                    MessageBox.Show($"Download failed, reason:\n\n{ex.Message}", "Download failed", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    return;
+                }
+
+                SendNotification(
+                    "Download finished",
+                    $"{request.Video.Title}\nThe download completed successfully",
+                    ToolTipIcon.Info
+                );
+
+                // After Download
+                if (Constants.Settings.AfterDownload == AfterDownloadOptions.AlwaysNaviagte)
+                {
+                    Process.Start("explorer.exe", "/select, \"" + finalFilePath + "\"");
+                }
+                else if (Constants.Settings.AfterDownload == AfterDownloadOptions.OpenFile)
+                {
+                    Process.Start(finalFilePath);
+                }
+                else if (Constants.Settings.AfterDownload == AfterDownloadOptions.NaviagteOnNotificationClick)
+                {
+                    _pendingNotificationPath = finalFilePath;
+                }
+            };
+
+            item.DeleteClicked += (sender, _) =>
+            {
+                var control = (DownloadItem)sender!;
+                flowLayoutPanel1.Controls.Remove(control);
+                control.Dispose();
+            };
+
+            flowLayoutPanel1.Controls.Add(item);
 
             tbURL.Text = "";
             btn_Add.Enabled = true;
             btn_Add.Text = "Add Video";
+        }
+
+        private void NotifyIcon1_MouseClick(object? sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(_pendingNotificationPath)) return;
+            
+            if (!File.Exists(_pendingNotificationPath))
+            {
+                _pendingNotificationPath = null;
+                return;
+            }
+
+            try
+            {
+                Process.Start("explorer.exe", "/select, \"" + _pendingNotificationPath + "\"");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Failed navigating to file, reason:\n\n{ex.Message}", "Click on Notification", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            } 
+            finally
+            {
+                _pendingNotificationPath = null;
+            }
         }
 
         private void btn_copyToClipboard_Click(object sender, EventArgs e)

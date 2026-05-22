@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using OpenDownloader.model;
+using OpenDownloader.model.Settings;
 
 namespace OpenDownloader;
 public static class Constants

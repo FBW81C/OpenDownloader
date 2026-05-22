@@ -41,15 +41,21 @@
             tb_logSaveDirectory = new TextBox();
             cb_autoSaveLogs = new CheckBox();
             folderBrowserDialog1 = new FolderBrowserDialog();
+            gb_afterDownload = new GroupBox();
+            rb_nothing = new RadioButton();
+            rb_alwaysOpen = new RadioButton();
+            rb_navigateWhenClicked = new RadioButton();
+            rb_alwaysNavigate = new RadioButton();
             gb_notifications.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)sb_notificationDuration).BeginInit();
             gb_logs.SuspendLayout();
+            gb_afterDownload.SuspendLayout();
             SuspendLayout();
             // 
             // btn_save
             // 
             btn_save.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            btn_save.Location = new Point(382, 303);
+            btn_save.Location = new Point(586, 399);
             btn_save.Margin = new Padding(1);
             btn_save.Name = "btn_save";
             btn_save.Size = new Size(77, 23);
@@ -61,7 +67,7 @@
             // btn_cancel
             // 
             btn_cancel.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            btn_cancel.Location = new Point(303, 303);
+            btn_cancel.Location = new Point(507, 399);
             btn_cancel.Margin = new Padding(1);
             btn_cancel.Name = "btn_cancel";
             btn_cancel.Size = new Size(77, 23);
@@ -79,7 +85,7 @@
             gb_notifications.Margin = new Padding(1);
             gb_notifications.Name = "gb_notifications";
             gb_notifications.Padding = new Padding(1);
-            gb_notifications.Size = new Size(449, 120);
+            gb_notifications.Size = new Size(653, 120);
             gb_notifications.TabIndex = 2;
             gb_notifications.TabStop = false;
             gb_notifications.Text = "Notifications";
@@ -128,7 +134,7 @@
             gb_logs.Controls.Add(cb_autoSaveLogs);
             gb_logs.Location = new Point(12, 135);
             gb_logs.Name = "gb_logs";
-            gb_logs.Size = new Size(445, 110);
+            gb_logs.Size = new Size(649, 110);
             gb_logs.TabIndex = 3;
             gb_logs.TabStop = false;
             gb_logs.Text = "Logs";
@@ -145,7 +151,7 @@
             // btn_browseLogFolder
             // 
             btn_browseLogFolder.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            btn_browseLogFolder.Location = new Point(291, 73);
+            btn_browseLogFolder.Location = new Point(495, 73);
             btn_browseLogFolder.Name = "btn_browseLogFolder";
             btn_browseLogFolder.Size = new Size(101, 23);
             btn_browseLogFolder.TabIndex = 2;
@@ -158,7 +164,7 @@
             tb_logSaveDirectory.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             tb_logSaveDirectory.Location = new Point(6, 74);
             tb_logSaveDirectory.Name = "tb_logSaveDirectory";
-            tb_logSaveDirectory.Size = new Size(279, 23);
+            tb_logSaveDirectory.Size = new Size(483, 23);
             tb_logSaveDirectory.TabIndex = 1;
             // 
             // cb_autoSaveLogs
@@ -172,13 +178,76 @@
             cb_autoSaveLogs.UseVisualStyleBackColor = true;
             cb_autoSaveLogs.CheckedChanged += cb_autoSaveLogs_CheckedChanged;
             // 
+            // gb_afterDownload
+            // 
+            gb_afterDownload.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            gb_afterDownload.Controls.Add(rb_nothing);
+            gb_afterDownload.Controls.Add(rb_alwaysOpen);
+            gb_afterDownload.Controls.Add(rb_navigateWhenClicked);
+            gb_afterDownload.Controls.Add(rb_alwaysNavigate);
+            gb_afterDownload.Location = new Point(12, 251);
+            gb_afterDownload.Name = "gb_afterDownload";
+            gb_afterDownload.Size = new Size(651, 130);
+            gb_afterDownload.TabIndex = 4;
+            gb_afterDownload.TabStop = false;
+            gb_afterDownload.Text = "After Download";
+            // 
+            // rb_nothing
+            // 
+            rb_nothing.AutoSize = true;
+            rb_nothing.Location = new Point(9, 97);
+            rb_nothing.Name = "rb_nothing";
+            rb_nothing.Size = new Size(69, 19);
+            rb_nothing.TabIndex = 3;
+            rb_nothing.TabStop = true;
+            rb_nothing.Text = "Nothing";
+            rb_nothing.UseVisualStyleBackColor = true;
+            rb_nothing.CheckedChanged += rb_afterDownload_CheckedChanged;
+            // 
+            // rb_alwaysOpen
+            // 
+            rb_alwaysOpen.AutoSize = true;
+            rb_alwaysOpen.Location = new Point(9, 72);
+            rb_alwaysOpen.Name = "rb_alwaysOpen";
+            rb_alwaysOpen.Size = new Size(73, 19);
+            rb_alwaysOpen.TabIndex = 2;
+            rb_alwaysOpen.TabStop = true;
+            rb_alwaysOpen.Text = "Open file";
+            rb_alwaysOpen.UseVisualStyleBackColor = true;
+            rb_alwaysOpen.CheckedChanged += rb_afterDownload_CheckedChanged;
+            // 
+            // rb_navigateWhenClicked
+            // 
+            rb_navigateWhenClicked.AutoSize = true;
+            rb_navigateWhenClicked.Location = new Point(9, 47);
+            rb_navigateWhenClicked.Name = "rb_navigateWhenClicked";
+            rb_navigateWhenClicked.Size = new Size(241, 19);
+            rb_navigateWhenClicked.TabIndex = 1;
+            rb_navigateWhenClicked.TabStop = true;
+            rb_navigateWhenClicked.Text = "Navigate to file when notification clicked";
+            rb_navigateWhenClicked.UseVisualStyleBackColor = true;
+            rb_navigateWhenClicked.CheckedChanged += rb_afterDownload_CheckedChanged;
+            // 
+            // rb_alwaysNavigate
+            // 
+            rb_alwaysNavigate.AutoSize = true;
+            rb_alwaysNavigate.Location = new Point(9, 22);
+            rb_alwaysNavigate.Name = "rb_alwaysNavigate";
+            rb_alwaysNavigate.Size = new Size(143, 19);
+            rb_alwaysNavigate.TabIndex = 0;
+            rb_alwaysNavigate.TabStop = true;
+            rb_alwaysNavigate.Text = "Always navigate to file";
+            rb_alwaysNavigate.UseVisualStyleBackColor = true;
+            rb_alwaysNavigate.CheckedChanged += rb_afterDownload_CheckedChanged;
+            // 
             // SettingsForm
             // 
             AcceptButton = btn_save;
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             CancelButton = btn_cancel;
-            ClientSize = new Size(469, 336);
+            ClientSize = new Size(673, 432);
+            Controls.Add(gb_afterDownload);
             Controls.Add(gb_logs);
             Controls.Add(gb_notifications);
             Controls.Add(btn_cancel);
@@ -195,6 +264,8 @@
             ((System.ComponentModel.ISupportInitialize)sb_notificationDuration).EndInit();
             gb_logs.ResumeLayout(false);
             gb_logs.PerformLayout();
+            gb_afterDownload.ResumeLayout(false);
+            gb_afterDownload.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -212,5 +283,10 @@
         private FolderBrowserDialog folderBrowserDialog1;
         private Button btn_browseLogFolder;
         private Label lbl_logPath;
+        private GroupBox gb_afterDownload;
+        private RadioButton rb_nothing;
+        private RadioButton rb_alwaysOpen;
+        private RadioButton rb_navigateWhenClicked;
+        private RadioButton rb_alwaysNavigate;
     }
 }

@@ -1,5 +1,5 @@
 using System.Text.Json;
-using OpenDownloader.model;
+using OpenDownloader.model.Settings;
 
 namespace OpenDownloader
 {

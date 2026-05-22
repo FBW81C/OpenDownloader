@@ -186,11 +186,14 @@ namespace OpenDownloader.ytdlpUtil
 
             var video = new Video
             {
-                Title = root.GetProperty("title").GetString(),
+                Title = root.GetProperty("title").GetString() ?? "N/A",
                 WebpageUrl = root.GetProperty("webpage_url").GetString(),
                 ThumbnailUrl = SelectCompatibleThumbnailUrl(root, output)
             };
 
+            // Sanitize Slashes (any filepath code will interpret it as folder)
+            video.Title = video.Title.Replace("\\", "");
+            video.Title = video.Title.Replace("/", "");
 
             try
             {

@@ -8,7 +8,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using OpenDownloader.model;
+using OpenDownloader.model.Settings;
 
 namespace OpenDownloader
 {
@@ -37,15 +37,12 @@ namespace OpenDownloader
                 tb_logSaveDirectory.Enabled = false;
                 btn_browseLogFolder.Enabled = false;
             }
-        }
 
-        private void cb_showNotifications_CheckedChanged(object sender, EventArgs e)
-        {
-            bool isChecked = cb_showNotifications.Checked;
-
-            sb_notificationDuration.Enabled = isChecked;
-
-            LocalSettings.ShowNotifications = isChecked;
+            // After Download
+            rb_alwaysNavigate.Checked = settings.AfterDownload == AfterDownloadOptions.AlwaysNaviagte;
+            rb_navigateWhenClicked.Checked = settings.AfterDownload == AfterDownloadOptions.NaviagteOnNotificationClick;
+            rb_alwaysOpen.Checked = settings.AfterDownload == AfterDownloadOptions.OpenFile;
+            rb_nothing.Checked = settings.AfterDownload == AfterDownloadOptions.Nothing;
         }
 
         private void btn_save_Click(object sender, EventArgs e)
@@ -64,6 +61,15 @@ namespace OpenDownloader
             }
 
             Close();
+        }
+
+        private void cb_showNotifications_CheckedChanged(object sender, EventArgs e)
+        {
+            bool isChecked = cb_showNotifications.Checked;
+
+            sb_notificationDuration.Enabled = isChecked;
+
+            LocalSettings.ShowNotifications = isChecked;
         }
 
         private void tb_notificationDuration_ValueChanged(object sender, EventArgs e)
@@ -91,11 +97,22 @@ namespace OpenDownloader
 
                 LocalSettings.LogSaveDirectory = path;
                 tb_logSaveDirectory.Text = path;
-            } 
+            }
             else
             {
                 return;
             }
+        }
+
+        private void rb_afterDownload_CheckedChanged(object sender, EventArgs e)
+        {
+            var option =
+                rb_alwaysNavigate.Checked ? AfterDownloadOptions.AlwaysNaviagte :
+                rb_navigateWhenClicked.Checked ? AfterDownloadOptions.NaviagteOnNotificationClick :
+                rb_alwaysOpen.Checked ? AfterDownloadOptions.OpenFile :
+                AfterDownloadOptions.Nothing;
+
+            LocalSettings.AfterDownload = option;
         }
     }
 }

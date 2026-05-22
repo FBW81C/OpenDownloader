@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OpenDownloader.model;
+namespace OpenDownloader.model.Settings;
 public class Settings
 {
     // Downloading
@@ -15,6 +15,8 @@ public class Settings
     // Logging
     public bool AutoSaveLog { get; set; } = false;
     public string LogSaveDirectory { get; set; } = string.Empty;
+    // After Download
+    public AfterDownloadOptions AfterDownload { get; set; } = AfterDownloadOptions.NaviagteOnNotificationClick;
 
     public Settings Clone()
     {
@@ -24,7 +26,10 @@ public class Settings
             ShowNotifications = ShowNotifications,
             NotificationDurationSec = NotificationDurationSec,
             AutoSaveLog = AutoSaveLog,
-            LogSaveDirectory = LogSaveDirectory
+            LogSaveDirectory = LogSaveDirectory,
+            AfterDownload = AfterDownload
         };
     }
 }
+
+
