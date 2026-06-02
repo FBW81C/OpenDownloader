@@ -1,7 +1,6 @@
 ﻿using OpenDownloader.lib;
 using OpenDownloader.model;
 using System.Text.RegularExpressions;
-using static System.Windows.Forms.DataFormats;
 
 namespace OpenDownloader
 {
@@ -30,52 +29,17 @@ namespace OpenDownloader
             lbl_title.Text = video.Title;
 
             // Formats
-            var grouped = video.Options
-                .Where(f => f.Type == VideoOptionType.SpecificFormat)
-                .GroupBy(f => new
-                {
-                    f.Height,
-                    f.Fps
-                });
-            var virtualOptions = video.Options
-                .Where(f => f.Type != VideoOptionType.SpecificFormat)
-                .ToList();
-
-            VideoOption PickBest(IGrouping<object, VideoOption> group)
-            {
-                return group
-                    .OrderByDescending(f => f.Ext == "mp4")
-                    .ThenByDescending(f => f.VCodec != null && f.VCodec.StartsWith("avc1"))
-                    .ThenByDescending(f => f.Filesize ?? 0)
-                    .First();
-            }
-
-            var normalOptions = grouped
-                .Select(PickBest)
-                .OrderByDescending(f => f.Height ?? 0)
-                .ThenByDescending(f => f.Fps ?? 0)
-                .ToList();
-
-            // Best
-            var best = virtualOptions.FirstOrDefault(f => f.Type == VideoOptionType.Best);
-            if (best != null)
-                normalOptions.Insert(0, best);
-
-            // Worst
-            var worst = virtualOptions.FirstOrDefault(f => f.Type == VideoOptionType.Worst);
-            if (worst != null)
-                normalOptions.Add(worst);
-
+            List<VideoOption> normalOptions = GetNormalVideoOptions(video.Options);
             List<VideoOption> advancedOptions = video.Options;
 
             cb_quality.Items.Clear();
-            var formats = 
+            var formats =
                 (Constants.Settings.ShowAdvancedVideoInfo ? advancedOptions : normalOptions)
-                .Select(option => new ComboboxItem<VideoOption> 
-                    { 
-                        Value = option, 
-                        Text = Constants.Settings.ShowAdvancedVideoInfo ? GetAdvancedDisplay(option) : GetNormalDisplay(option)
-                    })
+                .Select(option => new ComboboxItem<VideoOption>
+                {
+                    Value = option,
+                    Text = Constants.Settings.ShowAdvancedVideoInfo ? GetAdvancedDisplay(option) : GetNormalDisplay(option)
+                })
                 .ToArray();
             cb_quality.DataSource = formats;
             cb_quality.DisplayMember = "Text";
@@ -128,17 +92,58 @@ namespace OpenDownloader
             return $"{option.Id} - {res}{fps} - {option.Ext} - {option.VCodec}{note}";
         }
 
-        public void UpdateDisplay(bool advanced)
+        public List<VideoOption> GetNormalVideoOptions(List<VideoOption> options)
         {
-            foreach (ComboboxItem<VideoOption> item in cb_quality.Items)
+            var grouped = options
+               .Where(f => f.Type == VideoOptionType.SpecificFormat)
+               .GroupBy(f => new
+               {
+                   f.Height,
+                   f.Fps
+               });
+            var virtualOptions = options
+                .Where(f => f.Type != VideoOptionType.SpecificFormat)
+                .ToList();
+
+            VideoOption PickBest(IGrouping<object, VideoOption> group)
             {
-                item.Text = advanced
-                    ? GetAdvancedDisplay(item.Value)
-                    : GetNormalDisplay(item.Value);
+                return group
+                    .OrderByDescending(f => f.Ext == "mp4")
+                    .ThenByDescending(f => f.VCodec != null && f.VCodec.StartsWith("avc1"))
+                    .ThenByDescending(f => f.Filesize ?? 0)
+                    .First();
             }
 
-            cb_quality.Refresh();
+            var normalOptions = grouped
+                .Select(PickBest)
+                .OrderByDescending(f => f.Height ?? 0)
+                .ThenByDescending(f => f.Fps ?? 0)
+                .ToList();
+
+            // Best
+            var best = virtualOptions.FirstOrDefault(f => f.Type == VideoOptionType.Best);
+            if (best != null)
+                normalOptions.Insert(0, best);
+
+            // Worst
+            var worst = virtualOptions.FirstOrDefault(f => f.Type == VideoOptionType.Worst);
+            if (worst != null)
+                normalOptions.Add(worst);
+
+            return normalOptions;
         }
+
+        //public void UpdateDisplay(bool advanced)
+        //{
+        //    foreach (ComboboxItem<VideoOption> item in cb_quality.Items)
+        //    {
+        //        item.Text = advanced
+        //            ? GetAdvancedDisplay(item.Value)
+        //            : GetNormalDisplay(item.Value);
+        //    }
+
+        //    cb_quality.Refresh();
+        //}
 
         private async void btnDownload_Click(object sender, EventArgs e)
         {
