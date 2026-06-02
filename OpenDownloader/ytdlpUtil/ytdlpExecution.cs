@@ -185,6 +185,11 @@ namespace OpenDownloader.ytdlpUtil
             using var doc = JsonDocument.Parse(json);
             var root = doc.RootElement;
 
+            if (root.TryGetProperty("entries", out var _) && root.TryGetProperty("playlist_count", out var _))
+            {
+                throw new ArgumentException("Playlist detected, currently playlists aren't supported!");
+            }
+
             var video = new Video
             {
                 Title = root.GetProperty("title").GetString() ?? "Unknown",
