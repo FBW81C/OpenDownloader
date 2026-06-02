@@ -67,7 +67,7 @@ namespace OpenDownloader
         {
             if (!UrlValidator.IsUrl(tbURL.Text))
             {
-                var result = MessageBox.Show("URL doesn't seem to be in a URL format", "Invalid URL", MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation);
+                var result = MessageBox.Show("URL doesn't seem to be in a URL format, ignore and continue?", "Invalid URL", MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation);
                 if (result == DialogResult.Cancel)
                     return;
             }

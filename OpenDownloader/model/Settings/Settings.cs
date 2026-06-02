@@ -17,6 +17,8 @@ public class Settings
     public string LogSaveDirectory { get; set; } = string.Empty;
     // After Download
     public AfterDownloadOptions AfterDownload { get; set; } = AfterDownloadOptions.NaviagteOnNotificationClick;
+    // DownoadItem
+    public bool ShowAdvancedVideoInfo { get; set; } = false;
 
     public Settings Clone()
     {
@@ -27,7 +29,8 @@ public class Settings
             NotificationDurationSec = NotificationDurationSec,
             AutoSaveLog = AutoSaveLog,
             LogSaveDirectory = LogSaveDirectory,
-            AfterDownload = AfterDownload
+            AfterDownload = AfterDownload,
+            ShowAdvancedVideoInfo = ShowAdvancedVideoInfo
         };
     }
 }

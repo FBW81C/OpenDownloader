@@ -31,12 +31,10 @@
             pb_thumbnail = new PictureBox();
             lbl_title = new Label();
             cb_quality = new ComboBox();
-            cb_fps = new ComboBox();
             btn_download = new Button();
             lbl_estimatedSizeValue = new Label();
             pb_progress = new ProgressBar();
             tb_ETA = new TextBox();
-            lbl_FPS = new Label();
             cb_mode = new ComboBox();
             btn_openLog = new Button();
             btn_delete = new Button();
@@ -65,20 +63,11 @@
             // 
             cb_quality.DropDownStyle = ComboBoxStyle.DropDownList;
             cb_quality.FormattingEnabled = true;
-            cb_quality.Location = new Point(142, 34);
+            cb_quality.Location = new Point(276, 35);
             cb_quality.Name = "cb_quality";
-            cb_quality.Size = new Size(121, 23);
+            cb_quality.Size = new Size(278, 23);
             cb_quality.TabIndex = 2;
             cb_quality.SelectedValueChanged += cb_quality_SelectedValueChanged;
-            // 
-            // cb_fps
-            // 
-            cb_fps.DropDownStyle = ComboBoxStyle.DropDownList;
-            cb_fps.FormattingEnabled = true;
-            cb_fps.Location = new Point(301, 34);
-            cb_fps.Name = "cb_fps";
-            cb_fps.Size = new Size(121, 23);
-            cb_fps.TabIndex = 3;
             // 
             // btn_download
             // 
@@ -116,21 +105,12 @@
             tb_ETA.TabStop = false;
             tb_ETA.Text = "ETA: N/A";
             // 
-            // lbl_FPS
-            // 
-            lbl_FPS.AutoSize = true;
-            lbl_FPS.Location = new Point(269, 37);
-            lbl_FPS.Name = "lbl_FPS";
-            lbl_FPS.Size = new Size(26, 15);
-            lbl_FPS.TabIndex = 9;
-            lbl_FPS.Text = "FPS";
-            // 
             // cb_mode
             // 
             cb_mode.DropDownStyle = ComboBoxStyle.DropDownList;
             cb_mode.FormattingEnabled = true;
-            cb_mode.Location = new Point(426, 34);
-            cb_mode.Margin = new Padding(2, 2, 2, 2);
+            cb_mode.Location = new Point(142, 35);
+            cb_mode.Margin = new Padding(2);
             cb_mode.Name = "cb_mode";
             cb_mode.Size = new Size(129, 23);
             cb_mode.TabIndex = 10;
@@ -138,7 +118,7 @@
             // btn_openLog
             // 
             btn_openLog.Location = new Point(593, 58);
-            btn_openLog.Margin = new Padding(2, 2, 2, 2);
+            btn_openLog.Margin = new Padding(2);
             btn_openLog.Name = "btn_openLog";
             btn_openLog.Size = new Size(42, 23);
             btn_openLog.TabIndex = 11;
@@ -165,12 +145,10 @@
             Controls.Add(btn_delete);
             Controls.Add(btn_openLog);
             Controls.Add(cb_mode);
-            Controls.Add(lbl_FPS);
             Controls.Add(tb_ETA);
             Controls.Add(pb_progress);
             Controls.Add(lbl_estimatedSizeValue);
             Controls.Add(btn_download);
-            Controls.Add(cb_fps);
             Controls.Add(cb_quality);
             Controls.Add(lbl_title);
             Controls.Add(pb_thumbnail);
@@ -187,12 +165,10 @@
         private PictureBox pb_thumbnail;
         private Label lbl_title;
         private ComboBox cb_quality;
-        private ComboBox cb_fps;
         private Button btn_download;
         private Label lbl_estimatedSizeValue;
         private ProgressBar pb_progress;
         private TextBox tb_ETA;
-        private Label lbl_FPS;
         private ComboBox cb_mode;
         private Button btn_openLog;
         private Button btn_delete;

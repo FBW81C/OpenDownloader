@@ -46,16 +46,20 @@
             rb_alwaysOpen = new RadioButton();
             rb_navigateWhenClicked = new RadioButton();
             rb_alwaysNavigate = new RadioButton();
+            gp_downloadItem = new GroupBox();
+            lbl_advancedInfoFormat = new Label();
+            cb_advancedInfo = new CheckBox();
             gb_notifications.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)sb_notificationDuration).BeginInit();
             gb_logs.SuspendLayout();
             gb_afterDownload.SuspendLayout();
+            gp_downloadItem.SuspendLayout();
             SuspendLayout();
             // 
             // btn_save
             // 
             btn_save.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            btn_save.Location = new Point(586, 399);
+            btn_save.Location = new Point(586, 498);
             btn_save.Margin = new Padding(1);
             btn_save.Name = "btn_save";
             btn_save.Size = new Size(77, 23);
@@ -67,7 +71,7 @@
             // btn_cancel
             // 
             btn_cancel.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            btn_cancel.Location = new Point(507, 399);
+            btn_cancel.Location = new Point(507, 498);
             btn_cancel.Margin = new Padding(1);
             btn_cancel.Name = "btn_cancel";
             btn_cancel.Size = new Size(77, 23);
@@ -240,13 +244,46 @@
             rb_alwaysNavigate.UseVisualStyleBackColor = true;
             rb_alwaysNavigate.CheckedChanged += rb_afterDownload_CheckedChanged;
             // 
+            // gp_downloadItem
+            // 
+            gp_downloadItem.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            gp_downloadItem.Controls.Add(lbl_advancedInfoFormat);
+            gp_downloadItem.Controls.Add(cb_advancedInfo);
+            gp_downloadItem.Location = new Point(12, 387);
+            gp_downloadItem.Name = "gp_downloadItem";
+            gp_downloadItem.Size = new Size(649, 100);
+            gp_downloadItem.TabIndex = 5;
+            gp_downloadItem.TabStop = false;
+            gp_downloadItem.Text = "Download Item";
+            // 
+            // lbl_advancedInfoFormat
+            // 
+            lbl_advancedInfoFormat.AutoSize = true;
+            lbl_advancedInfoFormat.Location = new Point(175, 23);
+            lbl_advancedInfoFormat.Name = "lbl_advancedInfoFormat";
+            lbl_advancedInfoFormat.Size = new Size(313, 15);
+            lbl_advancedInfoFormat.TabIndex = 1;
+            lbl_advancedInfoFormat.Text = "[Id] | [Resolution] | [FPS] | [Ext] | [VCodec/Acodec] | [Note]";
+            // 
+            // cb_advancedInfo
+            // 
+            cb_advancedInfo.AutoSize = true;
+            cb_advancedInfo.Location = new Point(9, 22);
+            cb_advancedInfo.Name = "cb_advancedInfo";
+            cb_advancedInfo.Size = new Size(135, 19);
+            cb_advancedInfo.TabIndex = 0;
+            cb_advancedInfo.Text = "Show Advanced Info";
+            cb_advancedInfo.UseVisualStyleBackColor = true;
+            cb_advancedInfo.CheckedChanged += cb_advancedInfo_CheckedChanged;
+            // 
             // SettingsForm
             // 
             AcceptButton = btn_save;
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             CancelButton = btn_cancel;
-            ClientSize = new Size(673, 432);
+            ClientSize = new Size(673, 531);
+            Controls.Add(gp_downloadItem);
             Controls.Add(gb_afterDownload);
             Controls.Add(gb_logs);
             Controls.Add(gb_notifications);
@@ -266,6 +303,8 @@
             gb_logs.PerformLayout();
             gb_afterDownload.ResumeLayout(false);
             gb_afterDownload.PerformLayout();
+            gp_downloadItem.ResumeLayout(false);
+            gp_downloadItem.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -288,5 +327,8 @@
         private RadioButton rb_alwaysOpen;
         private RadioButton rb_navigateWhenClicked;
         private RadioButton rb_alwaysNavigate;
+        private GroupBox gp_downloadItem;
+        private Label lbl_advancedInfoFormat;
+        private CheckBox cb_advancedInfo;
     }
 }

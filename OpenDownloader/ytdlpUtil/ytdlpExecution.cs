@@ -12,44 +12,8 @@ namespace OpenDownloader.ytdlpUtil
             string path,
             IProgress<string> output)
         {
-
-            var option = request.Option;
-            var video = request.Video;
-            var mode = request.Mode;
-
-            var args = $"-P \"{path.Replace("\\", "/")}\" --restrict-filenames --progress --newline --print \"after_move:filepath:%(filepath)s\" \"{video.WebpageUrl}\"";
-
-            var formatArg = "";
-            if (request.Mode == DownloadMode.VideoWithAudio)
-            {
-                formatArg = option.Type switch
-                {
-                    VideoOptionType.Best => "bestvideo+bestaudio/best",
-                    VideoOptionType.Worst => "worstvideo+worstaudio/worst",
-                    _ => $"bestvideo[vcodec^=avc1][height={option.Height}][width={option.Width}][fps={option.Fps}]" +
-                               $"+bestaudio[acodec^=mp4a]/best"
-                };
-            }
-            else if (request.Mode == DownloadMode.VideoOnly)
-            {
-                formatArg = option.Type switch
-                {
-                    VideoOptionType.Best => "bestvideo/best",
-                    VideoOptionType.Worst => "worstvideo/worst",
-                    _ => $"bestvideo[vcodec^=avc1][height={option.Height}][width={option.Width}][fps={option.Fps}]"
-                };
-            }
-            else
-            {
-                formatArg = option.Type switch
-                {
-                    VideoOptionType.Best => "bestaudio/best",
-                    VideoOptionType.Worst => "worstaudio/worst",
-                    _ => $"bestaudio[acodec^=mp4a]/bestaudio"
-                };
-            }
-            args +=
-                $" -f \"{formatArg}\"";
+            var args = $"-P \"{path.Replace("\\", "/")}\" --restrict-filenames --progress --newline --print \"after_move:filepath:%(filepath)s\" \"{request.Video.WebpageUrl}\"";
+            args += $" -f \"{BuildFormatArg(request.Option, request.Mode)}\"";
 
             output.Report($"[GUI] Executing: yt-dlp.exe {args}");
 
@@ -119,6 +83,43 @@ namespace OpenDownloader.ytdlpUtil
             return finalFilePath;
         }
 
+        private static string BuildFormatArg(VideoOption option, DownloadMode mode)
+        {
+            if (option.Type == VideoOptionType.Best)
+            {
+                return mode switch
+                {
+                    DownloadMode.VideoWithAudio => "bestvideo+bestaudio/best",
+                    DownloadMode.VideoOnly => "bestvideo/best",
+                    DownloadMode.AudioOnly => "bestaudio/best",
+                    _ => throw new ArgumentOutOfRangeException()
+                };
+            }
+
+            if (option.Type == VideoOptionType.Worst)
+            {
+                return mode switch
+                {
+                    DownloadMode.VideoWithAudio => "worstvideo+worstaudio/worst",
+                    DownloadMode.VideoOnly => "worstvideo/worst",
+                    DownloadMode.AudioOnly => "worstaudio/worst",
+                    _ => throw new ArgumentOutOfRangeException()
+                };
+            }
+
+            // Specific format
+            if (string.IsNullOrEmpty(option.Id))
+                throw new InvalidOperationException("Format ID missing");
+
+            return mode switch
+            {
+                DownloadMode.VideoWithAudio => $"{option.Id}+bestaudio/best",
+                DownloadMode.VideoOnly => option.Id,
+                DownloadMode.AudioOnly => "bestaudio/best",
+                _ => throw new ArgumentOutOfRangeException()
+            };
+        }
+
         public static async Task<Video> DownloadVideoInfo(
             string url,
             IProgress<string> output
@@ -186,7 +187,7 @@ namespace OpenDownloader.ytdlpUtil
 
             var video = new Video
             {
-                Title = root.GetProperty("title").GetString() ?? "N/A",
+                Title = root.GetProperty("title").GetString() ?? "Unknown",
                 WebpageUrl = root.GetProperty("webpage_url").GetString(),
                 ThumbnailUrl = SelectCompatibleThumbnailUrl(root, output)
             };
@@ -213,16 +214,20 @@ namespace OpenDownloader.ytdlpUtil
 
                     var option = new VideoOption
                     {
+                        Id = f.GetProperty("format_id").GetString(),
                         Width = f.GetProperty("width").GetInt32(),
                         Height = h.GetInt32(),
                         Fps = fps.GetInt32(),
-                        FormatId = f.GetProperty("format_id").GetString(),
-                        EstimatedSize =
+                        Filesize =
                             f.TryGetProperty("filesize", out var fs) && fs.ValueKind != JsonValueKind.Null
                                 ? fs.GetInt64()
                                 : f.TryGetProperty("filesize_approx", out var fsa)
                                     ? fsa.GetInt64()
-                                    : null
+                                    : null,
+                        Ext = f.GetProperty("ext").GetString(),
+                        VCodec = f.GetProperty("vcodec").GetString(),
+                        ACodec = f.GetProperty("acodec").GetString(),
+                        FormatNote = f.GetProperty("format_note").GetString(),
                     };
 
                     video.Options.Add(option);
@@ -230,20 +235,10 @@ namespace OpenDownloader.ytdlpUtil
 
                 // Eliminate duplicates (same resolution + fps)
                 video.Options = video.Options
-                    .GroupBy(o => new { o.Width, o.Height, o.Fps })
-                    .Select(g => g.First())
-                    .OrderByDescending(o => o.Height)
-                    .ThenByDescending(o => o.Fps)
+                    .OrderByDescending(f => f.Height ?? 0)
+                    .ThenByDescending(f => f.Fps ?? 0)
+                    .ThenBy(f => f.VCodec == "none")
                     .ToList();
-
-                if (video.Options.Count > 1)
-                {
-                    var best = video.Options[0];
-                    best.AdditionalInfo = "Best";
-
-                    var worst = video.Options[^1];
-                    worst.AdditionalInfo = "Worst";
-                }
             } 
             catch (Exception ex)
             {
@@ -254,14 +249,12 @@ namespace OpenDownloader.ytdlpUtil
 
             video.Options.Insert(0, new VideoOption
             {
-                Type = VideoOptionType.Best,
-                AdditionalInfo = "auto"
+                Type = VideoOptionType.Best
             });
 
             video.Options.Add(new VideoOption
             {
-                Type = VideoOptionType.Worst,
-                AdditionalInfo = "auto"
+                Type = VideoOptionType.Worst
             });
 
             return video;

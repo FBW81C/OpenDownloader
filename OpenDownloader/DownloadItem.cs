@@ -1,6 +1,7 @@
 ﻿using OpenDownloader.lib;
 using OpenDownloader.model;
 using System.Text.RegularExpressions;
+using static System.Windows.Forms.DataFormats;
 
 namespace OpenDownloader
 {
@@ -28,38 +29,115 @@ namespace OpenDownloader
             pb_thumbnail.Image = video.Thumbnail;
             lbl_title.Text = video.Title;
 
-            // Resolutions
-            var startOption = video.Options[0];
+            // Formats
+            var grouped = video.Options
+                .Where(f => f.Type == VideoOptionType.SpecificFormat)
+                .GroupBy(f => new
+                {
+                    f.Height,
+                    f.Fps
+                });
+            var virtualOptions = video.Options
+                .Where(f => f.Type != VideoOptionType.SpecificFormat)
+                .ToList();
+
+            VideoOption PickBest(IGrouping<object, VideoOption> group)
+            {
+                return group
+                    .OrderByDescending(f => f.Ext == "mp4")
+                    .ThenByDescending(f => f.VCodec != null && f.VCodec.StartsWith("avc1"))
+                    .ThenByDescending(f => f.Filesize ?? 0)
+                    .First();
+            }
+
+            var normalOptions = grouped
+                .Select(PickBest)
+                .OrderByDescending(f => f.Height ?? 0)
+                .ThenByDescending(f => f.Fps ?? 0)
+                .ToList();
+
+            // Best
+            var best = virtualOptions.FirstOrDefault(f => f.Type == VideoOptionType.Best);
+            if (best != null)
+                normalOptions.Insert(0, best);
+
+            // Worst
+            var worst = virtualOptions.FirstOrDefault(f => f.Type == VideoOptionType.Worst);
+            if (worst != null)
+                normalOptions.Add(worst);
+
+            List<VideoOption> advancedOptions = video.Options;
 
             cb_quality.Items.Clear();
-            cb_quality.Items.AddRange(video.Options.ToArray());
-            cb_quality.DisplayMember = "Resolution";
-            if (cb_quality.Items.Count > 0)
-            {
-                cb_quality.SelectedItem = startOption;
-                SelectedVideoOption = startOption;
-            }
-
-            // FPS
-            if (cb_quality.Items.Count > 0 && startOption.Fps != null)
-            {
-                cb_fps.Items.Clear();
-                cb_fps.Items.AddRange([startOption.Fps]);
-                cb_fps.SelectedIndex = 0;
-            }
+            var formats = 
+                (Constants.Settings.ShowAdvancedVideoInfo ? advancedOptions : normalOptions)
+                .Select(option => new ComboboxItem<VideoOption> 
+                    { 
+                        Value = option, 
+                        Text = Constants.Settings.ShowAdvancedVideoInfo ? GetAdvancedDisplay(option) : GetNormalDisplay(option)
+                    })
+                .ToArray();
+            cb_quality.DataSource = formats;
+            cb_quality.DisplayMember = "Text";
 
             // Download Mode
             var modes = new ComboboxItem<DownloadMode>[]
             {
-            new() {Text = "Video & Audio", Value = DownloadMode.VideoWithAudio},
-            new() {Text = "Video", Value = DownloadMode.VideoOnly},
-            new() {Text = "Audio", Value = DownloadMode.AudioOnly}
+                new() {Text = "Video & Audio", Value = DownloadMode.VideoWithAudio},
+                new() {Text = "Video", Value = DownloadMode.VideoOnly},
+                new() {Text = "Audio", Value = DownloadMode.AudioOnly}
             };
             cb_mode.Items.Clear();
             cb_mode.Items.AddRange(modes);
             cb_mode.SelectedIndex = 0;
             cb_mode.DisplayMember = "Text";
             cb_mode.ValueMember = "Value";
+        }
+
+        private string GetNormalDisplay(VideoOption option)
+        {
+            if (option.Type != VideoOptionType.SpecificFormat)
+            {
+                return option.Resolution;
+            }
+
+            if (option.VCodec == "none")
+                return $"Audio only ({option.Ext})";
+
+            string res = option.Resolution ?? "Unknown";
+            string fps = option.Fps.HasValue ? $" @ {option.Fps:0}fps" : "";
+            string note = !string.IsNullOrEmpty(option.FormatNote) ? $" ({option.FormatNote})" : "";
+
+            return $"{res}{fps}{note}";
+        }
+
+        private string GetAdvancedDisplay(VideoOption option)
+        {
+            if (option.Type != VideoOptionType.SpecificFormat)
+            {
+                return option.Resolution;
+            }
+
+            string res = option.VCodec == "none"
+                ? "audio"
+                : option.Resolution ?? "Unknown";
+
+            string fps = option.Fps.HasValue ? $"@{option.Fps:0}" : "";
+            string note = !string.IsNullOrEmpty(option.FormatNote) ? $" ({option.FormatNote})" : "";
+
+            return $"{option.Id} - {res}{fps} - {option.Ext} - {option.VCodec}{note}";
+        }
+
+        public void UpdateDisplay(bool advanced)
+        {
+            foreach (ComboboxItem<VideoOption> item in cb_quality.Items)
+            {
+                item.Text = advanced
+                    ? GetAdvancedDisplay(item.Value)
+                    : GetNormalDisplay(item.Value);
+            }
+
+            cb_quality.Refresh();
         }
 
         private async void btnDownload_Click(object sender, EventArgs e)
@@ -99,7 +177,8 @@ namespace OpenDownloader
 
         private void cb_quality_SelectedValueChanged(object sender, EventArgs e)
         {
-            var option = cb_quality.SelectedItem as VideoOption;
+            var comboxBoxItem = cb_quality.SelectedItem as ComboboxItem<VideoOption>;
+            var option = comboxBoxItem?.Value;
 
             if (option == null)
             {
@@ -108,19 +187,7 @@ namespace OpenDownloader
 
             SelectedVideoOption = option;
 
-            cb_fps.Items.Clear();
-            if (option.Fps != null)
-            {
-                cb_fps.Items.AddRange([option.Fps]);
-                cb_fps.SelectedIndex = 0;
-                cb_fps.Enabled = true;
-            }
-            else
-            {
-                cb_fps.Enabled = false;
-            }
-
-            lbl_estimatedSizeValue.Text = option.EstimatedSize.HasValue ? $"~{FilesizeParser.ReadableFileSize(option.EstimatedSize.Value)}" : "N/A";
+            lbl_estimatedSizeValue.Text = option.Filesize.HasValue ? $"~{FilesizeParser.ReadableFileSize(option.Filesize.Value)}" : "N/A";
         }
 
         private void btn_openLog_Click(object sender, EventArgs e)

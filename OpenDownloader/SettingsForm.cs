@@ -43,6 +43,9 @@ namespace OpenDownloader
             rb_navigateWhenClicked.Checked = settings.AfterDownload == AfterDownloadOptions.NaviagteOnNotificationClick;
             rb_alwaysOpen.Checked = settings.AfterDownload == AfterDownloadOptions.OpenFile;
             rb_nothing.Checked = settings.AfterDownload == AfterDownloadOptions.Nothing;
+
+            // DownloadItem
+            cb_advancedInfo.Checked = settings.ShowAdvancedVideoInfo;
         }
 
         private void btn_save_Click(object sender, EventArgs e)
@@ -113,6 +116,11 @@ namespace OpenDownloader
                 AfterDownloadOptions.Nothing;
 
             LocalSettings.AfterDownload = option;
+        }
+
+        private void cb_advancedInfo_CheckedChanged(object sender, EventArgs e)
+        {
+            LocalSettings.ShowAdvancedVideoInfo = cb_advancedInfo.Checked;
         }
     }
 }

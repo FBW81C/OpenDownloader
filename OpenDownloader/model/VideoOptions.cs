@@ -10,13 +10,15 @@ namespace OpenDownloader.model
     {
         public VideoOptionType Type { get; set; } = VideoOptionType.SpecificFormat;
 
+        public string? Id { get; set; }
         public int? Width { get; set; }
         public int? Height { get; set; }
         public double? Fps { get; set; }
-
-        public long? EstimatedSize { get; set; }
-        public string? FormatId { get; set; }
-        public string? AdditionalInfo { get; set; }
+        public long? Filesize { get; set; }
+        public string? Ext { get; set; }
+        public string? VCodec { get; set; }
+        public string? ACodec { get; set; }
+        public string? FormatNote { get; set; }
 
         public string Resolution
         {
@@ -26,7 +28,7 @@ namespace OpenDownloader.model
                 {
                     VideoOptionType.Best => "Best quality",
                     VideoOptionType.Worst => "Worst quality",
-                    _ => $"{Width}x{Height} {(AdditionalInfo != null ? $"({AdditionalInfo})" : "")}"
+                    _ => $"{Width}x{Height}"
                 };
             }
         }
