@@ -6,8 +6,7 @@ GitHub: https://github.com/FBW81C/OpenDownloader
 
 Features:
 - Downloading Videos
-- FPS selection
-- Quality selection
+- Format selection
 - Mode selection (Video & Audio, Video, Audio)
 - Estimated file size
 - ETA
@@ -23,6 +22,7 @@ Features:
     - Naviagte to file when notification clicked
     - Open file
     - Nothing
+  - Advanced format selection (yes/no)
 
 Dependencies:
 - .NET 8 (Core)
