@@ -27,14 +27,26 @@ All functionality runs **locally and without telemetry**.
 - Progress bar
 
 ## Dependencies
-- **.NET 8 (Core)**
+- **.NET 8 (Core)**, you need to install it manually.
 - yt-dlp [https://github.com/yt-dlp/yt-dlp](https://github.com/yt-dlp/yt-dlp)
 - ffmpeg [https://ffmpeg.org/](https://ffmpeg.org/)
 
-yt-dlp and ffmpeg are already compiled with the Installer. Compile it yourself if you want to manage it manually.
+## Installer
+You can compile the installer yourself if you want to.
+There are different types of installers:
+- Normal installer
+- No dependency installer: yt-dlp and ffmpeg aren't included in this installer.
 
 ## Platform
-- Windows
+- Windows x64
+
+## Possible future features
+- History: Added links will be appended to a history. It will check if you already downloaded the file and inform you.
+- YT Playlist support: Currently playlists are blocked.
+- Remove after Download: Automatically remove link if downloaded successfully
+- Link-Collector: Upload a .txt file or enter links line by line to add multiple links at once.
+- Bulk-Download: Button for downloading all added links at once.
+- Enhanced notification management: More options for disabling error notifications and warnings.
 
 ## License
 - see LICENSE.txt
