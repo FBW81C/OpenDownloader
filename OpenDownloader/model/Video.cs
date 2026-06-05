@@ -14,4 +14,5 @@ public class Video
     public Image Thumbnail { get; set; }
 
     public List<VideoOption> Options { get; set; } = new();
+    public List<VideoOption> AudioOptions { get; set; } = new();
 }

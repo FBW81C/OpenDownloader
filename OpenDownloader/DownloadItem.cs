@@ -11,6 +11,11 @@ namespace OpenDownloader
         public Video Video;
         public VideoOption SelectedVideoOption;
 
+        // Video Options
+        private List<VideoOption> NormalVideoOptions = [];
+        private List<VideoOption> AdvancedVideoOptions = [];
+        private List<VideoOption> AudioOptions = [];
+
         // Log
         private LogForm logWindow;
         List<string> logBuffer = new();
@@ -18,6 +23,9 @@ namespace OpenDownloader
         // Actions
         public event Func<object?, DownloadRequest, Task>? DownloadClicked;
         public event EventHandler? DeleteClicked;
+
+        // Internal State Management
+        private bool _isInitializing = true;
 
         public DownloadItem(Video video)
         {
@@ -28,37 +36,28 @@ namespace OpenDownloader
             pb_thumbnail.Image = video.Thumbnail;
             lbl_title.Text = video.Title;
 
-            // Formats
-            List<VideoOption> normalOptions = GetNormalVideoOptions(video.Options);
-            List<VideoOption> advancedOptions = video.Options;
-
-            cb_quality.Items.Clear();
-            var formats =
-                (Constants.Settings.ShowAdvancedVideoInfo ? advancedOptions : normalOptions)
-                .Select(option => new ComboboxItem<VideoOption>
-                {
-                    Value = option,
-                    Text = Constants.Settings.ShowAdvancedVideoInfo ? GetAdvancedDisplay(option) : GetNormalDisplay(option)
-                })
-                .ToArray();
-            cb_quality.DataSource = formats;
-            cb_quality.DisplayMember = "Text";
-
             // Download Mode
             var modes = new ComboboxItem<DownloadMode>[]
-            {
-                new() {Text = "Video & Audio", Value = DownloadMode.VideoWithAudio},
-                new() {Text = "Video", Value = DownloadMode.VideoOnly},
-                new() {Text = "Audio", Value = DownloadMode.AudioOnly}
-            };
-            cb_mode.Items.Clear();
-            cb_mode.Items.AddRange(modes);
-            cb_mode.SelectedIndex = 0;
+                {
+                    new() {Text = "Video & Audio", Value = DownloadMode.VideoWithAudio},
+                    new() {Text = "Video", Value = DownloadMode.VideoOnly},
+                    new() {Text = "Audio", Value = DownloadMode.AudioOnly}
+                };
+            cb_mode.DataSource = modes;
             cb_mode.DisplayMember = "Text";
-            cb_mode.ValueMember = "Value";
+            cb_mode.SelectedIndex = 0;
+
+            // Video Formats
+            NormalVideoOptions = GetNormalVideoOptions(video.Options);
+            AdvancedVideoOptions = video.Options;
+            AudioOptions = video.AudioOptions;
+
+            _isInitializing = false;
+
+            SetQualityComboboxContent();
         }
 
-        private string GetNormalDisplay(VideoOption option)
+        private string GetNormalVideoDisplay(VideoOption option)
         {
             if (option.Type != VideoOptionType.SpecificFormat)
             {
@@ -66,7 +65,7 @@ namespace OpenDownloader
             }
 
             if (option.VCodec == "none")
-                return $"Audio only ({option.Ext})";
+                return $"Audio only ({option.VideoExt})";
 
             string res = option.Resolution ?? "Unknown";
             string fps = option.Fps.HasValue ? $" @ {option.Fps:0}fps" : "";
@@ -75,7 +74,7 @@ namespace OpenDownloader
             return $"{res}{fps}{note}";
         }
 
-        private string GetAdvancedDisplay(VideoOption option)
+        private string GetAdvancedVideoDisplay(VideoOption option)
         {
             if (option.Type != VideoOptionType.SpecificFormat)
             {
@@ -89,10 +88,34 @@ namespace OpenDownloader
             string fps = option.Fps.HasValue ? $"@{option.Fps:0}" : "";
             string note = !string.IsNullOrEmpty(option.FormatNote) ? $" ({option.FormatNote})" : "";
 
-            return $"{option.Id} - {res}{fps} - {option.Ext} - {option.VCodec}{note}";
+            return $"{option.Id} - {res}{fps} - {option.VideoExt} - {option.VCodec}{note}";
         }
 
-        public List<VideoOption> GetNormalVideoOptions(List<VideoOption> options)
+        private string GetNormalAudioDisplay(VideoOption option)
+        {
+            if (option.Type != VideoOptionType.SpecificFormat)
+            {
+                return option.Resolution;
+            }
+
+            string note = !string.IsNullOrEmpty(option.FormatNote) ? $" ({option.FormatNote})" : "";
+
+            return $"{option.AudioExt}{note}";
+        }
+
+        private string GetAdvancedAudioDisplay(VideoOption option)
+        {
+            if (option.Type != VideoOptionType.SpecificFormat)
+            {
+                return option.Resolution;
+            }
+
+            string note = !string.IsNullOrEmpty(option.FormatNote) ? $" ({option.FormatNote})" : "";
+
+            return $"{option.Id} - {option.AudioExt}{note} - {option.ACodec}";
+        }
+
+        private List<VideoOption> GetNormalVideoOptions(List<VideoOption> options)
         {
             var grouped = options
                .Where(f => f.Type == VideoOptionType.SpecificFormat)
@@ -108,7 +131,7 @@ namespace OpenDownloader
             VideoOption PickBest(IGrouping<object, VideoOption> group)
             {
                 return group
-                    .OrderByDescending(f => f.Ext == "mp4")
+                    .OrderByDescending(f => f.VideoExt == "mp4")
                     .ThenByDescending(f => f.VCodec != null && f.VCodec.StartsWith("avc1"))
                     .ThenByDescending(f => f.Filesize ?? 0)
                     .First();
@@ -131,6 +154,41 @@ namespace OpenDownloader
                 normalOptions.Add(worst);
 
             return normalOptions;
+        }
+
+        private void SetQualityComboboxContent()
+        {
+            var mode = cb_mode.SelectedItem as ComboboxItem<DownloadMode>;
+
+            if (mode == null)
+            {
+                throw new Exception("Code should not get here");
+            }
+
+            ComboboxItem<VideoOption>[] items;
+
+            if (mode.Value == DownloadMode.VideoWithAudio || mode.Value == DownloadMode.VideoOnly) // Video & Video With Audio Streams
+            {
+                items = (Constants.Settings.ShowAdvancedVideoInfo ? AdvancedVideoOptions : NormalVideoOptions)
+                    .Select(option => new ComboboxItem<VideoOption>
+                    {
+                        Value = option,
+                        Text = Constants.Settings.ShowAdvancedVideoInfo ? GetAdvancedVideoDisplay(option) : GetNormalVideoDisplay(option)
+                    })
+                    .ToArray();
+            }
+            else // Auido Streams
+            {
+                items = AudioOptions.Select(option => new ComboboxItem<VideoOption>
+                {
+                    Value = option,
+                    Text = Constants.Settings.ShowAdvancedVideoInfo ? GetAdvancedAudioDisplay(option) : GetNormalAudioDisplay(option)
+                })
+                .ToArray();
+            }
+
+            cb_quality.DataSource = items;
+            cb_quality.DisplayMember = "Text";
         }
 
         //public void UpdateDisplay(bool advanced)
@@ -182,6 +240,8 @@ namespace OpenDownloader
 
         private void cb_quality_SelectedValueChanged(object sender, EventArgs e)
         {
+            if (_isInitializing) return;
+
             var comboxBoxItem = cb_quality.SelectedItem as ComboboxItem<VideoOption>;
             var option = comboxBoxItem?.Value;
 
@@ -193,6 +253,13 @@ namespace OpenDownloader
             SelectedVideoOption = option;
 
             lbl_estimatedSizeValue.Text = option.Filesize.HasValue ? $"~{FilesizeParser.ReadableFileSize(option.Filesize.Value)}" : "N/A";
+        }
+
+        private void cb_mode_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (_isInitializing) return;
+
+            SetQualityComboboxContent();
         }
 
         private void btn_openLog_Click(object sender, EventArgs e)

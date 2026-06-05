@@ -114,6 +114,7 @@
             cb_mode.Name = "cb_mode";
             cb_mode.Size = new Size(129, 23);
             cb_mode.TabIndex = 10;
+            cb_mode.SelectedIndexChanged += cb_mode_SelectedIndexChanged;
             // 
             // btn_openLog
             // 

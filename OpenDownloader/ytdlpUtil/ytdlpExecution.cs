@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Text;
 using System.Text.Json;
+using OpenDownloader.lib;
 using OpenDownloader.model;
 
 namespace OpenDownloader.ytdlpUtil
@@ -115,7 +116,7 @@ namespace OpenDownloader.ytdlpUtil
             {
                 DownloadMode.VideoWithAudio => $"{option.Id}+bestaudio/best",
                 DownloadMode.VideoOnly => option.Id,
-                DownloadMode.AudioOnly => "bestaudio/best",
+                DownloadMode.AudioOnly => option.Id,
                 _ => throw new ArgumentOutOfRangeException()
             };
         }
@@ -207,35 +208,36 @@ namespace OpenDownloader.ytdlpUtil
 
                 foreach (var f in formats.EnumerateArray())
                 {
-                    // Only Video-Streams
-                    if (f.GetProperty("vcodec").GetString() == "none")
-                        continue;
-
-                    if (!f.TryGetProperty("height", out var h) || h.ValueKind == JsonValueKind.Null)
-                        continue;
-
-                    if (!f.TryGetProperty("fps", out var fps) || fps.ValueKind == JsonValueKind.Null)
+                    // Skip useless streams
+                    if (f.GetProperty("vcodec").GetString() == "none" && f.GetProperty("acodec").GetString() == "none")
                         continue;
 
                     var option = new VideoOption
                     {
                         Id = f.GetProperty("format_id").GetString(),
-                        Width = f.GetProperty("width").GetInt32(),
-                        Height = h.GetInt32(),
-                        Fps = fps.GetInt32(),
-                        Filesize =
-                            f.TryGetProperty("filesize", out var fs) && fs.ValueKind != JsonValueKind.Null
-                                ? fs.GetInt64()
-                                : f.TryGetProperty("filesize_approx", out var fsa)
-                                    ? fsa.GetInt64()
-                                    : null,
-                        Ext = f.GetProperty("ext").GetString(),
+                        Width = JsonParser.GetInt32Flexible(f, "width"),
+                        Height = JsonParser.GetInt32Flexible(f, "height"),
+                        Fps = JsonParser.GetInt32Flexible(f, "fps"),
+                        Filesize = JsonParser.GetInt64Flexible(f, "filesize") ?? JsonParser.GetInt64Flexible(f, "filesize_approx"),
+                        VideoExt = f.GetProperty("video_ext").GetString(),
+                        AudioExt = f.GetProperty("audio_ext").GetString(),
                         VCodec = f.GetProperty("vcodec").GetString(),
                         ACodec = f.GetProperty("acodec").GetString(),
                         FormatNote = f.GetProperty("format_note").GetString(),
                     };
 
-                    video.Options.Add(option);
+                    if (f.GetProperty("vcodec").GetString() == "none" && f.GetProperty("acodec").GetString() != "none") // Audio Only Streams
+                    {
+                        video.AudioOptions.Add(option);
+                    }
+                    else if (f.GetProperty("vcodec").GetString() != "none" && f.GetProperty("acodec").GetString() == "none") // Video Only Streams
+                    {
+                        video.Options.Add(option);
+                    }
+                    else // Video Streams & Video and Audio Streams
+                    {
+                        video.Options.Add(option);
+                    }
                 }
 
                 // Eliminate duplicates (same resolution + fps)
@@ -243,6 +245,10 @@ namespace OpenDownloader.ytdlpUtil
                     .OrderByDescending(f => f.Height ?? 0)
                     .ThenByDescending(f => f.Fps ?? 0)
                     .ThenBy(f => f.VCodec == "none")
+                    .ToList();
+
+                video.AudioOptions = video.AudioOptions
+                    .OrderByDescending(f => f.ACodec)
                     .ToList();
             } 
             catch (Exception ex)
@@ -252,15 +258,11 @@ namespace OpenDownloader.ytdlpUtil
                 output.Report($"[GUI] failed parsing JSON: {ex.Message}");
             }
 
-            video.Options.Insert(0, new VideoOption
-            {
-                Type = VideoOptionType.Best
-            });
+            video.Options.Insert(0, new VideoOption { Type = VideoOptionType.Best });
+            video.Options.Add(new VideoOption { Type = VideoOptionType.Worst });
 
-            video.Options.Add(new VideoOption
-            {
-                Type = VideoOptionType.Worst
-            });
+            video.AudioOptions.Insert(0, new VideoOption { Type = VideoOptionType.Best });
+            video.AudioOptions.Add(new VideoOption { Type = VideoOptionType.Worst });
 
             return video;
         }

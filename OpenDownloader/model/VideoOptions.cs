@@ -15,7 +15,8 @@ namespace OpenDownloader.model
         public int? Height { get; set; }
         public double? Fps { get; set; }
         public long? Filesize { get; set; }
-        public string? Ext { get; set; }
+        public string? VideoExt { get; set; }
+        public string? AudioExt { get; set; }
         public string? VCodec { get; set; }
         public string? ACodec { get; set; }
         public string? FormatNote { get; set; }
