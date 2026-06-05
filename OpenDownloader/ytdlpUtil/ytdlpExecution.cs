@@ -214,16 +214,22 @@ namespace OpenDownloader.ytdlpUtil
 
                     var option = new VideoOption
                     {
+                        // General
                         Id = f.GetProperty("format_id").GetString(),
+                        Filesize = JsonParser.GetInt64Flexible(f, "filesize") ?? JsonParser.GetInt64Flexible(f, "filesize_approx"),
+                        FormatNote = f.GetProperty("format_note").GetString(),
+                        // Video
                         Width = JsonParser.GetInt32Flexible(f, "width"),
                         Height = JsonParser.GetInt32Flexible(f, "height"),
                         Fps = JsonParser.GetInt32Flexible(f, "fps"),
-                        Filesize = JsonParser.GetInt64Flexible(f, "filesize") ?? JsonParser.GetInt64Flexible(f, "filesize_approx"),
                         VideoExt = f.GetProperty("video_ext").GetString(),
-                        AudioExt = f.GetProperty("audio_ext").GetString(),
                         VCodec = f.GetProperty("vcodec").GetString(),
+                        // Audio
+                        AudioExt = f.GetProperty("audio_ext").GetString(),
                         ACodec = f.GetProperty("acodec").GetString(),
-                        FormatNote = f.GetProperty("format_note").GetString(),
+                        Abr = JsonParser.GetDoubleFlexible(f, "abr"),
+                        Asr = JsonParser.GetInt32Flexible(f, "asr"),
+                        AudioChannels = JsonParser.GetInt32Flexible(f, "audio_channels"),
                     };
 
                     if (f.GetProperty("vcodec").GetString() == "none" && f.GetProperty("acodec").GetString() != "none") // Audio Only Streams

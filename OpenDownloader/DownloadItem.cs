@@ -98,9 +98,10 @@ namespace OpenDownloader
                 return option.Resolution;
             }
 
-            string note = !string.IsNullOrEmpty(option.FormatNote) ? $" ({option.FormatNote})" : "";
+            var codec = option.ACodec ?? "unknown";
+            var abr = option.Abr != null ? $"{Math.Round((double)option.Abr)} kbps" : GetQualityLabel(option.Abr);
 
-            return $"{option.AudioExt}{note}";
+            return $"{option.AudioExt} - {codec} ({abr})";
         }
 
         private string GetAdvancedAudioDisplay(VideoOption option)
@@ -110,9 +111,23 @@ namespace OpenDownloader
                 return option.Resolution;
             }
 
-            string note = !string.IsNullOrEmpty(option.FormatNote) ? $" ({option.FormatNote})" : "";
+            var id = option.Id ?? "?";
+            var codec = option.ACodec ?? "unknown";
+            var abr = option.Abr != null ? $"{Math.Round((double)option.Abr)} kbps" : "unknown";
+            var asr = option.Asr != null ? $"{option.Asr / 1000} kHz" : "?";
+            var ch = option.AudioChannels.ToString() ?? "?";
+            var ext = option.AudioExt ?? "?";
 
-            return $"{option.Id} - {option.AudioExt}{note} - {option.ACodec}";
+            return $"{id} - {codec} ({abr}, {asr}, {ch}ch) - {ext}";
+        }
+
+        private string GetQualityLabel(double? abr)
+        {
+            if (abr == null) return "unknown";
+
+            if (abr < 64) return "low";
+            if (abr < 128) return "medium";
+            return "high";
         }
 
         private List<VideoOption> GetNormalVideoOptions(List<VideoOption> options)

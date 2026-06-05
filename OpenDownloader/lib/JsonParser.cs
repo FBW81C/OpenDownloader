@@ -33,4 +33,16 @@ public static class JsonParser
             _ => null
         };
     }
+    public static double? GetDoubleFlexible(JsonElement parent, string name)
+    {
+        if (!parent.TryGetProperty(name, out var prop))
+            return null;
+
+        return prop.ValueKind switch
+        {
+            JsonValueKind.Number => prop.GetDouble(),
+            JsonValueKind.String when double.TryParse(prop.GetString(), out var val) => val,
+            _ => null
+        };
+    }
 }
