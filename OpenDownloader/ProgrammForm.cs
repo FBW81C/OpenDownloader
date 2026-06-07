@@ -80,7 +80,7 @@ namespace OpenDownloader
                     return;
             }
 
-            if (Constants.History.TryGetValue(tbURL.Text, out var existingTitle))
+            if (Constants.History.TryGetValue(tbURL.Text, out var existingTitle) && Constants.Settings.IsHistoryEnabled)
             {
                 var result = MessageBox.Show($"This URL was found in the history with title:\n\n{existingTitle}\n\nIgnore and continue?", "History", MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation);
                 if (result == DialogResult.Cancel)
@@ -242,6 +242,8 @@ namespace OpenDownloader
 
         private void AddVideoToHistory(Video video)
         {
+            if (!Constants.Settings.IsHistoryEnabled) return;
+
             Constants.History[video.WebpageUrl] = video.Title;
             File.AppendAllText(Constants.HISTORY_PATH, $"{video.WebpageUrl}\t{video.Title}\n");
         }

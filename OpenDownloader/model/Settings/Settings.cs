@@ -23,6 +23,8 @@ public class Settings
     public AfterDownloadRemoveOptions AfterDownloadRemove { get; set; } = AfterDownloadRemoveOptions.Never;
     // DownoadItem
     public bool ShowAdvancedVideoInfo { get; set; } = false;
+    // Hisotry
+    public bool IsHistoryEnabled { get; set; } = true;
 
     public Settings Clone()
     {
@@ -37,6 +39,7 @@ public class Settings
             AfterDownload = AfterDownload,
             AfterDownloadRemove = AfterDownloadRemove,
             ShowAdvancedVideoInfo = ShowAdvancedVideoInfo,
+            IsHistoryEnabled = IsHistoryEnabled,
         };
     }
 }

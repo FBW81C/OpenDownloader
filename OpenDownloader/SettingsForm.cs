@@ -54,6 +54,10 @@ namespace OpenDownloader
 
             // DownloadItem
             cb_advancedInfo.Checked = settings.ShowAdvancedVideoInfo;
+
+            // History
+            cb_enableHistory.Checked = settings.IsHistoryEnabled;
+            lbl_historyAmount.Text = Constants.History.Count.ToString() ?? "N/A";
         }
 
         private void btn_save_Click(object sender, EventArgs e)
@@ -144,6 +148,28 @@ namespace OpenDownloader
                 AfterDownloadRemoveOptions.Never;
 
             LocalSettings.AfterDownloadRemove = option;
+        }
+
+        private void cb_enableHistory_CheckedChanged(object sender, EventArgs e)
+        {
+            LocalSettings.IsHistoryEnabled = cb_enableHistory.Checked;
+        }
+
+        private void btn_resetHistory_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (File.Exists(Constants.HISTORY_PATH))
+                {
+                    File.Delete(Constants.HISTORY_PATH);
+                    Constants.History.Clear();
+                    lbl_historyAmount.Text = "0";
+                }
+            } 
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Failed deleting history file, reason:\n\n{ex.Message}\n\nTry deleting the file manually: {Constants.HISTORY_PATH}", "History", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }

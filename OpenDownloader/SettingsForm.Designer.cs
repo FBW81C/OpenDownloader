@@ -53,9 +53,14 @@
             gb_messgeboxes = new GroupBox();
             cb_showErrorMessageBoxes = new CheckBox();
             gb_afterDownoad_remove = new GroupBox();
-            rb_alwaysRemove = new RadioButton();
-            rb_removeWhenSuccessful = new RadioButton();
             rb_removeNever = new RadioButton();
+            rb_removeWhenSuccessful = new RadioButton();
+            rb_alwaysRemove = new RadioButton();
+            gb_history = new GroupBox();
+            lbl_historyAmount = new Label();
+            lbl_history = new Label();
+            cb_enableHistory = new CheckBox();
+            btn_resetHistory = new Button();
             gb_notifications.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)sb_notificationDuration).BeginInit();
             gb_logs.SuspendLayout();
@@ -63,6 +68,7 @@
             gp_downloadItem.SuspendLayout();
             gb_messgeboxes.SuspendLayout();
             gb_afterDownoad_remove.SuspendLayout();
+            gb_history.SuspendLayout();
             SuspendLayout();
             // 
             // btn_save
@@ -147,7 +153,7 @@
             gb_logs.Controls.Add(cb_autoSaveLogs);
             gb_logs.Location = new Point(12, 135);
             gb_logs.Name = "gb_logs";
-            gb_logs.Size = new Size(649, 110);
+            gb_logs.Size = new Size(328, 110);
             gb_logs.TabIndex = 3;
             gb_logs.TabStop = false;
             gb_logs.Text = "Logs";
@@ -155,7 +161,7 @@
             // lbl_logPath
             // 
             lbl_logPath.AutoSize = true;
-            lbl_logPath.Location = new Point(9, 56);
+            lbl_logPath.Location = new Point(9, 52);
             lbl_logPath.Name = "lbl_logPath";
             lbl_logPath.Size = new Size(34, 15);
             lbl_logPath.TabIndex = 3;
@@ -164,7 +170,7 @@
             // btn_browseLogFolder
             // 
             btn_browseLogFolder.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            btn_browseLogFolder.Location = new Point(227, 74);
+            btn_browseLogFolder.Location = new Point(213, 48);
             btn_browseLogFolder.Name = "btn_browseLogFolder";
             btn_browseLogFolder.Size = new Size(101, 23);
             btn_browseLogFolder.TabIndex = 2;
@@ -177,13 +183,13 @@
             tb_logSaveDirectory.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             tb_logSaveDirectory.Location = new Point(9, 74);
             tb_logSaveDirectory.Name = "tb_logSaveDirectory";
-            tb_logSaveDirectory.Size = new Size(212, 23);
+            tb_logSaveDirectory.Size = new Size(305, 23);
             tb_logSaveDirectory.TabIndex = 1;
             // 
             // cb_autoSaveLogs
             // 
             cb_autoSaveLogs.AutoSize = true;
-            cb_autoSaveLogs.Location = new Point(9, 31);
+            cb_autoSaveLogs.Location = new Point(9, 26);
             cb_autoSaveLogs.Name = "cb_autoSaveLogs";
             cb_autoSaveLogs.Size = new Size(107, 19);
             cb_autoSaveLogs.TabIndex = 0;
@@ -301,7 +307,7 @@
             gb_messgeboxes.Controls.Add(cb_showErrorMessageBoxes);
             gb_messgeboxes.Location = new Point(344, 10);
             gb_messgeboxes.Name = "gb_messgeboxes";
-            gb_messgeboxes.Size = new Size(317, 119);
+            gb_messgeboxes.Size = new Size(317, 120);
             gb_messgeboxes.TabIndex = 6;
             gb_messgeboxes.TabStop = false;
             gb_messgeboxes.Text = "Message Boxes";
@@ -329,17 +335,16 @@
             gb_afterDownoad_remove.TabStop = false;
             gb_afterDownoad_remove.Text = "Remove Video after Download";
             // 
-            // rb_alwaysRemove
+            // rb_removeNever
             // 
-            rb_alwaysRemove.AutoSize = true;
-            rb_alwaysRemove.Location = new Point(13, 22);
-            rb_alwaysRemove.Name = "rb_alwaysRemove";
-            rb_alwaysRemove.Size = new Size(62, 19);
-            rb_alwaysRemove.TabIndex = 0;
-            rb_alwaysRemove.TabStop = true;
-            rb_alwaysRemove.Text = "Always";
-            rb_alwaysRemove.UseVisualStyleBackColor = true;
-            rb_alwaysRemove.CheckedChanged += rb_alwaysRemove_CheckedChanged;
+            rb_removeNever.AutoSize = true;
+            rb_removeNever.Location = new Point(13, 72);
+            rb_removeNever.Name = "rb_removeNever";
+            rb_removeNever.Size = new Size(56, 19);
+            rb_removeNever.TabIndex = 2;
+            rb_removeNever.TabStop = true;
+            rb_removeNever.Text = "Never";
+            rb_removeNever.UseVisualStyleBackColor = true;
             // 
             // rb_removeWhenSuccessful
             // 
@@ -352,16 +357,70 @@
             rb_removeWhenSuccessful.Text = "Remove when download successful";
             rb_removeWhenSuccessful.UseVisualStyleBackColor = true;
             // 
-            // rb_removeNever
+            // rb_alwaysRemove
             // 
-            rb_removeNever.AutoSize = true;
-            rb_removeNever.Location = new Point(13, 72);
-            rb_removeNever.Name = "rb_removeNever";
-            rb_removeNever.Size = new Size(56, 19);
-            rb_removeNever.TabIndex = 2;
-            rb_removeNever.TabStop = true;
-            rb_removeNever.Text = "Never";
-            rb_removeNever.UseVisualStyleBackColor = true;
+            rb_alwaysRemove.AutoSize = true;
+            rb_alwaysRemove.Location = new Point(13, 22);
+            rb_alwaysRemove.Name = "rb_alwaysRemove";
+            rb_alwaysRemove.Size = new Size(62, 19);
+            rb_alwaysRemove.TabIndex = 0;
+            rb_alwaysRemove.TabStop = true;
+            rb_alwaysRemove.Text = "Always";
+            rb_alwaysRemove.UseVisualStyleBackColor = true;
+            rb_alwaysRemove.CheckedChanged += rb_alwaysRemove_CheckedChanged;
+            // 
+            // gb_history
+            // 
+            gb_history.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            gb_history.Controls.Add(btn_resetHistory);
+            gb_history.Controls.Add(lbl_historyAmount);
+            gb_history.Controls.Add(lbl_history);
+            gb_history.Controls.Add(cb_enableHistory);
+            gb_history.Location = new Point(346, 136);
+            gb_history.Name = "gb_history";
+            gb_history.Size = new Size(315, 109);
+            gb_history.TabIndex = 8;
+            gb_history.TabStop = false;
+            gb_history.Text = "History";
+            // 
+            // lbl_historyAmount
+            // 
+            lbl_historyAmount.AutoSize = true;
+            lbl_historyAmount.Location = new Point(161, 47);
+            lbl_historyAmount.Name = "lbl_historyAmount";
+            lbl_historyAmount.Size = new Size(29, 15);
+            lbl_historyAmount.TabIndex = 2;
+            lbl_historyAmount.Text = "N/A";
+            // 
+            // lbl_history
+            // 
+            lbl_history.AutoSize = true;
+            lbl_history.Location = new Point(161, 26);
+            lbl_history.Name = "lbl_history";
+            lbl_history.Size = new Size(106, 15);
+            lbl_history.TabIndex = 1;
+            lbl_history.Text = "Amount of entries:";
+            // 
+            // cb_enableHistory
+            // 
+            cb_enableHistory.AutoSize = true;
+            cb_enableHistory.Location = new Point(13, 25);
+            cb_enableHistory.Name = "cb_enableHistory";
+            cb_enableHistory.Size = new Size(102, 19);
+            cb_enableHistory.TabIndex = 0;
+            cb_enableHistory.Text = "Enable History";
+            cb_enableHistory.UseVisualStyleBackColor = true;
+            cb_enableHistory.CheckedChanged += cb_enableHistory_CheckedChanged;
+            // 
+            // btn_resetHistory
+            // 
+            btn_resetHistory.Location = new Point(13, 72);
+            btn_resetHistory.Name = "btn_resetHistory";
+            btn_resetHistory.Size = new Size(97, 23);
+            btn_resetHistory.TabIndex = 3;
+            btn_resetHistory.Text = "Reset History";
+            btn_resetHistory.UseVisualStyleBackColor = true;
+            btn_resetHistory.Click += btn_resetHistory_Click;
             // 
             // SettingsForm
             // 
@@ -370,6 +429,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             CancelButton = btn_cancel;
             ClientSize = new Size(673, 531);
+            Controls.Add(gb_history);
             Controls.Add(gb_afterDownoad_remove);
             Controls.Add(gb_messgeboxes);
             Controls.Add(gp_downloadItem);
@@ -398,6 +458,8 @@
             gb_messgeboxes.PerformLayout();
             gb_afterDownoad_remove.ResumeLayout(false);
             gb_afterDownoad_remove.PerformLayout();
+            gb_history.ResumeLayout(false);
+            gb_history.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -430,5 +492,10 @@
         private RadioButton rb_removeNever;
         private RadioButton rb_removeWhenSuccessful;
         private RadioButton rb_alwaysRemove;
+        private GroupBox gb_history;
+        private CheckBox cb_enableHistory;
+        private Label lbl_history;
+        private Label lbl_historyAmount;
+        private Button btn_resetHistory;
     }
 }
