@@ -6,10 +6,8 @@ namespace OpenDownloader
 {
     public partial class DownloadItem : UserControl
     {
-        public Image Thumbnail { get => pb_thumbnail.Image; }
-        public string Title { get => lbl_title.Text; }
-        public Video Video;
-        public VideoOption SelectedVideoOption;
+        private Video Video;
+        private VideoOption SelectedVideoOption;
 
         // Video Options
         private List<VideoOption> NormalVideoOptions = [];
@@ -55,79 +53,6 @@ namespace OpenDownloader
             _isInitializing = false;
 
             SetQualityComboboxContent();
-        }
-
-        private string GetNormalVideoDisplay(VideoOption option)
-        {
-            if (option.Type != VideoOptionType.SpecificFormat)
-            {
-                return option.Resolution;
-            }
-
-            if (option.VCodec == "none")
-                return $"Audio only ({option.VideoExt})";
-
-            string res = option.Resolution ?? "Unknown";
-            string fps = option.Fps.HasValue ? $" @ {option.Fps:0}fps" : "";
-            string note = !string.IsNullOrEmpty(option.FormatNote) ? $" ({option.FormatNote})" : "";
-
-            return $"{res}{fps}{note}";
-        }
-
-        private string GetAdvancedVideoDisplay(VideoOption option)
-        {
-            if (option.Type != VideoOptionType.SpecificFormat)
-            {
-                return option.Resolution;
-            }
-
-            string res = option.VCodec == "none"
-                ? "audio"
-                : option.Resolution ?? "Unknown";
-
-            string fps = option.Fps.HasValue ? $"@{option.Fps:0}" : "";
-            string note = !string.IsNullOrEmpty(option.FormatNote) ? $" ({option.FormatNote})" : "";
-
-            return $"{option.Id} - {res}{fps} - {option.VideoExt} - {option.VCodec}{note}";
-        }
-
-        private string GetNormalAudioDisplay(VideoOption option)
-        {
-            if (option.Type != VideoOptionType.SpecificFormat)
-            {
-                return option.Resolution;
-            }
-
-            var codec = option.ACodec ?? "unknown";
-            var abr = option.Abr != null ? $"{Math.Round((double)option.Abr)} kbps" : GetQualityLabel(option.Abr);
-
-            return $"{option.AudioExt} - {codec} ({abr})";
-        }
-
-        private string GetAdvancedAudioDisplay(VideoOption option)
-        {
-            if (option.Type != VideoOptionType.SpecificFormat)
-            {
-                return option.Resolution;
-            }
-
-            var id = option.Id ?? "?";
-            var codec = option.ACodec ?? "unknown";
-            var abr = option.Abr != null ? $"{Math.Round((double)option.Abr)} kbps" : "unknown";
-            var asr = option.Asr != null ? $"{option.Asr / 1000} kHz" : "?";
-            var ch = option.AudioChannels.ToString() ?? "?";
-            var ext = option.AudioExt ?? "?";
-
-            return $"{id} - {codec} ({abr}, {asr}, {ch}ch) - {ext}";
-        }
-
-        private string GetQualityLabel(double? abr)
-        {
-            if (abr == null) return "unknown";
-
-            if (abr < 64) return "low";
-            if (abr < 128) return "medium";
-            return "high";
         }
 
         private List<VideoOption> GetNormalVideoOptions(List<VideoOption> options)
@@ -188,7 +113,7 @@ namespace OpenDownloader
                     .Select(option => new ComboboxItem<VideoOption>
                     {
                         Value = option,
-                        Text = Constants.Settings.ShowAdvancedVideoInfo ? GetAdvancedVideoDisplay(option) : GetNormalVideoDisplay(option)
+                        Text = Constants.Settings.ShowAdvancedVideoInfo ? option.GetAdvancedVideoDisplay() : option.GetNormalVideoDisplay()
                     })
                     .ToArray();
             }
@@ -197,7 +122,7 @@ namespace OpenDownloader
                 items = AudioOptions.Select(option => new ComboboxItem<VideoOption>
                 {
                     Value = option,
-                    Text = Constants.Settings.ShowAdvancedVideoInfo ? GetAdvancedAudioDisplay(option) : GetNormalAudioDisplay(option)
+                    Text = Constants.Settings.ShowAdvancedVideoInfo ? option.GetAdvancedAudioDisplay() : option.GetNormalAudioDisplay()
                 })
                 .ToArray();
             }
@@ -344,7 +269,7 @@ namespace OpenDownloader
         {
             if (!Constants.Settings.AutoSaveLog) return;
 
-            var filename = Constants.LOG_FILENAME_TEMPLATE.Replace("#Title#", Title);
+            var filename = Constants.LOG_FILENAME_TEMPLATE.Replace("#Title#", Video.Title);
             var filePath = Path.Combine(Constants.Settings.LogSaveDirectory, filename);
 
             File.AppendAllLines(filePath, [data]);

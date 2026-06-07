@@ -38,5 +38,78 @@ namespace OpenDownloader.model
                 };
             }
         }
+
+        public string GetNormalVideoDisplay()
+        {
+            if (Type != VideoOptionType.SpecificFormat)
+            {
+                return Resolution;
+            }
+
+            if (VCodec == "none")
+                return $"Audio only ({VideoExt})";
+
+            string res = Resolution ?? "Unknown";
+            string fps = Fps.HasValue ? $" @ {Fps:0}fps" : "";
+            string note = !string.IsNullOrEmpty(FormatNote) ? $" ({FormatNote})" : "";
+
+            return $"{res}{fps}{note}";
+        }
+
+        public string GetAdvancedVideoDisplay()
+        {
+            if (Type != VideoOptionType.SpecificFormat)
+            {
+                return Resolution;
+            }
+
+            string res = VCodec == "none"
+                ? "audio"
+                : Resolution ?? "Unknown";
+
+            string fps = Fps.HasValue ? $"@{Fps:0}" : "";
+            string note = !string.IsNullOrEmpty(FormatNote) ? $" ({FormatNote})" : "";
+
+            return $"{Id} - {res}{fps} - {VideoExt} - {VCodec}{note}";
+        }
+
+        public string GetNormalAudioDisplay()
+        {
+            if (Type != VideoOptionType.SpecificFormat)
+            {
+                return Resolution;
+            }
+
+            var codec = ACodec ?? "unknown";
+            var abr = Abr != null ? $"{Math.Round((double)Abr)} kbps" : GetQualityLabel(Abr);
+
+            return $"{AudioExt} - {codec} ({abr})";
+        }
+
+        public string GetAdvancedAudioDisplay()
+        {
+            if (Type != VideoOptionType.SpecificFormat)
+            {
+                return Resolution;
+            }
+
+            var id = Id ?? "?";
+            var codec = ACodec ?? "unknown";
+            var abr = Abr != null ? $"{Math.Round((double)Abr)} kbps" : "unknown";
+            var asr = Asr != null ? $"{Asr / 1000} kHz" : "?";
+            var ch = AudioChannels.ToString() ?? "?";
+            var ext = AudioExt ?? "?";
+
+            return $"{id} - {codec} ({abr}, {asr}, {ch}ch) - {ext}";
+        }
+
+        private static string GetQualityLabel(double? abr)
+        {
+            if (abr == null) return "unknown";
+
+            if (abr < 64) return "low";
+            if (abr < 128) return "medium";
+            return "high";
+        }
     }
 }

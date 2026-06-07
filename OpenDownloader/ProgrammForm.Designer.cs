@@ -151,13 +151,13 @@
             tb_output.Multiline = true;
             tb_output.Name = "tb_output";
             tb_output.ReadOnly = true;
-            tb_output.Size = new Size(229, 378);
+            tb_output.Size = new Size(229, 349);
             tb_output.TabIndex = 23;
             // 
             // btn_copyToClipboard
             // 
             btn_copyToClipboard.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            btn_copyToClipboard.Location = new Point(690, 474);
+            btn_copyToClipboard.Location = new Point(690, 449);
             btn_copyToClipboard.Name = "btn_copyToClipboard";
             btn_copyToClipboard.Size = new Size(229, 23);
             btn_copyToClipboard.TabIndex = 24;
