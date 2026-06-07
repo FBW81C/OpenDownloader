@@ -128,6 +128,11 @@ namespace OpenDownloader
                         ToolTipIcon.Error
                     );
                     ShowErrorMessage("Download failed", $"Download failed, reason:\n\n{ex.Message}");
+                    if (Constants.Settings.AfterDownloadRemove == AfterDownloadRemoveOptions.Always)
+                    {
+                        flowLayoutPanel1.Controls.Remove(item);
+                        item.Dispose();
+                    }
                     return;
                 }
 
@@ -153,6 +158,13 @@ namespace OpenDownloader
                 else if (Constants.Settings.AfterDownload == AfterDownloadOptions.NaviagteOnNotificationClick)
                 {
                     _pendingNotificationPath = finalFilePath;
+                }
+
+                if (Constants.Settings.AfterDownloadRemove == AfterDownloadRemoveOptions.Always ||
+                    Constants.Settings.AfterDownloadRemove == AfterDownloadRemoveOptions.WhenSuccessful)
+                {
+                    flowLayoutPanel1.Controls.Remove(item);
+                    item.Dispose();
                 }
             };
 

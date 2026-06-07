@@ -47,6 +47,11 @@ namespace OpenDownloader
             rb_alwaysOpen.Checked = settings.AfterDownload == AfterDownloadOptions.OpenFile;
             rb_nothing.Checked = settings.AfterDownload == AfterDownloadOptions.Nothing;
 
+            // After Download remove
+            rb_alwaysRemove.Checked = settings.AfterDownloadRemove == AfterDownloadRemoveOptions.Always;
+            rb_removeWhenSuccessful.Checked = settings.AfterDownloadRemove == AfterDownloadRemoveOptions.WhenSuccessful;
+            rb_removeNever.Checked = settings.AfterDownloadRemove == AfterDownloadRemoveOptions.Never;
+
             // DownloadItem
             cb_advancedInfo.Checked = settings.ShowAdvancedVideoInfo;
         }
@@ -129,6 +134,16 @@ namespace OpenDownloader
         private void cb_showErrorMessageBoxes_CheckedChanged(object sender, EventArgs e)
         {
             LocalSettings.ShowErrorMessageBoxes = cb_showErrorMessageBoxes.Checked;
+        }
+
+        private void rb_alwaysRemove_CheckedChanged(object sender, EventArgs e)
+        {
+            var option =
+                rb_alwaysRemove.Checked ? AfterDownloadRemoveOptions.Always :
+                rb_removeWhenSuccessful.Checked ? AfterDownloadRemoveOptions.WhenSuccessful :
+                AfterDownloadRemoveOptions.Never;
+
+            LocalSettings.AfterDownloadRemove = option;
         }
     }
 }

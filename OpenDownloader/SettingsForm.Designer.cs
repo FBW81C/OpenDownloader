@@ -47,17 +47,22 @@
             rb_navigateWhenClicked = new RadioButton();
             rb_alwaysNavigate = new RadioButton();
             gp_downloadItem = new GroupBox();
+            label1 = new Label();
             lbl_advancedInfoFormat = new Label();
             cb_advancedInfo = new CheckBox();
             gb_messgeboxes = new GroupBox();
             cb_showErrorMessageBoxes = new CheckBox();
-            label1 = new Label();
+            gb_afterDownoad_remove = new GroupBox();
+            rb_alwaysRemove = new RadioButton();
+            rb_removeWhenSuccessful = new RadioButton();
+            rb_removeNever = new RadioButton();
             gb_notifications.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)sb_notificationDuration).BeginInit();
             gb_logs.SuspendLayout();
             gb_afterDownload.SuspendLayout();
             gp_downloadItem.SuspendLayout();
             gb_messgeboxes.SuspendLayout();
+            gb_afterDownoad_remove.SuspendLayout();
             SuspendLayout();
             // 
             // btn_save
@@ -195,7 +200,7 @@
             gb_afterDownload.Controls.Add(rb_alwaysNavigate);
             gb_afterDownload.Location = new Point(12, 251);
             gb_afterDownload.Name = "gb_afterDownload";
-            gb_afterDownload.Size = new Size(651, 130);
+            gb_afterDownload.Size = new Size(328, 130);
             gb_afterDownload.TabIndex = 4;
             gb_afterDownload.TabStop = false;
             gb_afterDownload.Text = "After Download";
@@ -261,6 +266,15 @@
             gp_downloadItem.TabStop = false;
             gp_downloadItem.Text = "Download Item";
             // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new Point(175, 48);
+            label1.Name = "label1";
+            label1.Size = new Size(252, 15);
+            label1.TabIndex = 2;
+            label1.Text = "Audio:    [Id] - [Codec] ([abr], [asr], [ch]) - [ext]";
+            // 
             // lbl_advancedInfoFormat
             // 
             lbl_advancedInfoFormat.AutoSize = true;
@@ -287,7 +301,7 @@
             gb_messgeboxes.Controls.Add(cb_showErrorMessageBoxes);
             gb_messgeboxes.Location = new Point(344, 10);
             gb_messgeboxes.Name = "gb_messgeboxes";
-            gb_messgeboxes.Size = new Size(317, 118);
+            gb_messgeboxes.Size = new Size(317, 119);
             gb_messgeboxes.TabIndex = 6;
             gb_messgeboxes.TabStop = false;
             gb_messgeboxes.Text = "Message Boxes";
@@ -303,14 +317,51 @@
             cb_showErrorMessageBoxes.UseVisualStyleBackColor = true;
             cb_showErrorMessageBoxes.CheckedChanged += cb_showErrorMessageBoxes_CheckedChanged;
             // 
-            // label1
+            // gb_afterDownoad_remove
             // 
-            label1.AutoSize = true;
-            label1.Location = new Point(175, 48);
-            label1.Name = "label1";
-            label1.Size = new Size(252, 15);
-            label1.TabIndex = 2;
-            label1.Text = "Audio:    [Id] - [Codec] ([abr], [asr], [ch]) - [ext]";
+            gb_afterDownoad_remove.Controls.Add(rb_removeNever);
+            gb_afterDownoad_remove.Controls.Add(rb_removeWhenSuccessful);
+            gb_afterDownoad_remove.Controls.Add(rb_alwaysRemove);
+            gb_afterDownoad_remove.Location = new Point(346, 251);
+            gb_afterDownoad_remove.Name = "gb_afterDownoad_remove";
+            gb_afterDownoad_remove.Size = new Size(315, 130);
+            gb_afterDownoad_remove.TabIndex = 7;
+            gb_afterDownoad_remove.TabStop = false;
+            gb_afterDownoad_remove.Text = "Remove Video after Download";
+            // 
+            // rb_alwaysRemove
+            // 
+            rb_alwaysRemove.AutoSize = true;
+            rb_alwaysRemove.Location = new Point(13, 22);
+            rb_alwaysRemove.Name = "rb_alwaysRemove";
+            rb_alwaysRemove.Size = new Size(62, 19);
+            rb_alwaysRemove.TabIndex = 0;
+            rb_alwaysRemove.TabStop = true;
+            rb_alwaysRemove.Text = "Always";
+            rb_alwaysRemove.UseVisualStyleBackColor = true;
+            rb_alwaysRemove.CheckedChanged += rb_alwaysRemove_CheckedChanged;
+            // 
+            // rb_removeWhenSuccessful
+            // 
+            rb_removeWhenSuccessful.AutoSize = true;
+            rb_removeWhenSuccessful.Location = new Point(13, 47);
+            rb_removeWhenSuccessful.Name = "rb_removeWhenSuccessful";
+            rb_removeWhenSuccessful.Size = new Size(213, 19);
+            rb_removeWhenSuccessful.TabIndex = 1;
+            rb_removeWhenSuccessful.TabStop = true;
+            rb_removeWhenSuccessful.Text = "Remove when download successful";
+            rb_removeWhenSuccessful.UseVisualStyleBackColor = true;
+            // 
+            // rb_removeNever
+            // 
+            rb_removeNever.AutoSize = true;
+            rb_removeNever.Location = new Point(13, 72);
+            rb_removeNever.Name = "rb_removeNever";
+            rb_removeNever.Size = new Size(56, 19);
+            rb_removeNever.TabIndex = 2;
+            rb_removeNever.TabStop = true;
+            rb_removeNever.Text = "Never";
+            rb_removeNever.UseVisualStyleBackColor = true;
             // 
             // SettingsForm
             // 
@@ -319,6 +370,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             CancelButton = btn_cancel;
             ClientSize = new Size(673, 531);
+            Controls.Add(gb_afterDownoad_remove);
             Controls.Add(gb_messgeboxes);
             Controls.Add(gp_downloadItem);
             Controls.Add(gb_afterDownload);
@@ -344,6 +396,8 @@
             gp_downloadItem.PerformLayout();
             gb_messgeboxes.ResumeLayout(false);
             gb_messgeboxes.PerformLayout();
+            gb_afterDownoad_remove.ResumeLayout(false);
+            gb_afterDownoad_remove.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -372,5 +426,9 @@
         private GroupBox gb_messgeboxes;
         private CheckBox cb_showErrorMessageBoxes;
         private Label label1;
+        private GroupBox gb_afterDownoad_remove;
+        private RadioButton rb_removeNever;
+        private RadioButton rb_removeWhenSuccessful;
+        private RadioButton rb_alwaysRemove;
     }
 }

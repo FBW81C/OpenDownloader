@@ -19,6 +19,8 @@ public class Settings
     public string LogSaveDirectory { get; set; } = string.Empty;
     // After Download
     public AfterDownloadOptions AfterDownload { get; set; } = AfterDownloadOptions.NaviagteOnNotificationClick;
+    // After Download remove
+    public AfterDownloadRemoveOptions AfterDownloadRemove { get; set; } = AfterDownloadRemoveOptions.Never;
     // DownoadItem
     public bool ShowAdvancedVideoInfo { get; set; } = false;
 
@@ -33,6 +35,7 @@ public class Settings
             AutoSaveLog = AutoSaveLog,
             LogSaveDirectory = LogSaveDirectory,
             AfterDownload = AfterDownload,
+            AfterDownloadRemove = AfterDownloadRemove,
             ShowAdvancedVideoInfo = ShowAdvancedVideoInfo,
         };
     }
