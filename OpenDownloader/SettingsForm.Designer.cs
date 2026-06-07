@@ -51,6 +51,7 @@
             cb_advancedInfo = new CheckBox();
             gb_messgeboxes = new GroupBox();
             cb_showErrorMessageBoxes = new CheckBox();
+            label1 = new Label();
             gb_notifications.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)sb_notificationDuration).BeginInit();
             gb_logs.SuspendLayout();
@@ -250,6 +251,7 @@
             // gp_downloadItem
             // 
             gp_downloadItem.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            gp_downloadItem.Controls.Add(label1);
             gp_downloadItem.Controls.Add(lbl_advancedInfoFormat);
             gp_downloadItem.Controls.Add(cb_advancedInfo);
             gp_downloadItem.Location = new Point(12, 387);
@@ -264,9 +266,9 @@
             lbl_advancedInfoFormat.AutoSize = true;
             lbl_advancedInfoFormat.Location = new Point(175, 23);
             lbl_advancedInfoFormat.Name = "lbl_advancedInfoFormat";
-            lbl_advancedInfoFormat.Size = new Size(361, 15);
+            lbl_advancedInfoFormat.Size = new Size(308, 15);
             lbl_advancedInfoFormat.TabIndex = 1;
-            lbl_advancedInfoFormat.Text = "Video:     [Id] | [Resolution] | [FPS] | [Ext] | [VCodec/Acodec] | [Note]";
+            lbl_advancedInfoFormat.Text = "Video:     [Id] - [Resolution][FPS] - [Ext] - [Codec] - [Note]\r\n";
             // 
             // cb_advancedInfo
             // 
@@ -300,6 +302,15 @@
             cb_showErrorMessageBoxes.Text = "Show Error Message Boxes";
             cb_showErrorMessageBoxes.UseVisualStyleBackColor = true;
             cb_showErrorMessageBoxes.CheckedChanged += cb_showErrorMessageBoxes_CheckedChanged;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new Point(175, 48);
+            label1.Name = "label1";
+            label1.Size = new Size(252, 15);
+            label1.TabIndex = 2;
+            label1.Text = "Audio:    [Id] - [Codec] ([abr], [asr], [ch]) - [ext]";
             // 
             // SettingsForm
             // 
@@ -360,5 +371,6 @@
         private CheckBox cb_advancedInfo;
         private GroupBox gb_messgeboxes;
         private CheckBox cb_showErrorMessageBoxes;
+        private Label label1;
     }
 }
