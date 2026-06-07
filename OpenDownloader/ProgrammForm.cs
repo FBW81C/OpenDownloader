@@ -1,9 +1,10 @@
-using System.Diagnostics;
-using System.Text.Json;
 using OpenDownloader.lib;
 using OpenDownloader.model;
 using OpenDownloader.model.Settings;
 using OpenDownloader.ytdlpUtil;
+using System.Diagnostics;
+using System.Security.Policy;
+using System.Text.Json;
 
 namespace OpenDownloader
 {
@@ -65,6 +66,13 @@ namespace OpenDownloader
 
         private async void btn_Add_Click(object sender, EventArgs e)
         {
+            var path = tbFolder.Text;
+            if (!Path.Exists(path))
+            {
+                ShowErrorMessage("Path", $"The following path doesn't exist:\n\n{path}", true);
+                return;
+            }
+
             if (!UrlValidator.IsUrl(tbURL.Text))
             {
                 var result = MessageBox.Show("URL doesn't seem to be in a URL format, ignore and continue?", "Invalid URL", MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation);
@@ -72,18 +80,16 @@ namespace OpenDownloader
                     return;
             }
 
+            if (Constants.History.TryGetValue(tbURL.Text, out var existingTitle))
+            {
+                var result = MessageBox.Show($"This URL was found in the history with title:\n\n{existingTitle}\n\nIgnore and continue?", "History", MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation);
+                if (result == DialogResult.Cancel)
+                    return;
+            }
+
             btn_Add.Enabled = false;
             btn_Add.Text = "Loading...";
             tb_output.Clear();
-
-            var path = tbFolder.Text;
-            if (!Path.Exists(path))
-            {
-                ShowErrorMessage("Path", $"The following path doesn't exist:\n\n{path}", true);
-                btn_Add.Enabled = true;
-                btn_Add.Text = "Add Video";
-                return;
-            }
 
             Video? video = null;
             try
@@ -108,6 +114,8 @@ namespace OpenDownloader
 
             item.DownloadClicked += async (_, request) =>
             {
+                AddVideoToHistory(request.Video);
+
                 string? finalFilePath = null;
                 try
                 {
@@ -230,6 +238,12 @@ namespace OpenDownloader
         private void ShowSuccessMessage(string title, string message)
         {
             MessageBox.Show(message, title, MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void AddVideoToHistory(Video video)
+        {
+            Constants.History[video.WebpageUrl] = video.Title;
+            File.AppendAllText(Constants.HISTORY_PATH, $"{video.WebpageUrl}\t{video.Title}\n");
         }
 
         private void settingsToolStripMenuItem_Click(object sender, EventArgs e)

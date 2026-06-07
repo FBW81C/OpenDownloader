@@ -16,6 +16,7 @@ namespace OpenDownloader
             EnsureIntegrity();
             CreateSettingsFolder();
             LoadSettings();
+            LoadHistory();
 
             // TODO: Check for yt-dlp and ffmpeg updates
 
@@ -38,7 +39,7 @@ namespace OpenDownloader
                         return;
                     }
                 }
-            } 
+            }
             catch (Exception ex)
             {
                 MessageBox.Show($"Settings could not be loaded from \"{Constants.SETTINGS_FILE_PATH}\"\nLoading default settings\n\nReason:\n{ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -46,6 +47,35 @@ namespace OpenDownloader
 
             Constants.Settings = new Settings();
         }
+        public static void LoadHistory()
+        {
+            try
+            {
+                if (File.Exists(Constants.HISTORY_PATH))
+                {
+                    var history = new Dictionary<string, string>();
+
+                    foreach (var line in File.ReadLines(Constants.HISTORY_PATH))
+                    {
+                        var parts = line.Split('\t', 2);
+
+                        var url = parts[0];
+                        var title = parts.Length > 1 ? parts[1] : "";
+
+                        history[url] = title;
+                    }
+
+                    Constants.History = history;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"History could not be loaded from \"{Constants.HISTORY_PATH}\"\nLoading empty history\n\nReason:\n{ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+
+            Constants.History = [];
+        }
+
         public static void EnsureIntegrity()
         {
             if (!File.Exists(Constants.ytdlpPath))
