@@ -29,7 +29,7 @@ namespace OpenDownloader
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Failed to load default directory because: {ex.Message}");
+                ShowErrorMessage("Default directory", $"Failed to load default directory because: {ex.Message}");
             }
         }
 
@@ -55,11 +55,11 @@ namespace OpenDownloader
                 Constants.Settings.DefaultSaveDirectory = tbFolder.Text;
                 var json = JsonSerializer.Serialize(Constants.Settings);
                 File.WriteAllText(Constants.SETTINGS_FILE_PATH, json);
-                MessageBox.Show($"Successfully set path '{tbFolder.Text}' as default");
+                ShowSuccessMessage("Default direcotry", $"Successfully set path '{tbFolder.Text}' as default");
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Failed to set path as default because: {ex.Message}");
+                ShowErrorMessage("Default directory", $"Failed to set path as default because: {ex.Message}", true);
             }
         }
 
@@ -79,7 +79,7 @@ namespace OpenDownloader
             var path = tbFolder.Text;
             if (!Path.Exists(path))
             {
-                MessageBox.Show("Invalid path", "Path doesn't exist", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                ShowErrorMessage("Path", $"The following path doesn't exist:\n\n{path}", true);
                 btn_Add.Enabled = true;
                 btn_Add.Text = "Add Video";
                 return;
@@ -95,7 +95,9 @@ namespace OpenDownloader
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Failed downloading video info, reason:\n\n{ex.Message}", "Download Video Info", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                var message = $"Failed downloading video info, reason:\n\n{ex.Message}";
+                ShowErrorMessage("Download video info", message);
+                tb_output.AppendText(message + Environment.NewLine);
                 tbURL.Text = "";
                 btn_Add.Enabled = true;
                 btn_Add.Text = "Add Video";
@@ -125,7 +127,7 @@ namespace OpenDownloader
                         "Check output panel for more information!",
                         ToolTipIcon.Error
                     );
-                    MessageBox.Show($"Download failed, reason:\n\n{ex.Message}", "Download failed", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    ShowErrorMessage("Download failed", $"Download failed, reason:\n\n{ex.Message}");
                     return;
                 }
 
@@ -184,7 +186,7 @@ namespace OpenDownloader
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Failed navigating to file, reason:\n\n{ex.Message}", "Click on Notification", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ShowErrorMessage("Click on notification", $"Failed navigating to file, reason:\n\n{ex.Message}", true);
             } 
             finally
             {
@@ -192,31 +194,6 @@ namespace OpenDownloader
             }
         }
 
-        private void btn_copyToClipboard_Click(object sender, EventArgs e)
-        {
-            if (!string.IsNullOrEmpty(tb_output.Text))
-                Clipboard.SetText(tb_output.Text);
-        }
-
-        private void aboutOpenClickerToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            string path = Path.Combine(Constants.TEXTS_PATH, "about.txt");
-
-            if (File.Exists(path))
-            {
-                string content = File.ReadAllText(path);
-                MessageBox.Show(content, $"About {Constants.APPLICATION_NAME}", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-            else
-            {
-                MessageBox.Show("About-File not found!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        private void gitHubToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Process.Start("explorer", Constants.LINK_GITHUB);
-        }
 
         private void SendNotification(string title, string message, ToolTipIcon icon)
         {
@@ -231,10 +208,45 @@ namespace OpenDownloader
             }
         }
 
+        private void ShowErrorMessage(string title, string message, bool force = false)
+        {
+            if (Constants.Settings.ShowErrorMessageBoxes || force)
+            {
+                MessageBox.Show(message, title, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+        private void ShowSuccessMessage(string title, string message)
+        {
+            MessageBox.Show(message, title, MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
         private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var settingsForm = new SettingsForm(Constants.Settings);
             settingsForm.ShowDialog();
+        }
+        private void btn_copyToClipboard_Click(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrEmpty(tb_output.Text))
+                Clipboard.SetText(tb_output.Text);
+        }
+        private void aboutOpenClickerToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string path = Path.Combine(Constants.TEXTS_PATH, "about.txt");
+
+            if (File.Exists(path))
+            {
+                string content = File.ReadAllText(path);
+                MessageBox.Show(content, $"About {Constants.APPLICATION_NAME}", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else
+            {
+                ShowErrorMessage("About Window", "about.txt not found!", true);
+            }
+        }
+        private void gitHubToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Process.Start("explorer", Constants.LINK_GITHUB);
         }
     }
 }

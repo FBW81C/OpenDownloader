@@ -29,6 +29,9 @@ namespace OpenDownloader
                 sb_notificationDuration.Enabled = false;
             }
 
+            // Message Boxes
+            cb_showErrorMessageBoxes.Checked = settings.ShowErrorMessageBoxes;
+
             // Auto Save Log
             cb_autoSaveLogs.Checked = settings.AutoSaveLog;
             tb_logSaveDirectory.Text = settings.LogSaveDirectory;
@@ -121,6 +124,11 @@ namespace OpenDownloader
         private void cb_advancedInfo_CheckedChanged(object sender, EventArgs e)
         {
             LocalSettings.ShowAdvancedVideoInfo = cb_advancedInfo.Checked;
+        }
+
+        private void cb_showErrorMessageBoxes_CheckedChanged(object sender, EventArgs e)
+        {
+            LocalSettings.ShowErrorMessageBoxes = cb_showErrorMessageBoxes.Checked;
         }
     }
 }

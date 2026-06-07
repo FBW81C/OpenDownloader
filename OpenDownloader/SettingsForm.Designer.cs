@@ -49,11 +49,14 @@
             gp_downloadItem = new GroupBox();
             lbl_advancedInfoFormat = new Label();
             cb_advancedInfo = new CheckBox();
+            gb_messgeboxes = new GroupBox();
+            cb_showErrorMessageBoxes = new CheckBox();
             gb_notifications.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)sb_notificationDuration).BeginInit();
             gb_logs.SuspendLayout();
             gb_afterDownload.SuspendLayout();
             gp_downloadItem.SuspendLayout();
+            gb_messgeboxes.SuspendLayout();
             SuspendLayout();
             // 
             // btn_save
@@ -89,7 +92,7 @@
             gb_notifications.Margin = new Padding(1);
             gb_notifications.Name = "gb_notifications";
             gb_notifications.Padding = new Padding(1);
-            gb_notifications.Size = new Size(653, 120);
+            gb_notifications.Size = new Size(330, 120);
             gb_notifications.TabIndex = 2;
             gb_notifications.TabStop = false;
             gb_notifications.Text = "Notifications";
@@ -120,12 +123,12 @@
             // cb_showNotifications
             // 
             cb_showNotifications.AutoSize = true;
-            cb_showNotifications.Location = new Point(8, 27);
+            cb_showNotifications.Location = new Point(11, 27);
             cb_showNotifications.Margin = new Padding(1);
             cb_showNotifications.Name = "cb_showNotifications";
-            cb_showNotifications.Size = new Size(126, 19);
+            cb_showNotifications.Size = new Size(124, 19);
             cb_showNotifications.TabIndex = 0;
-            cb_showNotifications.Text = "Show Notifications";
+            cb_showNotifications.Text = "Show notifications";
             cb_showNotifications.UseVisualStyleBackColor = true;
             cb_showNotifications.CheckedChanged += cb_showNotifications_CheckedChanged;
             // 
@@ -155,7 +158,7 @@
             // btn_browseLogFolder
             // 
             btn_browseLogFolder.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            btn_browseLogFolder.Location = new Point(495, 73);
+            btn_browseLogFolder.Location = new Point(227, 74);
             btn_browseLogFolder.Name = "btn_browseLogFolder";
             btn_browseLogFolder.Size = new Size(101, 23);
             btn_browseLogFolder.TabIndex = 2;
@@ -166,9 +169,9 @@
             // tb_logSaveDirectory
             // 
             tb_logSaveDirectory.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            tb_logSaveDirectory.Location = new Point(6, 74);
+            tb_logSaveDirectory.Location = new Point(9, 74);
             tb_logSaveDirectory.Name = "tb_logSaveDirectory";
-            tb_logSaveDirectory.Size = new Size(483, 23);
+            tb_logSaveDirectory.Size = new Size(212, 23);
             tb_logSaveDirectory.TabIndex = 1;
             // 
             // cb_autoSaveLogs
@@ -261,9 +264,9 @@
             lbl_advancedInfoFormat.AutoSize = true;
             lbl_advancedInfoFormat.Location = new Point(175, 23);
             lbl_advancedInfoFormat.Name = "lbl_advancedInfoFormat";
-            lbl_advancedInfoFormat.Size = new Size(313, 15);
+            lbl_advancedInfoFormat.Size = new Size(361, 15);
             lbl_advancedInfoFormat.TabIndex = 1;
-            lbl_advancedInfoFormat.Text = "[Id] | [Resolution] | [FPS] | [Ext] | [VCodec/Acodec] | [Note]";
+            lbl_advancedInfoFormat.Text = "Video:     [Id] | [Resolution] | [FPS] | [Ext] | [VCodec/Acodec] | [Note]";
             // 
             // cb_advancedInfo
             // 
@@ -276,6 +279,28 @@
             cb_advancedInfo.UseVisualStyleBackColor = true;
             cb_advancedInfo.CheckedChanged += cb_advancedInfo_CheckedChanged;
             // 
+            // gb_messgeboxes
+            // 
+            gb_messgeboxes.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            gb_messgeboxes.Controls.Add(cb_showErrorMessageBoxes);
+            gb_messgeboxes.Location = new Point(344, 10);
+            gb_messgeboxes.Name = "gb_messgeboxes";
+            gb_messgeboxes.Size = new Size(317, 118);
+            gb_messgeboxes.TabIndex = 6;
+            gb_messgeboxes.TabStop = false;
+            gb_messgeboxes.Text = "Message Boxes";
+            // 
+            // cb_showErrorMessageBoxes
+            // 
+            cb_showErrorMessageBoxes.AutoSize = true;
+            cb_showErrorMessageBoxes.Location = new Point(15, 27);
+            cb_showErrorMessageBoxes.Name = "cb_showErrorMessageBoxes";
+            cb_showErrorMessageBoxes.Size = new Size(166, 19);
+            cb_showErrorMessageBoxes.TabIndex = 0;
+            cb_showErrorMessageBoxes.Text = "Show Error Message Boxes";
+            cb_showErrorMessageBoxes.UseVisualStyleBackColor = true;
+            cb_showErrorMessageBoxes.CheckedChanged += cb_showErrorMessageBoxes_CheckedChanged;
+            // 
             // SettingsForm
             // 
             AcceptButton = btn_save;
@@ -283,6 +308,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             CancelButton = btn_cancel;
             ClientSize = new Size(673, 531);
+            Controls.Add(gb_messgeboxes);
             Controls.Add(gp_downloadItem);
             Controls.Add(gb_afterDownload);
             Controls.Add(gb_logs);
@@ -305,6 +331,8 @@
             gb_afterDownload.PerformLayout();
             gp_downloadItem.ResumeLayout(false);
             gp_downloadItem.PerformLayout();
+            gb_messgeboxes.ResumeLayout(false);
+            gb_messgeboxes.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -330,5 +358,7 @@
         private GroupBox gp_downloadItem;
         private Label lbl_advancedInfoFormat;
         private CheckBox cb_advancedInfo;
+        private GroupBox gb_messgeboxes;
+        private CheckBox cb_showErrorMessageBoxes;
     }
 }

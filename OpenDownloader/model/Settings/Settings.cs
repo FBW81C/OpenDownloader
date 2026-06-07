@@ -12,6 +12,8 @@ public class Settings
     // Notifications
     public bool ShowNotifications { get; set; } = true;
     public int NotificationDurationSec { get; set; } = 3;
+    // MessageBoxes
+    public bool ShowErrorMessageBoxes { get; set; } = true;
     // Logging
     public bool AutoSaveLog { get; set; } = false;
     public string LogSaveDirectory { get; set; } = string.Empty;
@@ -27,10 +29,11 @@ public class Settings
             DefaultSaveDirectory = DefaultSaveDirectory,
             ShowNotifications = ShowNotifications,
             NotificationDurationSec = NotificationDurationSec,
+            ShowErrorMessageBoxes = ShowErrorMessageBoxes,
             AutoSaveLog = AutoSaveLog,
             LogSaveDirectory = LogSaveDirectory,
             AfterDownload = AfterDownload,
-            ShowAdvancedVideoInfo = ShowAdvancedVideoInfo
+            ShowAdvancedVideoInfo = ShowAdvancedVideoInfo,
         };
     }
 }
