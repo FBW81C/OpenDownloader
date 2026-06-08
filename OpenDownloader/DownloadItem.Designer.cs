@@ -61,6 +61,7 @@
             // 
             // cb_quality
             // 
+            cb_quality.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             cb_quality.DropDownStyle = ComboBoxStyle.DropDownList;
             cb_quality.FormattingEnabled = true;
             cb_quality.Location = new Point(276, 35);
@@ -71,6 +72,7 @@
             // 
             // btn_download
             // 
+            btn_download.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btn_download.Location = new Point(560, 34);
             btn_download.Name = "btn_download";
             btn_download.Size = new Size(75, 23);
@@ -81,6 +83,7 @@
             // 
             // lbl_estimatedSizeValue
             // 
+            lbl_estimatedSizeValue.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             lbl_estimatedSizeValue.AutoSize = true;
             lbl_estimatedSizeValue.Location = new Point(558, 13);
             lbl_estimatedSizeValue.Name = "lbl_estimatedSizeValue";
@@ -90,6 +93,7 @@
             // 
             // pb_progress
             // 
+            pb_progress.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             pb_progress.Location = new Point(142, 63);
             pb_progress.Name = "pb_progress";
             pb_progress.Size = new Size(332, 10);
@@ -97,6 +101,7 @@
             // 
             // tb_ETA
             // 
+            tb_ETA.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             tb_ETA.Location = new Point(479, 58);
             tb_ETA.Name = "tb_ETA";
             tb_ETA.ReadOnly = true;
@@ -118,6 +123,7 @@
             // 
             // btn_openLog
             // 
+            btn_openLog.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btn_openLog.Location = new Point(593, 58);
             btn_openLog.Margin = new Padding(2);
             btn_openLog.Name = "btn_openLog";
@@ -129,6 +135,7 @@
             // 
             // btn_delete
             // 
+            btn_delete.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btn_delete.Image = Properties.Resources.delete;
             btn_delete.Location = new Point(638, 34);
             btn_delete.Name = "btn_delete";

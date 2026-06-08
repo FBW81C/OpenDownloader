@@ -131,6 +131,7 @@
             flowLayoutPanel1.Size = new Size(675, 378);
             flowLayoutPanel1.TabIndex = 21;
             flowLayoutPanel1.WrapContents = false;
+            flowLayoutPanel1.SizeChanged += flowLayoutPanel1_SizeChanged;
             // 
             // btn_Add
             // 

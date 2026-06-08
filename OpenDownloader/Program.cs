@@ -66,6 +66,7 @@ namespace OpenDownloader
                     }
 
                     Constants.History = history;
+                    return;
                 }
             }
             catch (Exception ex)

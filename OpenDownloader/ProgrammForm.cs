@@ -16,7 +16,7 @@ namespace OpenDownloader
         public ProgrammForm()
         {
             InitializeComponent();
-            
+
             // Execute on Form construction
             notifyIcon1.BalloonTipClicked += NotifyIcon1_MouseClick;
 
@@ -110,7 +110,7 @@ namespace OpenDownloader
                 return;
             }
 
-            var item = new DownloadItem(video) { Width = flowLayoutPanel1.ClientSize.Width - 12};
+            var item = new DownloadItem(video) { Width = flowLayoutPanel1.ClientSize.Width - 12 };
 
             item.DownloadClicked += async (_, request) =>
             {
@@ -184,6 +184,8 @@ namespace OpenDownloader
             };
 
             flowLayoutPanel1.Controls.Add(item);
+            flowLayoutPanel1.PerformLayout();
+            UpdateSize();
 
             tbURL.Text = "";
             btn_Add.Enabled = true;
@@ -193,7 +195,7 @@ namespace OpenDownloader
         private void NotifyIcon1_MouseClick(object? sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(_pendingNotificationPath)) return;
-            
+
             if (!File.Exists(_pendingNotificationPath))
             {
                 _pendingNotificationPath = null;
@@ -207,7 +209,7 @@ namespace OpenDownloader
             catch (Exception ex)
             {
                 ShowErrorMessage("Click on notification", $"Failed navigating to file, reason:\n\n{ex.Message}", true);
-            } 
+            }
             finally
             {
                 _pendingNotificationPath = null;
@@ -275,6 +277,26 @@ namespace OpenDownloader
         private void gitHubToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Process.Start("explorer", Constants.LINK_GITHUB);
+        }
+
+        private void flowLayoutPanel1_SizeChanged(object sender, EventArgs e)
+        {
+            UpdateSize();
+        }
+
+        private void UpdateSize()
+        {
+            int width = flowLayoutPanel1.ClientSize.Width
+              - flowLayoutPanel1.Padding.Horizontal;
+
+            flowLayoutPanel1.SuspendLayout();
+
+            foreach (Control c in flowLayoutPanel1.Controls)
+            {
+                c.Width = width;
+            }
+
+            flowLayoutPanel1.ResumeLayout();
         }
     }
 }
