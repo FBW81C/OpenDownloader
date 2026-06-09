@@ -3,6 +3,7 @@ using System.Text;
 using System.Text.Json;
 using OpenDownloader.lib;
 using OpenDownloader.model;
+using OpenDownloader.model.Text;
 
 namespace OpenDownloader.ytdlpUtil
 {
@@ -123,12 +124,12 @@ namespace OpenDownloader.ytdlpUtil
 
         public static async Task<Video> DownloadVideoInfo(
             string url,
-            IProgress<string> output
+            IProgress<RichText> output
             )
         {
             var args = $"-J {url}";
 
-            output.Report($"[GUI] Executing: yt-dlp.exe {args}");
+            output.Report(new RichText($"Executing: yt-dlp.exe {args}", TextType.Normal, "GUI"));
             var process = new Process
             {
                 StartInfo = new ProcessStartInfo
@@ -157,7 +158,15 @@ namespace OpenDownloader.ytdlpUtil
                 if (!string.IsNullOrEmpty(e.Data))
                 {
                     errorBuilder.AppendLine(e.Data);
-                    output?.Report(e.Data);
+
+                    if (e.Data.StartsWith("WARNING"))
+                    {
+                        output?.Report(new RichText(e.Data, TextType.Warning, "YT-DLP"));
+                    } 
+                    else
+                    {
+                        output?.Report(new RichText(e.Data, TextType.Error, "YT-DLP"));
+                    }
                 }
             };
 
@@ -181,7 +190,7 @@ namespace OpenDownloader.ytdlpUtil
             return video;
         }
 
-        private static Video ParseVideo(string json, IProgress<string> output)
+        private static Video ParseVideo(string json, IProgress<RichText> output)
         {
             using var doc = JsonDocument.Parse(json);
             var root = doc.RootElement;
@@ -261,7 +270,7 @@ namespace OpenDownloader.ytdlpUtil
             {
                 // An error occured while reading formats, maybe wrong datatype or missing property
                 // -> Only set best and worst option
-                output.Report($"[GUI] failed parsing JSON: {ex.Message}");
+                output.Report(new RichText($"failed parsing JSON: {ex.Message}", TextType.Warning, "GUI"));
             }
 
             video.Options.Insert(0, new VideoOption { Type = VideoOptionType.Best });
@@ -273,11 +282,11 @@ namespace OpenDownloader.ytdlpUtil
             return video;
         }
 
-        private static string SelectCompatibleThumbnailUrl(JsonElement root, IProgress<string> output)
+        private static string SelectCompatibleThumbnailUrl(JsonElement root, IProgress<RichText> output)
         {
             if (!root.TryGetProperty("thumbnails", out var thumbs))
             {
-                output.Report($"[GUI] No thumbnails found");
+                output.Report(new RichText("No thumbnails found", TextType.Warning, "GUI"));
                 return string.Empty;
             }
 
@@ -291,18 +300,18 @@ namespace OpenDownloader.ytdlpUtil
 
             if (compatible == null)
             {
-                output.Report($"[GUI] No compatible thumbnails found");
+                output.Report(new RichText($"No compatible thumbnails found", TextType.Warning, "GUI"));
                 return string.Empty;
             }
 
             return compatible;
         }
 
-        private static async Task LoadThumbnailAsync(Video video, IProgress<string> output)
+        private static async Task LoadThumbnailAsync(Video video, IProgress<RichText> output)
         {
             if (string.IsNullOrWhiteSpace(video.ThumbnailUrl))
             {
-                output.Report($"[GUI] No thumbnail found, loading dummy thumbnail");
+                output.Report(new RichText($"No thumbnail found, loading default thumbnail", TextType.Warning, "GUI"));
                 video.Thumbnail = Image.FromFile(Path.Combine(Constants.ASSETS_PATH, "Logo", "Logo.png"));
                 return;
             }
@@ -310,7 +319,7 @@ namespace OpenDownloader.ytdlpUtil
             try
             {
                 using var http = new HttpClient();
-                output.Report($"[GUI] Fetching thumbnail: {video.ThumbnailUrl}");
+                output.Report(new RichText($"Fetching thumbnail: {video.ThumbnailUrl}", TextType.Normal, "GUI"));
                 var bytes = await http.GetByteArrayAsync(video.ThumbnailUrl);
 
                 using var ms = new MemoryStream(bytes);
@@ -320,7 +329,7 @@ namespace OpenDownloader.ytdlpUtil
             } 
             catch (Exception ex)
             {
-                output.Report($"[GUI] Failed fetching thumbnail, loading dummy thumbnail: {ex.Message}");
+                output.Report(new RichText($"Failed fetching thumbnail, loading default thumbnail: {ex.Message}", TextType.Warning, "GUI"));
                 video.Thumbnail = Image.FromFile(Path.Combine(Constants.ASSETS_PATH, "Logo", "Logo.png"));
             }
         }

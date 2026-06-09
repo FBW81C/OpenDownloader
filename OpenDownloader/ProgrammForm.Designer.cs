@@ -40,7 +40,6 @@
             btnDefault = new Button();
             flowLayoutPanel1 = new FlowLayoutPanel();
             btn_Add = new Button();
-            tb_output = new TextBox();
             btn_copyToClipboard = new Button();
             menuStrip1 = new MenuStrip();
             aboutToolStripMenuItem = new ToolStripMenuItem();
@@ -48,6 +47,7 @@
             aboutToolStripMenuItem1 = new ToolStripMenuItem();
             settingsToolStripMenuItem = new ToolStripMenuItem();
             notifyIcon1 = new NotifyIcon(components);
+            rtb_output = new RichTextBox();
             menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
@@ -145,16 +145,6 @@
             btn_Add.UseVisualStyleBackColor = true;
             btn_Add.Click += btn_Add_Click;
             // 
-            // tb_output
-            // 
-            tb_output.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            tb_output.Location = new Point(690, 94);
-            tb_output.Multiline = true;
-            tb_output.Name = "tb_output";
-            tb_output.ReadOnly = true;
-            tb_output.Size = new Size(229, 349);
-            tb_output.TabIndex = 23;
-            // 
             // btn_copyToClipboard
             // 
             btn_copyToClipboard.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
@@ -210,13 +200,23 @@
             notifyIcon1.Icon = (Icon)resources.GetObject("notifyIcon1.Icon");
             notifyIcon1.Visible = true;
             // 
+            // rtb_output
+            // 
+            rtb_output.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            rtb_output.Location = new Point(690, 94);
+            rtb_output.Name = "rtb_output";
+            rtb_output.ReadOnly = true;
+            rtb_output.Size = new Size(226, 349);
+            rtb_output.TabIndex = 26;
+            rtb_output.Text = "";
+            // 
             // ProgrammForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(931, 510);
+            Controls.Add(rtb_output);
             Controls.Add(btn_copyToClipboard);
-            Controls.Add(tb_output);
             Controls.Add(btn_Add);
             Controls.Add(flowLayoutPanel1);
             Controls.Add(btnDefault);
@@ -250,7 +250,6 @@
         private Button btnDefault;
         private FlowLayoutPanel flowLayoutPanel1;
         private Button btn_Add;
-        private TextBox tb_output;
         private Button btn_copyToClipboard;
         private MenuStrip menuStrip1;
         private ToolStripMenuItem aboutToolStripMenuItem;
@@ -258,5 +257,6 @@
         private ToolStripMenuItem aboutToolStripMenuItem1;
         private NotifyIcon notifyIcon1;
         private ToolStripMenuItem settingsToolStripMenuItem;
+        private RichTextBox rtb_output;
     }
 }

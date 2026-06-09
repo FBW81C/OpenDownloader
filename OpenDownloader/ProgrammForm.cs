@@ -1,9 +1,9 @@
 using OpenDownloader.lib;
 using OpenDownloader.model;
 using OpenDownloader.model.Settings;
+using OpenDownloader.model.Text;
 using OpenDownloader.ytdlpUtil;
 using System.Diagnostics;
-using System.Security.Policy;
 using System.Text.Json;
 
 namespace OpenDownloader
@@ -89,21 +89,23 @@ namespace OpenDownloader
 
             btn_Add.Enabled = false;
             btn_Add.Text = "Loading...";
-            tb_output.Clear();
+            rtb_output.Clear();
 
             Video? video = null;
             try
             {
-                video = await ytdlpExecution.DownloadVideoInfo(tbURL.Text, new Progress<string>(data =>
+                video = await ytdlpExecution.DownloadVideoInfo(tbURL.Text, new Progress<RichText>(data =>
                 {
-                    tb_output.AppendText(data + Environment.NewLine);
+                    rtb_output.AppendRichText(data);
                 }));
             }
             catch (Exception ex)
             {
                 var message = $"Failed downloading video info, reason:\n\n{ex.Message}";
+
                 ShowErrorMessage("Download video info", message);
-                tb_output.AppendText(message + Environment.NewLine);
+                rtb_output.AppendRichText(new RichText(message, TextType.Error, "GUI"));
+
                 tbURL.Text = "";
                 btn_Add.Enabled = true;
                 btn_Add.Text = "Add Video";
@@ -257,8 +259,8 @@ namespace OpenDownloader
         }
         private void btn_copyToClipboard_Click(object sender, EventArgs e)
         {
-            if (!string.IsNullOrEmpty(tb_output.Text))
-                Clipboard.SetText(tb_output.Text);
+            if (!string.IsNullOrEmpty(rtb_output.Text))
+                Clipboard.SetText(rtb_output.Text);
         }
         private void aboutOpenClickerToolStripMenuItem_Click(object sender, EventArgs e)
         {
