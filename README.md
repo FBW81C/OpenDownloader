@@ -41,12 +41,10 @@ There are different types of installers:
 - Windows x64
 
 ## Possible future features
-- History: Added links will be appended to a history. It will check if you already downloaded the file and inform you.
 - YT Playlist support: Currently playlists are blocked.
-- Remove after Download: Automatically remove link if downloaded successfully
 - Link-Collector: Upload a .txt file or enter links line by line to add multiple links at once.
 - Bulk-Download: Button for downloading all added links at once.
-- Enhanced notification management: More options for disabling error notifications and warnings.
+- Updater
 
 ## License
 - see LICENSE.txt
