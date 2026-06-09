@@ -159,7 +159,7 @@
             // menuStrip1
             // 
             menuStrip1.ImageScalingSize = new Size(24, 24);
-            menuStrip1.Items.AddRange(new ToolStripItem[] { aboutToolStripMenuItem, settingsToolStripMenuItem });
+            menuStrip1.Items.AddRange(new ToolStripItem[] { settingsToolStripMenuItem, aboutToolStripMenuItem });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
             menuStrip1.Size = new Size(931, 24);
@@ -206,6 +206,7 @@
             rtb_output.Location = new Point(690, 94);
             rtb_output.Name = "rtb_output";
             rtb_output.ReadOnly = true;
+            rtb_output.ScrollBars = RichTextBoxScrollBars.Vertical;
             rtb_output.Size = new Size(226, 349);
             rtb_output.TabIndex = 26;
             rtb_output.Text = "";

@@ -40,4 +40,5 @@ public static class Constants
 
     // Other
     public readonly static string LOG_FILENAME_TEMPLATE = "log_#Title#.txt";
+    public readonly static string VERSION_TEMPLATE = "#VERSION#";
 }

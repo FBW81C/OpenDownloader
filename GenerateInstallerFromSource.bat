@@ -3,23 +3,23 @@ setlocal enabledelayedexpansion
 
 :: ===== CONFIGURATION =====
 set PROJECT_DIR=%~dp0
+set CSPROJ_FILE=%PROJECT_DIR%OpenDownloader\OpenDownloader.csproj
 set ISS_FILE=%PROJECT_DIR%OpenDownloader.iss
 set ISS_FILE_NODEPENDENCIES=%PROJECT_DIR%OpenDownloader_nodependencies.iss
 set INSTALLER_OUTPUT_DIR=%PROJECT_DIR%Installers
 set INNO_SETUP_PATH="C:\Program Files (x86)\Inno Setup 6\ISCC.exe"
 
-:: ===== GET CURRENT VERSION =====
-for /f "tokens=3 delims== " %%A in ('findstr /B /C:"#define MyAppVersion" "%ISS_FILE%"') do set VERSION=%%A
-:: for /f "tokens=2 delims=\"" %%A in ('findstr /B /C:"#define MyAppVersion" "%ISS_FILE%"') do set "VERSION=%%A"
-set VERSION=%VERSION:"=%
+:: ===== GET CURRENT VERSION FROM CSPROJ =====
+for /f "usebackq delims=" %%A in (`powershell -NoProfile -Command "[xml]$p=Get-Content '%CSPROJ_FILE%'; $p.Project.PropertyGroup.InformationalVersion"`) do set VERSION=%%A
 
 echo Current version: %VERSION%
-set /p NEW_VERSION=Enter new version (leave blank to keep current): 
+set /p NEW_VERSION=Enter new version (leave blank to keep current):
 
 if not "%NEW_VERSION%"=="" (
     set VERSION=%NEW_VERSION%
-    echo Updating version in .iss file to %NEW_VERSION%...
-    powershell -Command "(Get-Content '%ISS_FILE%') -replace '#define MyAppVersion \".*\"', '#define MyAppVersion \"%NEW_VERSION%\"' | Set-Content '%ISS_FILE%'"
+    echo Updating version in .csproj to %NEW_VERSION%...
+
+    powershell -NoProfile -Command "[xml]$p=Get-Content '%CSPROJ_FILE%'; $p.Project.PropertyGroup.InformationalVersion='%NEW_VERSION%'; $p.Save('%CSPROJ_FILE%')"
 )
 
 :: ===== BUILD .NET APP =====

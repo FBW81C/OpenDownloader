@@ -1,4 +1,4 @@
-OpenDownloader Version 2.3 by FBW81C
+OpenDownloader Version #VERSION# by FBW81C
 
 OpenDownloader Repository:
 https://github.com/FBW81C/OpenDownloader

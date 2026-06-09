@@ -4,6 +4,7 @@ using OpenDownloader.model.Settings;
 using OpenDownloader.model.Text;
 using OpenDownloader.ytdlpUtil;
 using System.Diagnostics;
+using System.Reflection;
 using System.Text.Json;
 
 namespace OpenDownloader
@@ -264,16 +265,23 @@ namespace OpenDownloader
         }
         private void aboutOpenClickerToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            var version = Assembly
+                .GetExecutingAssembly()
+                .GetCustomAttribute<AssemblyInformationalVersionAttribute>()
+                ?.InformationalVersion;
+
             string path = Path.Combine(Constants.TEXTS_PATH, "about.txt");
 
             if (File.Exists(path))
             {
                 string content = File.ReadAllText(path);
+                content = content.Replace(Constants.VERSION_TEMPLATE, version);
+
                 MessageBox.Show(content, $"About {Constants.APPLICATION_NAME}", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else
             {
-                ShowErrorMessage("About Window", "about.txt not found!", true);
+                ShowErrorMessage("About Window", $"about.txt not found!\n Version {version}", true);
             }
         }
         private void gitHubToolStripMenuItem_Click(object sender, EventArgs e)

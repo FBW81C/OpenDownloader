@@ -15,6 +15,7 @@ Features:
   - Default save directory
   - Show notifications (yes/no)
   - Notification duration sec (1-10)
+  - Show error message boxes (yes/no)
   - Auto save log (yes/no)
   - Log save directory
   - After download
@@ -22,7 +23,12 @@ Features:
     - Naviagte to file when notification clicked
     - Open file
     - Nothing
+  - After Download remove Video
+    - Always
+    - When successful
+    - Never
   - Advanced format selection (yes/no)
+  - History
 
 Dependencies:
 - .NET 8 (Core)
