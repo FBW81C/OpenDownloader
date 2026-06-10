@@ -25,6 +25,8 @@ public class Settings
     public bool ShowAdvancedVideoInfo { get; set; } = false;
     // Hisotry
     public bool IsHistoryEnabled { get; set; } = true;
+    // Updater
+    public bool IsAutoUpdateEnabled { get; set; } = true;
 
     public Settings Clone()
     {
@@ -40,6 +42,7 @@ public class Settings
             AfterDownloadRemove = AfterDownloadRemove,
             ShowAdvancedVideoInfo = ShowAdvancedVideoInfo,
             IsHistoryEnabled = IsHistoryEnabled,
+            IsAutoUpdateEnabled = IsAutoUpdateEnabled,
         };
     }
 }

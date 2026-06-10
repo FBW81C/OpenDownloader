@@ -308,5 +308,21 @@ namespace OpenDownloader
 
             flowLayoutPanel1.ResumeLayout();
         }
+
+        private async void ProgrammForm_Shown(object sender, EventArgs e)
+        {
+            if (!Constants.Settings.IsAutoUpdateEnabled) return;
+
+            await Task.Delay(1000);
+
+            try
+            {
+                await Updater.CheckForUpdateAsync();
+            }
+            catch (Exception ex) 
+            {
+                rtb_output.AppendRichText(new RichText($"Could not check for updates, reason:\n{ex.Message}", TextType.Warning, "Updater"));
+            }
+        }
     }
 }

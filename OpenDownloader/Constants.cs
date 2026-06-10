@@ -37,6 +37,7 @@ public static class Constants
 
     // Links
     public readonly static string LINK_GITHUB = $"https://github.com/FBW81C/{APPLICATION_NAME}";
+    public readonly static string LINK_GITHUB_LATEST = $"https://api.github.com/repos/FBW81C/{APPLICATION_NAME}/releases/latest";
 
     // Other
     public readonly static string LOG_FILENAME_TEMPLATE = "log_#Title#.txt";

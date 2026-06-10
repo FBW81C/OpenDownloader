@@ -42,10 +42,10 @@
             btn_Add = new Button();
             btn_copyToClipboard = new Button();
             menuStrip1 = new MenuStrip();
+            settingsToolStripMenuItem = new ToolStripMenuItem();
             aboutToolStripMenuItem = new ToolStripMenuItem();
             gitHubToolStripMenuItem = new ToolStripMenuItem();
             aboutToolStripMenuItem1 = new ToolStripMenuItem();
-            settingsToolStripMenuItem = new ToolStripMenuItem();
             notifyIcon1 = new NotifyIcon(components);
             rtb_output = new RichTextBox();
             menuStrip1.SuspendLayout();
@@ -166,6 +166,13 @@
             menuStrip1.TabIndex = 25;
             menuStrip1.Text = "menuStrip1";
             // 
+            // settingsToolStripMenuItem
+            // 
+            settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
+            settingsToolStripMenuItem.Size = new Size(61, 20);
+            settingsToolStripMenuItem.Text = "Settings";
+            settingsToolStripMenuItem.Click += settingsToolStripMenuItem_Click;
+            // 
             // aboutToolStripMenuItem
             // 
             aboutToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { gitHubToolStripMenuItem, aboutToolStripMenuItem1 });
@@ -186,13 +193,6 @@
             aboutToolStripMenuItem1.Size = new Size(203, 22);
             aboutToolStripMenuItem1.Text = "About OpenDownloader";
             aboutToolStripMenuItem1.Click += aboutOpenClickerToolStripMenuItem_Click;
-            // 
-            // settingsToolStripMenuItem
-            // 
-            settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
-            settingsToolStripMenuItem.Size = new Size(61, 20);
-            settingsToolStripMenuItem.Text = "Settings";
-            settingsToolStripMenuItem.Click += settingsToolStripMenuItem_Click;
             // 
             // notifyIcon1
             // 
@@ -234,6 +234,7 @@
             MinimumSize = new Size(712, 549);
             Name = "ProgrammForm";
             Text = "OpenDownloader";
+            Shown += ProgrammForm_Shown;
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
             ResumeLayout(false);

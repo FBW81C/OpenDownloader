@@ -57,10 +57,13 @@
             rb_removeWhenSuccessful = new RadioButton();
             rb_alwaysRemove = new RadioButton();
             gb_history = new GroupBox();
+            btn_resetHistory = new Button();
             lbl_historyAmount = new Label();
             lbl_history = new Label();
             cb_enableHistory = new CheckBox();
-            btn_resetHistory = new Button();
+            gb_updates = new GroupBox();
+            btn_checkForUpdates = new Button();
+            cb_autoUpdate = new CheckBox();
             gb_notifications.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)sb_notificationDuration).BeginInit();
             gb_logs.SuspendLayout();
@@ -69,6 +72,7 @@
             gb_messgeboxes.SuspendLayout();
             gb_afterDownoad_remove.SuspendLayout();
             gb_history.SuspendLayout();
+            gb_updates.SuspendLayout();
             SuspendLayout();
             // 
             // btn_save
@@ -267,7 +271,7 @@
             gp_downloadItem.Controls.Add(cb_advancedInfo);
             gp_downloadItem.Location = new Point(12, 387);
             gp_downloadItem.Name = "gp_downloadItem";
-            gp_downloadItem.Size = new Size(649, 100);
+            gp_downloadItem.Size = new Size(328, 100);
             gp_downloadItem.TabIndex = 5;
             gp_downloadItem.TabStop = false;
             gp_downloadItem.Text = "Download Item";
@@ -275,7 +279,7 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(175, 48);
+            label1.Location = new Point(10, 63);
             label1.Name = "label1";
             label1.Size = new Size(252, 15);
             label1.TabIndex = 2;
@@ -284,7 +288,7 @@
             // lbl_advancedInfoFormat
             // 
             lbl_advancedInfoFormat.AutoSize = true;
-            lbl_advancedInfoFormat.Location = new Point(175, 23);
+            lbl_advancedInfoFormat.Location = new Point(9, 48);
             lbl_advancedInfoFormat.Name = "lbl_advancedInfoFormat";
             lbl_advancedInfoFormat.Size = new Size(308, 15);
             lbl_advancedInfoFormat.TabIndex = 1;
@@ -325,6 +329,7 @@
             // 
             // gb_afterDownoad_remove
             // 
+            gb_afterDownoad_remove.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             gb_afterDownoad_remove.Controls.Add(rb_removeNever);
             gb_afterDownoad_remove.Controls.Add(rb_removeWhenSuccessful);
             gb_afterDownoad_remove.Controls.Add(rb_alwaysRemove);
@@ -383,6 +388,16 @@
             gb_history.TabStop = false;
             gb_history.Text = "History";
             // 
+            // btn_resetHistory
+            // 
+            btn_resetHistory.Location = new Point(13, 72);
+            btn_resetHistory.Name = "btn_resetHistory";
+            btn_resetHistory.Size = new Size(97, 23);
+            btn_resetHistory.TabIndex = 3;
+            btn_resetHistory.Text = "Reset History";
+            btn_resetHistory.UseVisualStyleBackColor = true;
+            btn_resetHistory.Click += btn_resetHistory_Click;
+            // 
             // lbl_historyAmount
             // 
             lbl_historyAmount.AutoSize = true;
@@ -412,15 +427,38 @@
             cb_enableHistory.UseVisualStyleBackColor = true;
             cb_enableHistory.CheckedChanged += cb_enableHistory_CheckedChanged;
             // 
-            // btn_resetHistory
+            // gb_updates
             // 
-            btn_resetHistory.Location = new Point(13, 72);
-            btn_resetHistory.Name = "btn_resetHistory";
-            btn_resetHistory.Size = new Size(97, 23);
-            btn_resetHistory.TabIndex = 3;
-            btn_resetHistory.Text = "Reset History";
-            btn_resetHistory.UseVisualStyleBackColor = true;
-            btn_resetHistory.Click += btn_resetHistory_Click;
+            gb_updates.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            gb_updates.Controls.Add(btn_checkForUpdates);
+            gb_updates.Controls.Add(cb_autoUpdate);
+            gb_updates.Location = new Point(346, 387);
+            gb_updates.Name = "gb_updates";
+            gb_updates.Size = new Size(315, 100);
+            gb_updates.TabIndex = 9;
+            gb_updates.TabStop = false;
+            gb_updates.Text = "Updates";
+            // 
+            // btn_checkForUpdates
+            // 
+            btn_checkForUpdates.Location = new Point(13, 48);
+            btn_checkForUpdates.Name = "btn_checkForUpdates";
+            btn_checkForUpdates.Size = new Size(127, 23);
+            btn_checkForUpdates.TabIndex = 1;
+            btn_checkForUpdates.Text = "Check for Updates";
+            btn_checkForUpdates.UseVisualStyleBackColor = true;
+            btn_checkForUpdates.Click += btn_checkForUpdates_Click;
+            // 
+            // cb_autoUpdate
+            // 
+            cb_autoUpdate.AutoSize = true;
+            cb_autoUpdate.Location = new Point(13, 22);
+            cb_autoUpdate.Name = "cb_autoUpdate";
+            cb_autoUpdate.Size = new Size(263, 19);
+            cb_autoUpdate.TabIndex = 0;
+            cb_autoUpdate.Text = "Auto check for Updates (on appliaction start)";
+            cb_autoUpdate.UseVisualStyleBackColor = true;
+            cb_autoUpdate.CheckedChanged += cb_autoUpdate_CheckedChanged;
             // 
             // SettingsForm
             // 
@@ -429,6 +467,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             CancelButton = btn_cancel;
             ClientSize = new Size(673, 531);
+            Controls.Add(gb_updates);
             Controls.Add(gb_history);
             Controls.Add(gb_afterDownoad_remove);
             Controls.Add(gb_messgeboxes);
@@ -460,6 +499,8 @@
             gb_afterDownoad_remove.PerformLayout();
             gb_history.ResumeLayout(false);
             gb_history.PerformLayout();
+            gb_updates.ResumeLayout(false);
+            gb_updates.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -497,5 +538,8 @@
         private Label lbl_history;
         private Label lbl_historyAmount;
         private Button btn_resetHistory;
+        private GroupBox gb_updates;
+        private Button btn_checkForUpdates;
+        private CheckBox cb_autoUpdate;
     }
 }

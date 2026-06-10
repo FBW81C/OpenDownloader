@@ -1,4 +1,7 @@
-﻿using System;
+﻿using OpenDownloader.lib;
+using OpenDownloader.model.Settings;
+using OpenDownloader.model.Text;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -8,7 +11,6 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using OpenDownloader.model.Settings;
 
 namespace OpenDownloader
 {
@@ -58,6 +60,9 @@ namespace OpenDownloader
             // History
             cb_enableHistory.Checked = settings.IsHistoryEnabled;
             lbl_historyAmount.Text = Constants.History.Count.ToString() ?? "N/A";
+
+            // Updates
+            cb_autoUpdate.Checked = settings.IsAutoUpdateEnabled;
         }
 
         private void btn_save_Click(object sender, EventArgs e)
@@ -165,11 +170,28 @@ namespace OpenDownloader
                     Constants.History.Clear();
                     lbl_historyAmount.Text = "0";
                 }
-            } 
+            }
             catch (Exception ex)
             {
                 MessageBox.Show($"Failed deleting history file, reason:\n\n{ex.Message}\n\nTry deleting the file manually: {Constants.HISTORY_PATH}", "History", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private async void btn_checkForUpdates_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                await Updater.CheckForUpdateAsync();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Could not check for updates, reason:\n{ex.Message}", "Update Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void cb_autoUpdate_CheckedChanged(object sender, EventArgs e)
+        {
+            LocalSettings.IsAutoUpdateEnabled = cb_autoUpdate.Checked;
         }
     }
 }
