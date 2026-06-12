@@ -181,7 +181,25 @@ namespace OpenDownloader
         {
             try
             {
-                await Updater.CheckForUpdateAsync();
+                var updateResult = await Updater.CheckForUpdateAsync();
+                if (updateResult.UpdateFound)
+                {
+                    MessageBox.Show(
+                       $"New version available: {updateResult.LatestVersion}\nCurrent version: {updateResult.CurrentVersion}",
+                       "OpenDownloader Updater",
+                       MessageBoxButtons.OK,
+                       MessageBoxIcon.Information
+                    );
+                }
+                else
+                {
+                    MessageBox.Show(
+                       $"You are already on the newest version!\nThanks for using OpenDownloader!",
+                       "OpenDownloader Updater",
+                       MessageBoxButtons.OK,
+                       MessageBoxIcon.Information
+                    );
+                }
             }
             catch (Exception ex)
             {

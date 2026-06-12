@@ -314,12 +314,21 @@ namespace OpenDownloader
             if (!Constants.Settings.IsAutoUpdateEnabled) return;
 
             await Task.Delay(1000);
-
+            
             try
             {
-                await Updater.CheckForUpdateAsync();
+                var updateResult = await Updater.CheckForUpdateAsync();
+                if (updateResult.UpdateFound)
+                {
+                    MessageBox.Show(
+                       $"New version available: {updateResult.LatestVersion}\nCurrent version: {updateResult.CurrentVersion}",
+                       "OpenDownloader Updater",
+                       MessageBoxButtons.OK,
+                       MessageBoxIcon.Information
+                    );
+                }
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
                 rtb_output.AppendRichText(new RichText($"Could not check for updates, reason:\n{ex.Message}", TextType.Warning, "Updater"));
             }

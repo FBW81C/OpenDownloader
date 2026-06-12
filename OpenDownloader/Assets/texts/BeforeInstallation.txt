@@ -29,6 +29,7 @@ Features:
     - Never
   - Advanced format selection (yes/no)
   - History
+  - Updater (optional, check for updates)
 
 Dependencies:
 - .NET 8 (Core)

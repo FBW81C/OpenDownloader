@@ -5,43 +5,56 @@ using System.Reflection;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using OpenDownloader.model.Update;
 
 namespace OpenDownloader.lib;
 public static class Updater
 {
-    public static async Task CheckForUpdateAsync()
+    public static async Task<UpdateResult> CheckForUpdateAsync()
     {
+        // Loading current version from assembly
         var informationalVersion = Assembly
                 .GetExecutingAssembly()
                 .GetCustomAttribute<AssemblyInformationalVersionAttribute>()
                 ?.InformationalVersion;
-        if (informationalVersion == null) return;
 
-        var currentVersion = new Version(informationalVersion);
+        if (string.IsNullOrWhiteSpace(informationalVersion))
+            throw new InvalidOperationException("AssemblyInformationalVersion is missing.");
+
+        if (!Version.TryParse(informationalVersion, out var currentVersion))
+            throw new FormatException($"Invalid assembly version: '{informationalVersion}'.");
+
+        // Fetch latest version from github
+        using var request = new HttpRequestMessage(HttpMethod.Get, Constants.LINK_GITHUB_LATEST);
+        request.Headers.UserAgent.ParseAdd("OpenDownloader");
 
         using var client = new HttpClient();
-        client.DefaultRequestHeaders.UserAgent.ParseAdd("OpenDownloader");
+        using var response = await client.SendAsync(request);
 
-        var json = await client.GetStringAsync(Constants.LINK_GITHUB_LATEST);
+        if (!response.IsSuccessStatusCode)
+            throw new HttpRequestException(
+                $"GitHub request failed with status code {(int)response.StatusCode} ({response.ReasonPhrase}).");
+
+        var json = await response.Content.ReadAsStringAsync();
 
         using var doc = JsonDocument.Parse(json);
-        var latestTag = doc.RootElement.GetProperty("tag_name").GetString();
 
-        if (latestTag == null) return;
+        if (!doc.RootElement.TryGetProperty("tag_name", out var tagElement))
+            throw new KeyNotFoundException("Property 'tag_name' not found in GitHub response.");
 
-        // "v2.4" → "2.4"
-        latestTag = latestTag.TrimStart('v');
+        var latestTagRaw = tagElement.GetString();
 
-        var latestVersion = new Version(latestTag);
+        if (string.IsNullOrWhiteSpace(latestTagRaw))
+            throw new InvalidOperationException("GitHub tag_name is null or empty.");
 
-        if (latestVersion > currentVersion)
-        {
-            MessageBox.Show(
-                $"New version available: {latestVersion}\nCurrent version: {currentVersion}",
-                "OpenDownloader Updater",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Information
-            );
-        }
+        var normalizedTag = latestTagRaw.TrimStart('v', 'V');
+
+        if (!Version.TryParse(normalizedTag, out var latestVersion))
+            throw new FormatException($"Invalid GitHub version format: '{latestTagRaw}'.");
+
+        return new UpdateResult(
+            latestVersion > currentVersion,
+            currentVersion,
+            latestVersion);
     }
 }
