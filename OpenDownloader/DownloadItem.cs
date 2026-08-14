@@ -33,6 +33,7 @@ namespace OpenDownloader
 
             pb_thumbnail.Image = video.Thumbnail;
             lbl_title.Text = video.Title;
+            tb_title.Text = video.Title;
 
             // Download Mode
             var modes = new ComboboxItem<DownloadMode>[]
@@ -160,7 +161,8 @@ namespace OpenDownloader
                 {
                     Video = Video,
                     Option = SelectedVideoOption,
-                    Mode = mode.Value
+                    Mode = mode.Value,
+                    ManualTitle = tb_title.Text
                 };
 
                 var startTime = DateTime.Now;

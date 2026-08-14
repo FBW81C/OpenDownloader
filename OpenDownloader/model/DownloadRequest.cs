@@ -8,6 +8,7 @@ namespace OpenDownloader.model;
 public class DownloadRequest
 {
     public Video Video { get; init; }
+    public string ManualTitle { get; init; }
     public VideoOption Option { get; init; }
     public DownloadMode Mode { get; init; }
 }

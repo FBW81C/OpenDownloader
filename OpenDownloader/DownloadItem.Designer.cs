@@ -38,6 +38,7 @@
             cb_mode = new ComboBox();
             btn_openLog = new Button();
             btn_delete = new Button();
+            tb_title = new TextBox();
             ((System.ComponentModel.ISupportInitialize)pb_thumbnail).BeginInit();
             SuspendLayout();
             // 
@@ -144,12 +145,20 @@
             btn_delete.UseVisualStyleBackColor = true;
             btn_delete.Click += btn_delete_Click;
             // 
+            // tb_title
+            // 
+            tb_title.Location = new Point(276, 6);
+            tb_title.Name = "tb_title";
+            tb_title.Size = new Size(276, 23);
+            tb_title.TabIndex = 13;
+            // 
             // DownloadItem
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.Menu;
             BorderStyle = BorderStyle.FixedSingle;
+            Controls.Add(tb_title);
             Controls.Add(btn_delete);
             Controls.Add(btn_openLog);
             Controls.Add(cb_mode);
@@ -180,5 +189,6 @@
         private ComboBox cb_mode;
         private Button btn_openLog;
         private Button btn_delete;
+        private TextBox tb_title;
     }
 }

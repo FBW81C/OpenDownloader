@@ -14,7 +14,8 @@ namespace OpenDownloader.ytdlpUtil
             string path,
             IProgress<string> output)
         {
-            var args = $"-P \"{path.Replace("\\", "/")}\" --restrict-filenames --progress --newline --print \"after_move:filepath:%(filepath)s\" \"{request.Video.WebpageUrl}\"";
+            var args = $"-P \"{path.Replace("\\", "/")}\" -o \"{request.ManualTitle}.%(ext)s\" --restrict-filenames --progress --newline --print \"after_move:filepath:%(filepath)s\" \"{request.Video.WebpageUrl}\"";
+
             args += $" -f \"{BuildFormatArg(request.Option, request.Mode)}\"";
 
             output.Report($"[GUI] Executing: yt-dlp.exe {args}");
